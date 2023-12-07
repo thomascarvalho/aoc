@@ -24,12 +24,6 @@
 
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
-
-#_(clerk/with-viewer '(fn [_]
-                        (reagent.core/with-let [counter (reagent.core/atom 0)]
-                          (nextjournal.clerk.viewer/html [:h3.cursor-pointer {:on-click #(swap! counter inc)} "I was clicked " @counter " times."])))
-    nil)
-
 ;; ## Example
 
 (def input-example

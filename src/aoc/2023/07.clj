@@ -52,17 +52,17 @@ QQQJA 483"))
                    vals
                    (sort >)
                    vec)]
-    (conj
-     [(match freqs
-        [5] 7
-        [4 1] 6
-        [3 2] 5
-        [3 1 1] 4
-        [2 2 1] 3
-        [2 1 1 1] 2
-        [1 _ _ _ _] 1
-        :else (throw (Exception. "Bad match case")))]
-     (mapv card-rank hand))))
+    (apply conj
+           [(match freqs
+              [5] 7
+              [4 1] 6
+              [3 2] 5
+              [3 1 1] 4
+              [2 2 1] 3
+              [2 1 1 1] 2
+              [1 _ _ _ _] 1
+              :else (throw (Exception. "Bad match case")))]
+           (mapv card-rank hand))))
 
 (defn part-1
   [data]
@@ -82,12 +82,57 @@ QQQJA 483"))
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
+
+(defn card-rank-p2 [c]
+  (case c
+    \A 14
+    \K 13
+    \Q 12
+    \J 0
+    \T 10
+    (parse-long (str c))))
+
+(defn hand-rank-p2 [hand]
+  (let [freqs     (frequencies hand)
+        freqs-vec (->> freqs
+                       vals
+                       (sort >)
+                       vec)
+        j-count   0 #_(or (get freqs \J) 0)
+        j (or (get freqs \J) 0)]
+    (apply conj
+           [(let [[a b c d e] freqs-vec]
+              (+ j
+                 (cond 
+                   (= (+ a j-count) 5) 7
+                   (and (= (+ a j-count) 4) (= b 1) ) 6
+                   (and (= (+ a j-count) 3) (= b 2)) 5
+                   (and (= (+ a j-count) 3) (= b 1) (= c 1)) 4
+                   (and (= (+ a j-count) 2) (= b 2) (= c 1)) 3
+                   (and (= (+ a j-count) 2) (= b 1) (= c 1) (= d 1)) 2
+                   (and (= (+ a j-count) 1) (= b 1) (= c 1)) 1
+
+                ;; [3 1 1] 4
+                ;; [2 2 1] 3
+                ;; [2 1 1 1] 2
+                   )))
+            #_(match freqs-vec
+                [5] 7
+                [4 1] 6
+                [3 2] 5
+                [3 1 1] 4
+                [2 2 1] 3
+                [2 1 1 1] 2
+                [1 _ _ _ _] 1
+                :else (throw (Exception. "Bad match case")))]
+           (mapv card-rank-p2 hand))))
+
 (defn part-2
   [data]
   (->>
    data
    (map (fn [[hand bid]]
-          [(hand-rank hand) hand bid]))
+          [(hand-rank-p2 hand) hand bid]))
    (sort-by first)
    (map-indexed (fn [idx [_ _ bid]] (* (inc idx) bid)))
    (reduce +))
@@ -105,13 +150,13 @@ QQQJA 483"))
   (testing "part one - example"
     (is (= 6440 (part-1 input-example))))
 
-  #_(testing "part one"
-      (is (= 1 (part-1 input))))
+  (testing "part one"
+    (is (= 253954294 (part-1 input))))
 
-  #_(testing "part two - example"
-      (is (= 5905 (part-2 input-example))))
+  (testing "part two - example"
+    (is (= 5905 (part-2 input-example))))
 
   #_(testing "part two"
       (is (= 1 (part-2 input)))))
 
-#_(part-2 input-example)
+(part-2 input)

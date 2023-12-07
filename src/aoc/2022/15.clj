@@ -1,11 +1,22 @@
+^{:nextjournal.clerk/visibility :hide-ns}
 (ns aoc.2022.15
+  {:nextjournal.clerk/toc true}
   (:require [clojure.test :refer :all]
             [clojure.string :as cs]
-            [util :refer [parse-int read-from-ns]]
+            [clojure.java.io :as io]
+            [nextjournal.clerk :as clerk]
+            [util :as u :refer [parse-int]]
             [instaparse.core :as insta]
             [pp-grid.api :as g]))
 
-(def input (read-from-ns ::x))
+;; # Problem
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :show}}
+(clerk/html (u/load-problem "15" "2022"))
+{:nextjournal.clerk/visibility {:code   :show
+                                :result :show}}
+
+(def input (->> (slurp (io/resource "inputs/2022/15.txt"))))
 
 (def input-example "Sensor at x=2, y=18: closest beacon is at x=-2, y=15
 Sensor at x=9, y=16: closest beacon is at x=10, y=16

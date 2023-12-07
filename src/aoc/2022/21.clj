@@ -5,7 +5,6 @@
             [instaparse.core :as insta]
             [ubergraph.core :as uber]
             [clojure.math.numeric-tower :as math]
-            [clojure.pprint :refer [pprint]]
             [ubergraph.alg :as alg]
             [nextjournal.clerk :as clerk]
             [util :as u :refer [parse-int]]

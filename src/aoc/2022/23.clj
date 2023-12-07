@@ -3,7 +3,7 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [util :as u :refer [parse-int]]
+            [util :as u]
             [pp-grid.api :as g]
             [clojure.string :as str]
             [clojure.test :refer :all]))

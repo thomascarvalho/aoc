@@ -23,7 +23,14 @@
                                :jvm-opts  ["-Dclojure.main.report=stdout"]
                                :exec-args {:index       "src/index.clj"
                                            :compile-css true
-                                           :paths       ["src/aoc/*/*.clj"]}
+                                           :paths       ["src/aoc/2015/*.clj"
+                                                         "src/aoc/2018/*.clj"
+                                                         "src/aoc/2019/*.clj"
+                                                         "src/aoc/2020/*.clj"
+                                                         "src/aoc/2021/*.clj"
+                                                         ;; "src/aoc/2022/*.clj" ;; FIXME: clerk build crashes with 2022 => find why 
+                                                         "src/aoc/2023/*.clj"]
+                                           }
                                :main-opts ["-m" "babashka.cli.exec"]}
            :clerk/serve       {:exec-fn   nextjournal.clerk/serve!
                                :exec-args {:index       "src/index.clj"

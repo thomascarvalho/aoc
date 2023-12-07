@@ -3,7 +3,6 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [clojure.math.numeric-tower :as m]
             [util :as u :refer [parse-int]]
             [clojure.string :as str]
             [clojure.test :refer :all]))
@@ -60,4 +59,4 @@
   (testing "part two"
     (is (= 1 (part-2 input)))))
 
-(part-1 input-example)
+#_(part-1 input-example)

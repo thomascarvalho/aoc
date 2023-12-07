@@ -1,12 +1,22 @@
+^{:nextjournal.clerk/visibility :hide-ns}
 (ns aoc.2022.07
+  {:nextjournal.clerk/toc true}
   (:require [clojure.test :refer :all]
             [instaparse.core :as insta]
-            [clojure.string :as cs]
-            [util :refer [read-from-ns parse-int]]
+            [nextjournal.clerk :as clerk]
+            [clojure.java.io :as io]
+            [util :as u :refer [parse-int]]
             [ubergraph.core :as uber]
             [ubergraph.alg :as alg]))
 
-(def input (read-from-ns ::x))
+
+;; # Problem
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :show}}
+(clerk/html (u/load-problem "07" "2022"))
+{:nextjournal.clerk/visibility {:code   :show
+                                :result :show}}
+(def input (->> (slurp (io/resource "inputs/2022/07.txt"))))
 
 (def input-example "$ cd /
 $ ls
@@ -143,13 +153,7 @@ $ ls
     (is (= 95437 (part-one input-example))))
 
   #_(testing "part one"
-    (is (= 1491614 (part-one))))
+      (is (= 1491614 (part-one))))
 
   #_(testing "part two"
       (is (= 6400111 (part-two)))))
-
-
-
-
-
-(part-one input-example)

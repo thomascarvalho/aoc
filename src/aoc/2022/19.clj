@@ -1,12 +1,10 @@
 (ns aoc.2022.19
   (:require [clojure.test :refer :all]
-            [util :refer  [read-from-ns parse-int]]
-            [instaparse.core :as insta]
-            [ubergraph.alg :as alg]
-            [ubergraph.core :as uber]
-            [clojure.string :as cs]))
+            [clojure.java.io :as io]
+            [util :refer  [parse-int]]
+            [instaparse.core :as insta]))
 
-(def input (read-from-ns ::x))
+(def input (->> (slurp (io/resource "inputs/2022/19.txt"))))
 
 (defn parser [i]
   (->>
@@ -50,7 +48,7 @@ Blueprint 2: Each ore robot costs 2 ore. Each clay robot costs 3 ore. Each obsid
   (testing "part two"
     (is (= 1 (part-two)))))
 
-(let [blueprints (map parser (cs/split-lines input-example))]
+#_(let [blueprints (map parser (cs/split-lines input-example))]
   (get-blueprint 1 blueprints)
 
   ;

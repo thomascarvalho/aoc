@@ -67,26 +67,25 @@
                                 :result :show}}
 #_(part-1 input)
 
-(comment
 ;; ## Part 2
-  {:nextjournal.clerk/visibility {:code   :show
-                                  :result :hide}}
-  (defn part-2
-    [input]
-    nil)
+{:nextjournal.clerk/visibility {:code   :show
+                                :result :hide}}
+(defn part-2
+  [input]
+  nil)
 
 ;; Which gives our answer
-  {:nextjournal.clerk/visibility {:code   :hide
-                                  :result :show}}
-  #_(part-2 input)
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :show}}
+#_(part-2 input)
 
 
 ;; # Tests
-  (deftest test-2022-20
-    #_(testing "part one"
+(deftest test-2022-20
+  #_(testing "part one"
       (is (= 1 (part-1 input))))
 
-    #_(testing "part two"
-      (is (= 1 (part-2 input))))))
+  #_(testing "part two"
+      (is (= 1 (part-2 input)))))
 
 #_(part-1 input-example)

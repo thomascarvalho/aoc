@@ -189,7 +189,7 @@
 #_(part-2 input)
 
 
-(second input-example)
+#_(second input-example)
 
 ;; Tests
 (deftest test-2022-22

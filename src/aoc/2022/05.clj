@@ -1,9 +1,21 @@
+^{:nextjournal.clerk/visibility :hide-ns}
 (ns aoc.2022.05
+  {:nextjournal.clerk/toc true}
   (:require [clojure.test :refer :all]
-            [util :refer [parse-int read-from-ns]]
+            [clojure.java.io :as io]
+            [nextjournal.clerk :as clerk]
+            [util :as u :refer [parse-int]]
             [clojure.string :as cs]))
 
-(def input (read-from-ns ::x))
+
+;; # Problem
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :show}}
+(clerk/html (u/load-problem "05" "2022"))
+{:nextjournal.clerk/visibility {:code   :show
+                                :result :show}}
+
+(def input (->> (slurp (io/resource "inputs/2022/05.txt"))))
 
 (def input-example "    [D]    
 [N] [C]    

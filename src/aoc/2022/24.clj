@@ -3,7 +3,7 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [util :as u :refer [parse-int manhattan-distance]]
+            [util :as u]
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
@@ -83,4 +83,4 @@
   #_(testing "part two"
       (is (= 1 (part-2 input)))))
 
-(part-1 input-example)
+#_(part-1 input-example)

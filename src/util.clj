@@ -85,16 +85,6 @@
   (let [raw (slurp (str (System/getProperty "user.home") "/.adventofcode.session"))]
     (str/replace raw "\n" "")))
 
-(defn read-input-puzzle
-  [{:keys [year day]}]
-  (slurp (str "resources/inputs/" year "/" day ".txt")))
-
-(defn read-from-ns
-  [ns]
-  (let [[_ year day] (str/split (namespace ns) #"\.")]
-    (read-input-puzzle {:year year
-                        :day  day})))
-
 (defn load-problem
   "Given a DAY and a YEAR, cache the problem definition locally. If `AOC_TOKEN`
   is set correctly, this will pull both parts if you've done part 1."
