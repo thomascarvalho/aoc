@@ -50,8 +50,7 @@ QQQJA 483"))
   (let [freqs (->> hand
                    frequencies
                    vals
-                   sort
-                   reverse
+                   (sort >)
                    vec)]
     (conj
      [(match freqs
