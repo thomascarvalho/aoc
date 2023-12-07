@@ -5,9 +5,7 @@
             [nextjournal.clerk :as clerk]
             [util :as u :refer [parse-int]]
             [clojure.string :as str]
-            [clojure.test :refer :all]
-            [quil.core :as q]
-            [quil.middleware :as m]))
+            [clojure.test :refer :all]))
 
 ;; # Problem
 {:nextjournal.clerk/visibility {:code   :hide
@@ -28,9 +26,9 @@
                                 :result :show}}
 
 #_(clerk/with-viewer '(fn [_]
-                      (reagent.core/with-let [counter (reagent.core/atom 0)]
-                        (nextjournal.clerk.viewer/html [:h3.cursor-pointer {:on-click #(swap! counter inc)} "I was clicked " @counter " times."])))
-  nil)
+                        (reagent.core/with-let [counter (reagent.core/atom 0)]
+                          (nextjournal.clerk.viewer/html [:h3.cursor-pointer {:on-click #(swap! counter inc)} "I was clicked " @counter " times."])))
+    nil)
 
 ;; ## Example
 
@@ -69,20 +67,22 @@
 (part-1 input-example)
 
 ;; ## Part 2
-{:nextjournal.clerk/visibility {:code :show :result :hide}}
+{:nextjournal.clerk/visibility {:code   :show
+                                :result :hide}}
 (defn part-2
   [input]
   nil)
 
 ;; Which gives our answer
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :show}}
 #_(part-2 input)
 
 
 ;; Tests
 (deftest test-2018-03
   #_(testing "part one"
-    (is (= 1 (part-1 input))))
+      (is (= 1 (part-1 input))))
 
   #_(testing "part two"
-    (is (= 1 (part-2 input)))))
+      (is (= 1 (part-2 input)))))
