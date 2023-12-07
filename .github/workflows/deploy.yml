@@ -13,9 +13,10 @@ jobs:
   test:
     name: Deploy
     runs-on: ubuntu-latest
+    environment: AOC_TOKEN
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.SSH_KEY }}
           submodules: true
