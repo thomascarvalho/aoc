@@ -1,0 +1,36 @@
+{:paths   ["src" "resources"]
+ :deps    {org.clojure/clojure            {:mvn/version "1.11.1"}
+           org.babashka/http-client       {:mvn/version "0.4.15"}
+           instaparse/instaparse          {:mvn/version "1.4.12"}
+           ubergraph/ubergraph            {:mvn/version "0.8.2"}
+           org.clojars.rorokimdim/pp-grid {:mvn/version "0.1.18"}
+           net.mikera/core.matrix         {:mvn/version "0.63.0"}
+           org.clojure/math.numeric-tower {:mvn/version "0.0.5"}
+            ;; io.github.nextjournal/clerk    {:mvn/version "0.15.957"}
+           defun/defun                    {:mvn/version "0.4.0"}
+           io.github.nextjournal/clerk    {:git/sha "ff2bf8b0b5d596286fb1d22408b14456fee2dbf7"}
+           clj-http/clj-http              {:mvn/version "3.12.3"}
+           org.clj-commons/hickory        {:mvn/version "0.7.3"}
+           org.clojure/core.match         {:mvn/version "1.0.1"}
+           org.slf4j/slf4j-nop            {:mvn/version "2.0.9"}
+           org.babashka/cli               {:mvn/version "0.7.53"}
+           quil/quil                      {:mvn/version "4.3.1323"}
+           metasoarous/oz                 {:mvn/version "1.5.6"}
+           aysylu/loom                    {:mvn/version "1.0.2"}
+           org.clojure/test.check         {:mvn/version "1.1.1"}}
+ :aliases {:test              {:extra-deps {lambdaisland/kaocha        {:mvn/version "1.87.1366"}
+                                            nubank/matcher-combinators {:mvn/version "3.8.8"}}
+                               :main-opts  ["-m" "kaocha.runner"]}
+           :nextjournal/clerk {:exec-fn   nextjournal.clerk/build!
+                               :jvm-opts  ["-Dclojure.main.report=stdout"]
+                               :exec-args {:index       "src/index.clj"
+                                           :compile-css true
+                                           :paths       ["src/aoc/*/*.clj"]}
+                               :main-opts ["-m" "babashka.cli.exec"]}
+           :clerk/serve       {:exec-fn   nextjournal.clerk/serve!
+                               :exec-args {:index       "src/index.clj"
+                                           :watch-paths ["src"]
+                                           :port        7878
+                                           :compile-css true
+                                           :paths       ["src/aoc/*/*.clj"]}
+                               :main-opts ["-m" "babashka.cli.exec"]}}}

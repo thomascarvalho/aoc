@@ -1,0 +1,53 @@
+{:paths ["src" "resources"]
+ :tasks {:requires       ([babashka.fs :as fs]
+                          [clojure.string :as str]
+                          [babashka.cli :as cli]
+                          [clojure.java.io :as io]
+                          [babashka.curl :as curl])
+         -input-dir      "resources/inputs"
+         -load-template  {:task (slurp (io/resource "template.clj"))}
+         -load-session   {:task (-> (str (System/getProperty "user.home") "/.adventofcode.session")
+                                    slurp
+                                    (str/replace (re-pattern "\n") ""))}
+         -parse-day-args {:task (let [now  (new java.util.Date)
+                                      year (.format (java.text.SimpleDateFormat. "yyyy") now)
+                                      day  (.format (java.text.SimpleDateFormat. "d") now)]
+                                  (condp = (count *command-line-args*)
+                                    1 [(first *command-line-args*) year]
+                                    2 [(first *command-line-args*) (second *command-line-args*)]
+                                    [day year]))}
+         -download-input {:task (let [session    (run '-load-session)
+                                      [day year] (run '-parse-day-args)
+                                      path       (fs/path (run '-input-dir) year)
+                                      file-name  (format "%02d.txt" (Integer/parseInt day))
+                                      url        (format "https://adventofcode.com/%s/day/%s/input" year day)
+                                      resp       (curl/get url {:headers {"Cookie" (str "session=" session)}})]
+
+                                  (when-not (fs/exists? path)
+                                    (fs/create-dir path))
+                                  (spit (str (fs/path path file-name)) (:body resp)))}
+         new-day         {:doc     "Create the next day from the template."
+                          :depends [-download-input]
+                          :task    (let [[day year] (run '-parse-day-args)
+                                         day        (format "%02d" (Integer/parseInt day))
+                                         template   (run '-load-template)
+                                         path       (fs/path "src" "aoc" year)
+                                         file-name  (format "%s.clj" day)]
+                                     (print (format "Creating template for %s/%s" day year))
+
+                           ;; Create the year path if missing
+                                     (when-not (fs/exists? path)
+                                       (fs/create-dir path))
+
+                                     (spit
+                                      (str (fs/path path file-name))
+                                      (-> template
+                                          (str/replace (re-pattern "YEAR") year)
+                                          (str/replace (re-pattern "DAY") day))))}
+         test            {:task (let [{:keys [args opts]} (cli/parse-args *command-line-args*)
+                                      watch               (:watch opts)]
+                                  (if (= 2 (count args))
+                                    (clojure (str "-M:test --focus aoc." (second args) "." (first args) (if watch " --watch" "")))
+                                    (clojure (str "-M:test" (if watch " --watch" "")))))}
+         serve           {:task (clojure "-M:clerk/serve")}
+         build           {:task (clojure "-M:nextjournal/clerk")}}}
