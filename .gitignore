@@ -22,11 +22,13 @@
 *.class
 *.jar
 *.swp
+
 *~
 /checkouts
 /classes
 /target
 node_modules/
 /.clerk/
-/public/
+/public/build/*
+!/public/build/.nojekyll
 yarn.lock
