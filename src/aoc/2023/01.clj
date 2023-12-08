@@ -3,7 +3,8 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [util :as u :refer [parse-int]]
+            [test-util :as t]
+            [util :as u]
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
@@ -18,16 +19,7 @@
 (def all-numbers ["one" "two" "three" "four" "five" "six" "seven" "eight" "nine"
                   "1" "2" "3" "4" "5" "6" "7" "8" "9"])
 
-(def mapping {;;             ‡"1"     1
-;;               "2"     2
-;;               "3"     3
-;;               "4"     4
-;;               "5"     5
-;;               "6"     6
-;;               "7"     7
-;;               "8"     8
-;;               "9"     9
-              "one"   1
+(def mapping {"one"   1
               "two"   2
               "three" 3
               "four"  4
@@ -82,7 +74,7 @@ zoneight234
        (map (fn [nums]
               (->
                (str (first nums) (last nums))
-               parse-int)))
+               parse-long)))
        (reduce +))
   ;
   )
@@ -106,7 +98,7 @@ zoneight234
        (map #(sort-by first %))
        (map (fn [nums]
               (let [s (str (parse-n (first nums)) (parse-n (last nums)))]
-                (parse-int s))))
+                (parse-long s))))
        (reduce +)))
 
 ;; Which gives our answer
@@ -115,11 +107,15 @@ zoneight234
 (part-2 input)
 
 
-;; Tests
+;; # Tests
+{:nextjournal.clerk/visibility {:code   :show
+                                :result :hide}}
+
+;; ## Suite
 (deftest test-2023-01
   (testing "part one"
     (is (= 54644 (part-1 input))))
-
+  
   (testing "part two - example"
     (is (= 281 (part-2 input-example-2))))
 
@@ -127,3 +123,7 @@ zoneight234
     (is (= 53348 (part-2 input)))))
 
 
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :show}}
+;; ## Results
+(t/render-results (t/run #'test-2023-01))

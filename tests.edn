@@ -1,15 +1,12 @@
 #kaocha/v1
- {:tests                 [{:id          :unit
-                           :test-paths  ["src"]
-                           :ns-patterns ["aoc.*"]
-                           :skip-meta   [:pending]
-                           :kaocha.hooks/pre-test [kaocha.hooks/sample-before-hook]
-                           :kaocha.hooks/after  [kaocha.hooks/sample-after-hook]}]
-  :plugins               [;; :kaocha.plugin/print-invocations
+ {:tests           [{:id          :unit
+                     :test-paths  ["src"]
+                     :ns-patterns ["aoc.*"]
+                     :skip-meta   [:pending]}]
+  :plugins         [;; :kaocha.plugin/print-invocations
                     ;; :kaocha.plugin/profiling
                     ;; :kaocha.plugin/notifier
-                          :kaocha.plugin/hooks]
-  :kaocha.hooks/pre-test [kaocha.hooks/sample-hook]
-  :capture-output?       false
-  :reporter              kaocha.report/dots
-  :color?                true}
+                    :kaocha.plugin/hooks]
+  :capture-output? false
+  :reporter        kaocha.report/dots
+  :color?          true}

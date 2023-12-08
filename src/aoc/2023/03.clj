@@ -4,6 +4,7 @@
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
             [instaparse.core :as insta]
+            [test-util :as t]
             [util :as u :refer [parse-int instaparse]]
             [clojure.string :as str]
             [clojure.test :refer :all]))
@@ -155,7 +156,11 @@
 #_(part-2 input)
 
 
-;; Tests
+;; # Tests
+{:nextjournal.clerk/visibility {:code   :show
+                                :result :hide}}
+
+;; ## Suite
 (deftest test-2023-03
   (testing "some tests"
     (is (= 24 (part-1 (parser "........
@@ -183,11 +188,16 @@
 ...*13*.......
 .......15.....")))))
 
-  #_(testing "part one - example"
+  (testing "part one - example"
       (is (= 4361 (part-1 input-example))))
 
-  #_(testing "part one"
+  (testing "part one"
       (is (= 533784 (part-1 input))))
 
   (testing "part two"
     (is (= 78826761 (part-2 input)))))
+
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :show}}
+;; ## Results
+(t/render-results (t/run #'test-2023-03))

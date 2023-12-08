@@ -1,5 +1,5 @@
 {
-    "calva.testOnSave": true,
+    "calva.testOnSave": false,
     "testing.automaticallyOpenPeekView": "never",
     "calva.jackInEnv": {
         "JAVA_TOOL_OPTIONS": "${env:JAVA_TOOL_OPTIONS} -Xmx2G"

@@ -3,7 +3,8 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [util :as u :refer [parse-int]]
+            [util :as u]
+            [test-util :as t]
             [clojure.string :as str]
             [clojure.core.match :refer [match]]
             [clojure.test :refer :all]))
@@ -64,6 +65,7 @@ QQQJA 483"))
               :else (throw (Exception. "Bad match case")))]
            (mapv card-rank hand))))
 
+;; ## Part 1
 (defn part-1
   [data]
   (->>
@@ -145,7 +147,11 @@ QQQJA 483"))
 #_(part-2 input)
 
 
-;; Tests
+;; # Tests
+{:nextjournal.clerk/visibility {:code   :show
+                                :result :hide}}
+
+;; ## Suite
 (deftest test-2023-07
   (testing "part one - example"
     (is (= 6440 (part-1 input-example))))
@@ -158,5 +164,11 @@ QQQJA 483"))
 
   #_(testing "part two"
       (is (= 1 (part-2 input)))))
+
+
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :show}}
+;; ## Results
+(t/render-results (t/run #'test-2023-07))
 
 (part-2 input)

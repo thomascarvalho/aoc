@@ -3,7 +3,8 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [util :as u :refer [parse-int]]
+            [util :as u]
+            [test-util :as t]
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
@@ -84,7 +85,11 @@ Distance:  9  40  200"))
 #_(part-2 input)
 
 
-;; Tests
+;; # Tests
+{:nextjournal.clerk/visibility {:code   :show
+                                :result :hide}}
+
+;; ## Suite
 (deftest test-2023-06
   (testing "part one - example"
     (is (= 288 (part-1 input-example))))
@@ -94,3 +99,9 @@ Distance:  9  40  200"))
 
   (testing "part two"
       (is (= 34788142 (part-2 input)))))
+
+
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :show}}
+;; ## Results
+(t/render-results (t/run #'test-2023-06))

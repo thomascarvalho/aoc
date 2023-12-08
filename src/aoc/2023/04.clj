@@ -4,8 +4,9 @@
   (:require [clojure.java.io :as io]
             [clojure.string :as str]
             [clojure.test :refer :all]
+            [test-util :as t]
             [nextjournal.clerk :as clerk]
-            [util :as u :refer [instaparse parse-int time-it]]))
+            [util :as u :refer [instaparse parse-int]]))
 
 ;; # Problem
 {:nextjournal.clerk/visibility {:code   :hide
@@ -116,10 +117,19 @@ Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11"))
 #_(time-it (part-2 input))
 
 
-;; Tests
+;; # Tests
+{:nextjournal.clerk/visibility {:code   :show
+                                :result :hide}}
+
+;; ## Suite
 (deftest test-2023-04
   (testing "part one"
     (is (= 25651 (part-1 input))))
 
   (testing "part two"
     (is (= 19499881 (part-2 input)))))
+
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :show}}
+;; ## Results
+(t/render-results (t/run #'test-2023-04))

@@ -3,8 +3,8 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [clojure.math.numeric-tower :as math]
-            [util :as u :refer [parse-int instaparse]]
+            [test-util :as t]
+            [util :as u :refer [parse-int]]
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
@@ -116,10 +116,19 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"))
 (part-2 input)
 
 
-;; Tests
+;; # Tests
+{:nextjournal.clerk/visibility {:code   :show
+                                :result :hide}}
+
+;; ## Suite
 (deftest test-2023-02
   (testing "part one"
       (is (= 2486 (part-1 input))))
 
   (testing "part two"
     (is (= 87984 (part-2 input)))))
+
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :show}}
+;; ## Results
+(t/render-results (t/run #'test-2023-02))

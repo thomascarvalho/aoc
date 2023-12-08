@@ -3,7 +3,7 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [clojure.core.reducers :as r]
+            [test-util :as t]
             [util :as u]
             [clojure.test :refer :all]))
 
@@ -144,7 +144,11 @@ humidity-to-location map:
 #_(part-2 input)
 
 
-;; Tests
+;; # Tests
+{:nextjournal.clerk/visibility {:code   :show
+                                :result :hide}}
+
+;; ## Suite
 (deftest test-2023-05
 
   (testing "lookup"
@@ -158,6 +162,11 @@ humidity-to-location map:
 
   (testing "part two - example"
     (is (= 46 (time (part-2 input-example))))))
+
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :show}}
+;; ## Results
+(t/render-results (t/run #'test-2023-05))
 
 ;; (def sums (map agent (repeat 10 0)))
 

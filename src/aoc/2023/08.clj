@@ -4,6 +4,7 @@
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
             [util :as u]
+            [test-util :as t]
             [clojure.math.numeric-tower :as math]
             [clojure.string :as str]
             [clojure.test :refer :all]))
@@ -87,9 +88,12 @@
 (part-2 input)
 
 
+
+;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
-;; Tests
+
+;; ## Suite
 (deftest test-2023-08
   (testing "part one - example 1"
     (is (= 2 (part-1 (parser "RL
@@ -127,3 +131,7 @@ XXX = (XXX, XXX)")))))
   (testing "part two"
     (is (= 13385272668829 (part-2 input)))))
 
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :show}}
+;; ## Results
+(t/render-results (t/run #'test-2023-08))
