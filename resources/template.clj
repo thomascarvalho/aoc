@@ -20,7 +20,7 @@
   (->> data
        str/split-lines))
 
-(def input (->> (slurp (io/resource "YEAR/DAY.txt")) ;; Load the resource
+(def input (->> (slurp (io/resource "inputs/YEAR/DAY.txt")) ;; Load the resource
                 parser))                             ;; Split into lines
 {:nextjournal.clerk/visibility {:result :hide}}
 
