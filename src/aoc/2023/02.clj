@@ -131,4 +131,4 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"))
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 ;; ## Results
-(t/render-results (t/run #'test-2023-02))
+#_(t/render-results (t/run #'test-2023-02))

@@ -169,6 +169,6 @@ QQQJA 483"))
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 ;; ## Results
-(t/render-results (t/run #'test-2023-07))
+#_(t/render-results (t/run #'test-2023-07))
 
 (part-2 input)

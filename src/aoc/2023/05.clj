@@ -166,7 +166,7 @@ humidity-to-location map:
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 ;; ## Results
-(t/render-results (t/run #'test-2023-05))
+#_(t/render-results (t/run #'test-2023-05))
 
 ;; (def sums (map agent (repeat 10 0)))
 

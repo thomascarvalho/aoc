@@ -104,4 +104,4 @@ Distance:  9  40  200"))
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 ;; ## Results
-(t/render-results (t/run #'test-2023-06))
+#_(t/render-results (t/run #'test-2023-06))
