@@ -4,6 +4,7 @@
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
             [util :as u]
+            [clojure.math.numeric-tower :as math]
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
@@ -37,34 +38,6 @@
                 parser))                             ;; Split into lines
 {:nextjournal.clerk/visibility {:result :hide}}
 
-;;  Example
-(def input-example (parser "RL
-
-AAA = (BBB, CCC)
-BBB = (DDD, EEE)
-CCC = (ZZZ, GGG)
-DDD = (DDD, DDD)
-EEE = (EEE, EEE)
-GGG = (GGG, GGG)
-ZZZ = (ZZZ, ZZZ)"))
-
-
-(defn- gcd [a b]
-  (loop [a a
-         b b]
-    (if (zero? b)
-      a
-      (recur b (mod a b)))))
-
-;; Least common multiple
-(defn- lcm
-  ([a b]
-   (-> b
-       (/ (gcd a b))
-       (* a)))
-  ([nums]
-   (reduce #(lcm %1 %2) nums)))
-
 ;; ## Part 1
 (defn part-1
   [[grabs network-map]]
@@ -90,7 +63,7 @@ ZZZ = (ZZZ, ZZZ)"))
                             keys
                             (filter #(str/ends-with? % "A")))]
 
-    (->
+    (->>
      (for [start starting-nodes]
        (->> (cycle grabs)
             (reduce
@@ -98,9 +71,9 @@ ZZZ = (ZZZ, ZZZ)"))
                (if (str/ends-with? current "Z")
                  (reduced step)
                  [(-> (get network-map current) grab) (inc step)])) [start 0])))
-     lcm)
+     (reduce math/lcm))
 
-    ;; my first naive attempt below, but gives StackOverflowError for puzzle input, need to find the least common mutliple -> see above
+    ;; my first naive attempt below, but gives StackOverflowError for puzzle input, need to find the least common multiple -> see above with numeric-tower/lcm solution
     #_(->> (cycle grabs)
            (reduce
             (fn [[current-nodes step] grab]
@@ -114,6 +87,8 @@ ZZZ = (ZZZ, ZZZ)"))
 (part-2 input)
 
 
+{:nextjournal.clerk/visibility {:code   :show
+                                :result :hide}}
 ;; Tests
 (deftest test-2023-08
   (testing "part one - example 1"
