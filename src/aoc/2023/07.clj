@@ -159,4 +159,3 @@ QQQJA 483"))
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 ;; ## Results
-(t/run #'test-2023-07)

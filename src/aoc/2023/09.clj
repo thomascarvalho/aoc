@@ -1,8 +1,10 @@
-^{:nextjournal.clerk/visibility :hide-ns}
+^{:nextjournal.clerk/visibility :hide-ns
+  :nextjournal.clerk/no-cache   true}
 (ns aoc.2023.09
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
+            [nextjournal.clerk.viewer :as v]
             [util :as u]
             [test-util :as t]
             [clojure.string :as str]
@@ -40,18 +42,18 @@
   ;; Quick and dirty solution, but it works, TODO: refactor
   (->>
    (for [nums data
-         :let [history (loop [nums nums
-                              all  [nums]]
-                         (if (every? zero? nums)
-                           (reverse all)
-                           (let [res (for [[n1 n2] (partition 2 1 nums)]
-                                       (- n2 n1))]
-                             (recur
-                              res (conj all res)))))]]
+         :let [tree (loop [nums nums
+                           all  [nums]]
+                      (if (every? zero? nums)
+                        (reverse all)
+                        (let [res (for [[n1 n2] (partition 2 1 nums)]
+                                    (- n2 n1))]
+                          (recur
+                           res (conj all res)))))]]
      (->>
-      (map-indexed (fn [i n] [i n]) history)
+      (map-indexed (fn [i n] [i n]) tree)
       (reduce (fn [h [i n]]
-                (conj h 
+                (conj h
                       (if (zero? i)
                         (conj n 0)
                         (concat n [(+ (last n) (last (nth h (dec i))))])))) [])))
@@ -97,25 +99,63 @@
 
 
 ;; # Tests
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :hide}}
+
 
 ;; ## Suite
-(deftest test-2023-09
 
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :hide}}
+(defn- test-var? [x]
+  (not (nil? (when-let [v (v/get-safe x :nextjournal.clerk/var-from-def)]
+               #_(println (:name (meta v)))
+               (:test (meta v))))))
+
+(defn with-test-out->str [func]
+
+  (let [s (new java.io.StringWriter)]
+    #_(binding [kao s])
+    (str (func))
+    #_(str s)))
+
+(defn test-runner-viewer [v]
+  #_(println (meta v))
+
+  (with-test-out->str #(t/run v)))
+
+#_(def test-viewer {:pred         true
+                  ;; :pred         #(do 
+                  ;;                  (println %)
+                                  ;;  ( test-var? %))
+                    :transform-fn #(do
+                                     #_(println  (v/get-safe % :nextjournal.clerk/var-from-def))
+                                     (-> % :nextjournal/value :nextjournal.clerk/var-from-def test-runner-viewer))
+                    :render-fn    #(clerk/html [:span.syntax-string.inspected-value %])})
+
+(clerk/add-viewers!
+ [{:pred         test-var?
+   :transform-fn #(-> % :nextjournal/value :nextjournal.clerk/var-from-def test-runner-viewer)
+   :render-fn    '(fn [x]
+                    [:span.syntax-string.inspected-value x])}])
+
+{:nextjournal.clerk/visibility {:code   :show
+                                :result :show}}
+
+(deftest test-2023-09
   (testing "part one - example"
     (is (= 114 (part-1 input-example))))
 
   (testing "part one"
     (is (= 1842168671 (part-1 input))))
-  
+
   (testing "part two - example"
     (is (= 2 (part-2 input-example))))
 
   (testing "part two"
-      (is (= 903 (part-2 input)))))
+    (is (= 903 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
 ;; ## Results
-#_(t/render-results (t/run #'test-2023-09))
+
+#_(with-test-out->str
+    #(testing
+      (is (= [1] [2]))))
+
