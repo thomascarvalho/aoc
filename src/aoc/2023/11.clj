@@ -40,44 +40,53 @@
 .......#..
 #...#....."))
 
-(defn expand [m mul]
-  (let [empty-x (->> (ma/columns m)
-                     (map-indexed
-                      (fn [x col]
-                        (when (every? #(= % \.) col)
-                          x)))
-                     (remove nil?)
-                     set)
+(defn expand
+  ([m]
+   (expand m 1))
+  ([m pad]
+   (let [empty-x (->> (ma/columns m)
+                      (map-indexed
+                       (fn [x col]
+                         (when (every? #(= % \.) col)
+                           x)))
+                      (remove nil?)
+                      set)
 
-        empty-y (->> (ma/rows m)
-                     (map-indexed
-                      (fn [y row]
-                        (when (every? #(= % \.) row)
-                          y)))
-                     (remove nil?)
-                     set)]
-    (for [[y r] (map-indexed (fn [y r] [y r]) m)
-          [x c] (map-indexed (fn [x c] [x c]) r)
-          :when (= c  \#)
-          :let  [x-factor (count (filter #(> x %) empty-x))
-                 y-factor (count (filter #(> y %) empty-y))
-                 new-x (+ x (* mul x-factor))
-                 new-y (+ y (* mul y-factor))]]
-      [new-x new-y])))
+         empty-y (->> (ma/rows m)
+                      (map-indexed
+                       (fn [y row]
+                         (when (every? #(= % \.) row)
+                           y)))
+                      (remove nil?)
+                      set)]
+     (for [[y r] (map-indexed (fn [y r] [y r]) m)
+           [x c] (map-indexed (fn [x c] [x c]) r)
+           :when (= c  \#)
+           :let  [x-factor (count (filter #(> x %) empty-x))
+                  y-factor (count (filter #(> y %) empty-y))
+                  new-x (+ x (* pad x-factor))
+                  new-y (+ y (* pad y-factor))]]
+       [new-x new-y]))))
+
+(defn get-pairs [galaxies]
+  (->>
+   (for [g1    galaxies
+         g2    galaxies
+         :when (not= g1 g2)]
+     (sort [g1 g2]))
+   set))
+
+(defn get-pairs-distance-sum [pairs]
+  (->> pairs
+       (reduce (fn [total [g1 g2]]
+                 (+ total (u/manhattan-distance g1 g2))) 0)))
 
 ;; ## Part 1
 (defn part-1
   [initial-m]
-  (let [galaxies (expand initial-m 1)
-        pairs    (->>
-                  (for [g1    galaxies
-                        g2    galaxies
-                        :when (not= g1 g2)]
-                    (sort [g1 g2]))
-                  set)]
-    (->> pairs
-         (reduce (fn [total [g1 g2]]
-                   (+ total (u/manhattan-distance g1 g2))) 0))))
+  (->> (expand initial-m)
+       get-pairs
+       get-pairs-distance-sum))
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
@@ -90,16 +99,10 @@
 
 (defn part-2
   [initial-m]
-  (let [galaxies (expand initial-m (dec 1000000))
-        pairs    (->>
-                  (for [g1    galaxies
-                        g2    galaxies
-                        :when (not= g1 g2)]
-                    (sort [g1 g2]))
-                  set)]
-    (->> pairs
-         (reduce (fn [total [g1 g2]]
-                   (+ total (u/manhattan-distance g1 g2))) 0))))
+  (->> (dec 1000000)
+       (expand initial-m)
+       get-pairs
+       get-pairs-distance-sum))
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
@@ -113,7 +116,6 @@
 
 ;; ## Suite
 (deftest test-2023-11
-
   (testing "part one - example"
     (is (= 374 (part-1 input-example))))
 
