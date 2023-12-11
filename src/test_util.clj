@@ -1,7 +1,34 @@
 ^{:nextjournal.clerk/visibility :hide-ns}
 (ns test-util
   (:require [nextjournal.clerk :as clerk]
+            [nextjournal.clerk.viewer :as v]
             [kaocha.repl :as k]))
+
+
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :hide}}
+(defn test-var? [x]
+  (not (nil? (when-let [v (v/get-safe x :nextjournal.clerk/var-from-def)]
+               (:test (meta v))))))
+
+(defn with-test-out->str [func]
+  (let [s (new java.io.StringWriter)]
+    (str (func))))
+
+(defn test-runner-viewer [v]
+  (with-test-out->str #(k/run v)))
+
+
+(def test-viewer {:transform-fn #(-> % :nextjournal/value :nextjournal.clerk/var-from-def test-runner-viewer)
+                  :render-fn    '(fn [x]
+                                   [:span.syntax-string.inspected-value x])})
+
+(defn init []
+  (clerk/add-viewers!
+   [{:pred         test-var?
+     :transform-fn #(-> % :nextjournal/value :nextjournal.clerk/var-from-def test-runner-viewer)
+     :render-fn    '(fn [x]
+                      [:span.syntax-string.inspected-value x])}]))
 
 (def run k/run)
 

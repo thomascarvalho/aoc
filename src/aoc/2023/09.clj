@@ -99,47 +99,8 @@
 
 
 ;; # Tests
-
-
-;; ## Suite
-
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :hide}}
-(defn- test-var? [x]
-  (not (nil? (when-let [v (v/get-safe x :nextjournal.clerk/var-from-def)]
-               #_(println (:name (meta v)))
-               (:test (meta v))))))
-
-(defn with-test-out->str [func]
-
-  (let [s (new java.io.StringWriter)]
-    #_(binding [kao s])
-    (str (func))
-    #_(str s)))
-
-(defn test-runner-viewer [v]
-  #_(println (meta v))
-
-  (with-test-out->str #(t/run v)))
-
-#_(def test-viewer {:pred         true
-                  ;; :pred         #(do 
-                  ;;                  (println %)
-                                  ;;  ( test-var? %))
-                    :transform-fn #(do
-                                     #_(println  (v/get-safe % :nextjournal.clerk/var-from-def))
-                                     (-> % :nextjournal/value :nextjournal.clerk/var-from-def test-runner-viewer))
-                    :render-fn    #(clerk/html [:span.syntax-string.inspected-value %])})
-
-(clerk/add-viewers!
- [{:pred         test-var?
-   :transform-fn #(-> % :nextjournal/value :nextjournal.clerk/var-from-def test-runner-viewer)
-   :render-fn    '(fn [x]
-                    [:span.syntax-string.inspected-value x])}])
-
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :show}}
-
 (deftest test-2023-09
   (testing "part one - example"
     (is (= 114 (part-1 input-example))))
@@ -152,10 +113,4 @@
 
   (testing "part two"
     (is (= 903 (part-2 input)))))
-
-;; ## Results
-
-#_(with-test-out->str
-    #(testing
-      (is (= [1] [2]))))
 
