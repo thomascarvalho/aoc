@@ -21,8 +21,7 @@
 
 (defn parser [data]
   (->> data
-       u/to-matrix
-       ma/matrix))
+       u/to-matrix))
 
 (def input (->> (slurp (io/resource "inputs/2023/11.txt")) ;; Load the resource
                 parser))                             ;; Split into lines
