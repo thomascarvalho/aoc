@@ -26,6 +26,16 @@
        to-lines
        (mapv vec)))
 
+(defn vec-remove
+  "Remove element at index on a coll"
+  [pos coll]
+  (into (subvec coll 0 pos) (subvec coll (inc pos))))
+
+(defn nth-cycling
+  "Find any element on a cycling vector"
+  [vector i]
+  (nth vector (mod i (count vector))))
+
 (defn parse-out-longs
   "Parse out all numbers in `line` that are integers (longs)"
   [line]
@@ -56,6 +66,13 @@
     (if (.find m)
       (recur m (cons (list (.start m) (.group m)) res))
       (reverse res))))
+
+(defn re-find-pos
+  "Return a list of pairs of (index, string) for all matches of `re` in `s`"
+  [re s]
+  (let [m   (re-matcher re s)]
+    (when (.find m)
+      (list (.start m) (.group m)))))
 
 (defn instaparse [data grammar transform]
   (->> data
