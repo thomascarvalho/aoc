@@ -17,25 +17,22 @@
                                 :result :show}}
 
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
-;; [y x]
-(def dirs {"D" [0 1]
-           "U" [0 -1]
-           "R" [1 0]
-           "L" [-1 0]})
+(def dirs {:U [-1 0]
+           :R [0 1]
+           :D [1 0]
+           :L [0 -1]})
 
 (defn create-grid [dig-plan]
-  (let [assoc-data (fn [grid items c] (reduce (fn [acc k] (assoc acc (vec k) c)) grid items))]
+  (let [assoc-data (fn [grid items c] (reduce (fn [acc k] (assoc acc (vec (reverse k)) c)) grid items))]
     (-> (g/empty-grid)
         (assoc-data dig-plan "#"))))
 
 (defn parser [data]
   (->> data
-       str/split-lines
+       u/to-lines
        (map (fn [s]
               (let [[dir step color] (str/split s #" ")]
-                {:dir   (dirs dir)
+                {:dir   (keyword dir)
                  :step  (parse-long step)
                  :color (subs color 1 (dec (count color)))})))))
 
@@ -59,98 +56,46 @@ U 3 (#a77fa3)
 L 2 (#015232)
 U 2 (#7a21e3)"))
 
-(defn move-path [[x y] {:keys [dir step]}]
-  (reduce (fn [path s]
-            (let [[tx ty] dir]
-              (conj path [(+ x (* tx s)) (+ y (* ty s))]))) [] (range 1 (inc step))))
+(defn move [[y x] {:keys [dir step]}]
+  (mapv + [y x] (mapv * [step step] (dir dirs))))
 
+;; https://en.wikipedia.org/wiki/Shoelace_formula
+(defn- shoelace [[[y1 x1] [y2 x2]]]
+  (- (* x1 y2) (* y1 x2)))
 
-;; (defn intersects? [p1 p2 x y]
-;;   (let [[x1 y1] p1
-;;         [x2 y2] p2
-;;         min-y   (min y1 y2)
-;;         max-y   (max y1 y2)]
-;;     (and (not= y1 y2)
-;;          (>= y min-y)
-;;          (<= y max-y)
-;;          (let [x-coord (if (= x1 x2)
-;;                          x1
-;;                          (+ x1 (/ (* (- y y1) (- x2 x1)) (- y2 y1))))]
-;;            (> x-coord x)))))
+;; Magic `shoelace` formula over adjacent pairs 
+(defn- calculate-full-area [[polygon points]]
+  (let [poly (reverse polygon)]
+    (->
+     (+ (shoelace (list (last poly) (first poly)))
+        (reduce + (map shoelace (partition 2 1 poly)))
+        points)
+     (quot 2)
+     inc)))
 
-;; (defn inside-polygon? [x y path]
-;;   (let [extended-path (conj path (first path))
-;;         intersections (count (filter (fn [[p1 p2]] (intersects? p1 p2 x y)) (partition 2 1 extended-path)))]
-;;     (odd? intersections)))
-
-;; (defn get-grid-size [path]
-;;   (let [max-x (apply max (map first path))
-;;         max-y (apply max (map second path))]
-;;     [(inc max-x) (inc max-y)]))
-
-;; (defn fill-polygon [path]
-;;   (let [[cols rows] (get-grid-size path)
-;;         points      (for [x     (range cols)
-;;                           y     (range rows)
-;;                           :when (inside-polygon? x y path)] [x y])]
-;;     (set points)))
-
-(defn segments-on-line [y path]
-  (filter #(let [[[x1 y1] [x2 y2]] %]
-             (or (= y y1) (= y y2)))
-          (partition 2 1 (conj path (first path)))))
-
-(defn fill-line [y path cols]
-  (let [segments (segments-on-line y path)
-        xs       (sort (mapcat #(vector (first %) (first (next %))) segments))] ; Extraire les coordonnées x des segments
-    (if (empty? xs)
-      #{}
-      (reduce (fn [acc x]
-                (if (contains? acc x)
-                  (disj acc x)
-                  (conj acc x)))
-              #{}
-              (range (apply min (map first xs)) (apply max (map first xs))))))) ; Utiliser min et max pour déterminer la plage
-
-
-(defn fill-polygon [path cols rows]
-  (set (for [y (range rows)
-             x (fill-line y path cols)]
-         [x y])))
+(defn create-polygon [actions]
+  (loop [[action & rest] actions
+         polygon         [[0 0]]
+         points          0]
+    (if action
+      (let [{:keys [step]} action
+            pos            (first polygon)
+            newpos         (move pos action)]
+        (recur rest (cons newpos polygon) (+ points step)))
+      [polygon points])))
 
 ;; ## Part 1
 (defn part-1
   [actions]
-  (let [{:keys [dig-plan]} (reduce (fn [r action]
-                                     (let [path (move-path (:pos r) action)]
-                                       (-> r
-                                           (update :dig-plan concat path)
-                                           (assoc :pos (last path)))))
-                                   {:dig-plan []
-                                    :pos      [0 0]} actions)
-        [width height] (->> dig-plan
-                            (reduce (fn [[max-x max-y] [x y]]
-                                      [(max max-x x) (max max-y y)]) [0 0])
-                            (mapv inc)
-                            )]
-    
-    (->>
-     (fill-polygon dig-plan width height)
-     (concat dig-plan)
-     set
-     count)
-    ;
-    ))
-
-
-
-  ;
+  (->> actions
+       create-polygon
+       calculate-full-area))
 
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
-#_(part-1 input)
+(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -173,8 +118,12 @@ U 2 (#7a21e3)"))
 
 ;; ## Suite
 (deftest test-2023-18
-  #_(testing "part one"
-      (is (= 1 (part-1 input))))
+  
+  (testing "part one - example"
+    (is (= 62 (part-1 input-example))))
+
+  (testing "part one"
+      (is (= 34329 (part-1 input))))
 
   #_(testing "part two"
       (is (= 1 (part-2 input)))))
@@ -183,17 +132,3 @@ U 2 (#7a21e3)"))
                                 :result :show}}
 ;; ## Results
 
-(part-1 input)
-
-;; 35853 -> too high
-
-
-
-#_(-> (walk-based-fill (map reverse path)))
-
-; Appel de la fonction
-#_(walk-based-fill path)
-
-
-; Exemple d'utilisation
-#_(fill-polygon (map reverse path))
