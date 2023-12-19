@@ -59,12 +59,12 @@ U 2 (#7a21e3)"))
 (defn move [[y x] {:keys [dir step]}]
   (mapv + [y x] (mapv * [step step] (dir dirs))))
 
-;; https://en.wikipedia.org/wiki/Shoelace_formula
-(defn- shoelace [[[y1 x1] [y2 x2]]]
+;; Magic `shoelace` formula https://en.wikipedia.org/wiki/Shoelace_formula
+(defn shoelace [[[y1 x1] [y2 x2]]]
   (- (* x1 y2) (* y1 x2)))
 
-;; Magic `shoelace` formula over adjacent pairs 
-(defn- calculate-full-area [[polygon points]]
+;; Apply `shoelace` over adjacent pairs 
+(defn calculate-full-area [[polygon points]]
   (let [poly (reverse polygon)]
     (->
      (+ (shoelace (list (last poly) (first poly)))
@@ -74,14 +74,13 @@ U 2 (#7a21e3)"))
      inc)))
 
 (defn create-polygon [actions]
-  (loop [[action & rest] actions
-         polygon         [[0 0]]
-         points          0]
+  (loop [[action & next-actions] actions
+         polygon                 [[0 0]]
+         points                  0]
     (if action
       (let [{:keys [step]} action
-            pos            (first polygon)
-            newpos         (move pos action)]
-        (recur rest (cons newpos polygon) (+ points step)))
+            newpos         (move (first polygon) action)]
+        (recur next-actions (cons newpos polygon) (+ points step)))
       [polygon points])))
 
 ;; ## Part 1
@@ -100,16 +99,28 @@ U 2 (#7a21e3)"))
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
-(defn part-2
-  [input])
 
-  ;
+(defn decode-hexa-color [{:keys [color]}]
+  {:dir  (case (last color)
+           \0 :R
+           \1 :D
+           \2 :L
+           \3 :U)
+   :step (read-string (str "0x" (subs color 1 (- (count color) 1))))})
+
+(defn part-2
+  [actions]
+
+  (->> actions
+       (map decode-hexa-color)
+       create-polygon
+       calculate-full-area))
 
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
-#_(part-2 input)
+(part-2 input)
 
 
 ;; # Tests
@@ -118,17 +129,19 @@ U 2 (#7a21e3)"))
 
 ;; ## Suite
 (deftest test-2023-18
-  
+
   (testing "part one - example"
     (is (= 62 (part-1 input-example))))
 
   (testing "part one"
-      (is (= 34329 (part-1 input))))
+    (is (= 34329 (part-1 input))))
 
-  #_(testing "part two"
-      (is (= 1 (part-2 input)))))
+  (testing "decode hexa color"
+    (is (= {:dir  :R
+            :step 461937} (decode-hexa-color {:color "#70c710"})))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-;; ## Results
-
+    (is (= {:dir  :D
+            :step 56407} (decode-hexa-color {:color "#0dc571"}))))
+  
+  (testing "part two"
+    (is (= 42617947302920 (part-2 input)))))
