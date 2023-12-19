@@ -102,15 +102,13 @@ hdj{m>838:A,pv}
       return)))
 
 (defn get-path [workflows ratings]
-  (letfn [(get-workflow [name]
-            (get workflows name))]
-    (loop [path ["in"]]
-      (as-> (last path) $
-        (get-workflow $)
-        (get-next-workflow-name $ ratings)
-        (case $
-          ("A" "R") (conj path $)
-          (recur (conj path $)))))))
+  (loop [path ["in"]]
+    (as-> (last path) $
+      (get workflows $)
+      (get-next-workflow-name $ ratings)
+      (case $
+        ("A" "R") (conj path $)
+        (recur (conj path $))))))
 
 ;; ## Part 1
 (defn part-1

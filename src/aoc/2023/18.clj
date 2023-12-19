@@ -100,19 +100,18 @@ U 2 (#7a21e3)"))
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 
-(defn decode-hexa-color [{:keys [color]}]
+(defn decode-hexa-color [color]
   {:dir  (case (last color)
            \0 :R
            \1 :D
            \2 :L
            \3 :U)
-   :step (read-string (str "0x" (subs color 1 (- (count color) 1))))})
+   :step (Integer/parseInt (subs color 1 (dec (count color))) 16)})
 
 (defn part-2
   [actions]
-
   (->> actions
-       (map decode-hexa-color)
+       (map #(-> % :color decode-hexa-color))
        create-polygon
        calculate-full-area))
 
@@ -138,10 +137,10 @@ U 2 (#7a21e3)"))
 
   (testing "decode hexa color"
     (is (= {:dir  :R
-            :step 461937} (decode-hexa-color {:color "#70c710"})))
+            :step 461937} (decode-hexa-color "#70c710")))
 
     (is (= {:dir  :D
-            :step 56407} (decode-hexa-color {:color "#0dc571"}))))
-  
+            :step 56407} (decode-hexa-color "#0dc571"))))
+
   (testing "part two"
     (is (= 42617947302920 (part-2 input)))))
