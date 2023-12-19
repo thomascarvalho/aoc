@@ -21,10 +21,13 @@
 
 (defn to-matrix
   "Turn a blob (or block) into a vector of vectors"
-  [input]
-  (->> input
-       to-lines
-       (mapv vec)))
+  ([input]
+   (to-matrix identity input))
+  ([transform input]
+   (->> input
+        to-lines
+        (mapv #(mapv transform (vec %))))))
+
 
 (defn vec-remove
   "Remove element at index on a coll"
@@ -150,3 +153,25 @@
               (apply concat (map #(find-paths %1 (conj path %1))
                                  (remove #(contains? (set path) %) (uber/successors graph node))))))]
     (find-paths start [start])))
+
+(defn- get-grid [rows cols]
+  (vec (repeat rows (vec (repeat cols " ")))))
+
+(defn- mark-path [grid path]
+  (reduce (fn [g [x y]] (assoc-in g [x y] "#")) grid path))
+
+(defn- flood-fill [grid x y]
+  (let [rows (count grid)
+        cols (count (first grid))]
+    (if (or (< x 0) (>= x rows) (< y 0) (>= y cols) (= (get-in grid [x y]) "#") (= (get-in grid [x y]) "*"))
+      grid
+      (let [updated-grid (assoc-in grid [x y] "*")
+            directions   [[0 -1] [0 1] [-1 0] [1 0]]] ; Haut, bas, gauche, droite
+        (reduce (fn [g [dx dy]] (flood-fill g (+ x dx) (+ y dy))) updated-grid directions)))))
+
+(defn fill-inside-path [path [y x]]
+  (let [max-x            (apply max (map first path))
+        max-y            (apply max (map second path))
+        grid             (get-grid (inc max-x) (inc max-y))
+        path-marked-grid (mark-path grid path)]
+    (flood-fill path-marked-grid x y)))
