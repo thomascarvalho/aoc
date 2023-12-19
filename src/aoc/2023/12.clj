@@ -25,7 +25,7 @@
   (->> data
        str/split-lines
        (map #(let [[t nums] (str/split % #" ")]
-               [(into [] (char-array t)) (u/parse-out-longs nums)]))))
+               [t (u/parse-out-longs nums)]))))
 
 (def input (->> (slurp (io/resource "inputs/2023/12.txt")) ;; Load the resource
                 parser))                             ;; Split into lines
@@ -49,30 +49,17 @@
 ;; ## Part 1
 (defn part-1
   [data]
-  #_(println data)
-  (->>
-   (for [[initial-s nums] data]
-     (loop [[n & rest] nums
-            a          [initial-s]]
-       (let [[s & groups] a]
-         (if n
-           (let [g (damaged-iterator s 0 n)]
-             (if g
-               (let [new-s (into []
-                                 (->>
-                                  (concat (subvec s 0 (first g))
-                                          (subvec s (+ (first g) n) (count s)))
-                                  (remove nil?)
-                                  ))]
-                 (println new-s)
-                 (recur
-                  rest
-                  (-> a
-                      (assoc 0 new-s)
-                      (conj groups g))))
-               (recur rest a)))
-           a))))
-   pprint)
+  (for [d    data
+        :let [[s nums] d
+              groups (map (fn [n]
+                            [n (->
+                                (str "\\.?(#{" n "})\\.?")
+                                re-pattern
+                                (re-seq s))]
+                            ) nums)]]
+    (do
+      (cons groups d)))
+
   ;
   )
 

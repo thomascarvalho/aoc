@@ -72,15 +72,15 @@
           end   (range (inc start) (inc n))
           :let  [s (subvec vec start end)
                  s-count (count s)]
-          :when (and (palindrome? s) #_(even? s-count))]
+          :when (and (palindrome? s) (even? s-count))]
       {:start start
        ;; :mid (+ (/ s-count 2) start)
        :count s-count})))
 
 
 (defn vertical-reflection [m]
-  (let [pals   (for [row m
-                     :let [subs (all-subvectors-palindromes row)]
+  (let [pals   (for [row   m
+                     :let  [subs (all-subvectors-palindromes row)]
                      :when (seq subs)]
                  (->>
                   subs
@@ -88,38 +88,7 @@
         valid? (apply = pals)]
     (when valid?
       (let [{:keys [start count]} (first pals)]
-        [(+ (/ count 2) start) count])))
-
-
-  #_(let [pals   (for [row m]
-                   (all-subvectors-palindromes row))
-          valid? (apply = (map count pals))]
-      (when valid?
-        (let [p (str/join (first pals))
-              c (count p)]
-          [c (->
-              (for [[i part] (map-indexed vector (partition c 1 (first m)))
-                    :when    (= p part)]
-                (+ (quot c 2) i))
-              first)])))
-  #_(->>
-     (let [col-count    (-> m first count)
-           vertical-div 2]
-       (loop [gaps initial-gaps
-              step 0]
-         (when (seq gaps)
-           (let [[start end] (first gaps)
-                 n           #_(nt/floor)
-                 (quot (- col-count start end) vertical-div)vertical?
-                 (->>
-                  (for [row  m
-                        :let [v1 (into [] (drop start (take n row)))
-                              v2 (into [] (reverse (take-last (- n start) (drop end row))))]]
-                    (compare v1 v2))
-                  (every? zero?))]
-             (if vertical?
-               [(int (+ start n)) step]
-               (recur (next gaps) (inc step)))))))))
+        [(+ (/ count 2) start) count]))))
 
 (defn horizontal-reflection [m]
   (let [pals   (for [row   (ma/columns m)
@@ -165,43 +134,62 @@
        )))
 
 (defn process-matrix [m]
-  (let [[v v-count] (vertical-reflection m)
-        [h h-count] (horizontal-reflection m)]
-    #_(println [v h])
-    [(or v 0)  (or h 0)]
-    #_(cond
-      (and v (not h)) [v 0]
-      (and h (not v)) [0 h]
-      (and v-count h-count (> v-count h-count)) [v 0]
-      (and v-count h-count (< v-count h-count)) [0 h]
-      :else (do 
-              #_(println [v h])
-              [0 0]))
-    #_(if (< v-step h-step)
+  (ma/pm m)
+  (let [row-start  0
+        row-length (- (count m) row-start)
+        col-start  1
+        col-length (- (count (first m)) col-start)
+        sub-m      (ma/submatrix m row-start row-length col-start col-length)
+        
+        
 
-        [v 0 {:v      v
-              :h      h
-              :v-step v-step
-              :h-step h-step}]
-        [0 h {:v      v
-              :h      h
-              :v-step v-step
-              :h-step h-step}])))
+        v1 (take (quot col-length 2) sub-m)
+        ]
+    (ma/pm sub-m)
+    (ma/pm v1)
+
+
+    )
+
+  #_(for [r (range (count m))]
+      (ma/symmetric? (drop r m)))
+  #_(let [[v v-count] (vertical-reflection m)
+          [h h-count] (horizontal-reflection m)]
+      #_(println [v h])
+      [(or v 0)  (or h 0)]
+      #_(cond
+          (and v (not h)) [v 0]
+          (and h (not v)) [0 h]
+          (and v-count h-count (> v-count h-count)) [v 0]
+          (and v-count h-count (< v-count h-count)) [0 h]
+          :else (do
+                  #_(println [v h])
+                  [0 0]))
+      #_(if (< v-step h-step)
+
+          [v 0 {:v      v
+                :h      h
+                :v-step v-step
+                :h-step h-step}]
+          [0 h {:v      v
+                :h      h
+                :v-step v-step
+                :h-step h-step}])))
 
 ;; ## Part 1
 (defn part-1
   [all-matrices]
 
-  #_(for [m all-matrices]
-      (process-matrix m))
+  (for [m all-matrices]
+    (process-matrix m))
 
-  (let [[v h] (->>
-               all-matrices
-               (reduce (fn [[v-total h-total] m]
-                         (let [[v h] (process-matrix m)]
-                           [(+ v-total v) (+ h-total h)])) [0 0]))]
+  #_(let [[v h] (->>
+                 all-matrices
+                 (reduce (fn [[v-total h-total] m]
+                           (let [[v h] (process-matrix m)]
+                             [(+ v-total v) (+ h-total h)])) [0 0]))]
 
-    (+ v (* h 100)))
+      (+ v (* h 100)))
   ;
   )
 
@@ -231,8 +219,8 @@
 
 ;; ## Suite
 (deftest test-2023-13
-  (testing "part one - example"
-    (is (= 405 (part-1 input-example))))
+  #_(testing "part one - example"
+      (is (= 405 (part-1 input-example))))
 
   #_(testing "part one"
       (is (= 1 (part-1 input))))
@@ -245,4 +233,4 @@
 ;; ## Results
 #_(t/render-results (t/run #'test-2023-13))
 
-(part-1 input)
+(part-1 input-example)
