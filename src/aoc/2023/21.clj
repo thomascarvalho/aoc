@@ -98,7 +98,7 @@
   [{:keys [width height cells]}]
   (reduce nt/lcm [50 1594 6536])
 
-  (/ 130229800 (/ 1000 50))
+  
   #_(let [[starting-coords _] (starting-cell cells)
         total-steps         100]
     (->>

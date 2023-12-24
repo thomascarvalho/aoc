@@ -64,72 +64,77 @@
        (filter #(= (:module %) name))
        first))
 
-(defn get-next-queue-items [{:keys [type module dests]} current-pulse on history lasts]
-  #_(clojure.pprint/pprint lasts)
-  (println module current-pulse lasts on)
+(defn get-next-queue-items [{:keys [type module dests]} current-pulse on history lasts connected]
   (letfn [(assoc-dests-pulse [pulse]
-            (mapv #(vector % pulse) dests))
+                             (mapv #(vector % pulse) dests))
           (assoc-last-pulse []
-            (assoc lasts module current-pulse))]
+                            (assoc lasts module current-pulse))
+          (assoc-history-pulse [pulse]
+                               (apply conj history (map #(vector module pulse %) dests)))]
     (match [type current-pulse]
-      [nil _] [(assoc-dests-pulse current-pulse) on (assoc-last-pulse)] ;; broadcaster
+      [nil _] [(assoc-dests-pulse current-pulse) on (assoc-last-pulse) (assoc-history-pulse current-pulse)] ;; broadcaster
 
       [:f :low] (let [on? (some #(= % module) on)]
                   (if on?
-                    [(assoc-dests-pulse :low) (vec (remove #{module} on)) (assoc-last-pulse)]
-                    [(assoc-dests-pulse :high) (conj on module) (assoc-last-pulse)]))
-      [:f :high] [[] on (assoc-last-pulse)]
+                    [(assoc-dests-pulse :low) (vec (remove #{module} on)) (assoc-last-pulse) (assoc-history-pulse :low)]
+                    [(assoc-dests-pulse :high) (conj on module) (assoc-last-pulse) (assoc-history-pulse :high)]))
+      [:f :high] [[] on (assoc-last-pulse) history]
 
-      [:c _] (if #_(-> history last :pulse (= :high)) (every? #(= % :high) (vals lasts))
-                 [(assoc-dests-pulse :low) on (assoc-last-pulse)]
-                 [(assoc-dests-pulse :high) on (assoc-last-pulse)])
+      [:c _] (let [cons (last (map #(get lasts %) (get connected module)))]
+               #_(when (= module "con")
+                 (println cons #_(every? #(= % :high) cons)))
 
-      :else [[] on (assoc-last-pulse)]))
+               (if (= cons :high) #_(-> history last second (= :high)) #_(every? #(= % :high) cons)
+                   [(assoc-dests-pulse :low) on (assoc-last-pulse) (assoc-history-pulse :low)]
+                   [(assoc-dests-pulse :high) on (assoc-last-pulse) (assoc-history-pulse :high)]))
 
-  )
+      :else [[] on (assoc-last-pulse) history])))
 
 ;; ## Part 1
 (defn part-1
   [modules]
 
-  (->>
-   (loop [all-step    0
-          all-history []
-          all-on      []
-          all-lasts   {}]
+  (let [connected
+        (reduce (fn [m {:keys [type module]}]
+                  (if (= type :c)
+                    (assoc m module (mapv :module (filter (fn [mo] (some #(= % module) (:dests mo))) modules)))
+                    m)) {} modules)]
+    (->>
+     (loop [all-step    0
+            all-history []
+            all-on      []
+            all-lasts   {}]
+       
+       (if (= all-step 1000)
+         all-history
 
-     (if (= all-step 1)
-       (do
-         (clojure.pprint/pprint all-history)
-         all-history)
-
-       (let [[h o l] (loop [queue   [["broadcaster" :low]]
-                            history all-history
-                            on      all-on
-                            lasts   all-lasts
-                            step    0]
-                       
-                       (if (or #_(> step 100) (empty? queue))
-                         [history on lasts]
-                         (let [[current pulse]          (first queue)
-                               m                        (get-module modules current)
-                               [items new-on new-lasts] (get-next-queue-items m pulse on history lasts)]
-                           (recur
-                            (concat (next queue) items)
-                            (conj history {:module current
-                                           :pulse  pulse})
-                            new-on
-                            new-lasts
-                            (inc step)))))]
-         (recur
-          (inc all-step)
-          h
-          o
-          l))))
-   (map :pulse)
-   frequencies
-   (map second)
-   (apply *))
+         (let [[h o l] (loop [queue   [["broadcaster" :low]]
+                              history (conj all-history ["button" :low "broadcaster"])
+                              on      all-on
+                              lasts   all-lasts
+                              step    0]
+                         (if (or #_(> step 100) (empty? queue))
+                           [history on lasts]
+                           (let [[current pulse]          (first queue)
+                                 m                        (get-module modules current)
+                                 [items new-on new-lasts new-history] (get-next-queue-items m pulse on history lasts connected)]
+                             (recur
+                              (concat (next queue) items)
+                              #_(conj history {:module current
+                                             :pulse  pulse})
+                              new-history
+                              new-on
+                              new-lasts
+                              (inc step)))))]
+           (recur
+            (inc all-step)
+            h
+            o
+            l))))
+     (map second)
+     frequencies
+     #_vals
+     #_(apply *)))
   #_(->>
 
      (map :pulse)
@@ -166,8 +171,13 @@
 
 ;; ## Suite
 (deftest test-2023-20
-  #_(testing "part one"
-      (is (= 1 (part-1 input))))
+  (testing "part one"
+    (is (= {:low  8000
+            :high 4000} (part-1 input-example))))
+
+  (testing "part one"
+    (is (= {:low  4250
+            :high 2750} (part-1 input-example-2))))
 
   #_(testing "part two"
       (is (= 1 (part-2 input)))))
@@ -177,4 +187,7 @@
 ;; ## Results
 
 ;; 11687500
-(part-1 input-example-2)
+#_(part-1 input-example)
+
+#_(part-1 input-example-2)
+

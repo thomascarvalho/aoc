@@ -6,10 +6,11 @@
             [clojure.core.matrix :as ma]
             [clojure.core.match :refer [match]]
             [pp-grid.api :as g]
-            [clojure.set :refer [difference]]
+            [clojure.set :refer [union difference]]
             [util :as u]
             [test-util :as t]
             [clojure.string :as str]
+            [pathfinding :as pf]
             [clojure.test :refer :all]))
 
 ;; # Problem
@@ -36,88 +37,108 @@
                         parser))
 
 (defn create-grid [energized]
-  (let [assoc-data (fn [grid items c] (reduce (fn [acc k] (assoc acc k c)) grid items))]
+  (println energized)
+  (let [assoc-data (fn [grid items c] (reduce (fn [acc k]
+                                                (println (reverse k))
+                                                (assoc acc (into [] (reverse k)) c)) grid (vec items)))]
     (-> (g/empty-grid)
         (assoc-data energized "#")
         (g/box :left-padding 1 :right-padding 1))))
 
-(def dirs {:E [1 0]
-           :W [-1 0]
-           :N [0 -1]
-           :S [0 1]})
+(def dirs {:E [0 1]
+           :W [0 -1]
+           :N [-1 0]
+           :S [1 0]})
 
-(defn move [{:keys [pos dir]
-             :as   beam} {:keys [max-x max-y]}]
-  (let [[x y]   pos
-        [tx ty] dir
+(defn move [[[y x] d] [height width]]
+  (let [[ty tx] (dirs d)
         new-x   (+ x tx)
         new-y   (+ y ty)]
+    ;; To make it bounce, but that's not ok
+    ;; (cond
+    ;;   (>= new-y height) [[y x] :N]
+    ;;   (neg? new-y) [[y x] :S]
+    ;;   (>= new-x width) [[y x] :W]
+    ;;   (neg? new-x) [[y x] :E]
+    ;;   :else [[new-y new-x] d])
     (when-not (or
-               (> new-y max-y)
+               (>= new-y height)
                (neg? new-y)
-               (> new-x max-x)
+               (>= new-x width)
                (neg? new-x))
-      (assoc beam :pos [new-x new-y]))))
-
-(defn action [m {:keys [pos dir]
-                 :as   b}]
-  (let [[x y]         pos
-        [dir-x dir-y] dir
-        cell          (ma/mget m y x)
-        vb            [b]]
-
-    (match [cell dir-x dir-y]
-      [\. _ _] vb
-
-      [\| _ 0] [(assoc b :dir (dirs :N))
-                (assoc b :dir (dirs :S))]
-      [\| 0 _] vb
-
-      [\- _ 0] vb
-      [\- 0 _] [(assoc b :dir (dirs :E))
-                (assoc b :dir (dirs :W))]
-
-      [\/ 1 0] [(assoc b :dir (dirs :N))]
-      [\/ -1 0] [(assoc b :dir (dirs :S))]
-      [\/ 0 1] [(assoc b :dir (dirs :W))]
-      [\/ 0 -1] [(assoc b :dir (dirs :E))]
-
-      [\\ 1 0] [(assoc b :dir (dirs :S))]
-      [\\ -1 0] [(assoc b :dir (dirs :N))]
-      [\\ 0 1] [(assoc b :dir (dirs :E))]
-      [\\ 0 -1] [(assoc b :dir (dirs :W))]
-
-      :else (throw (Exception. (str "Bad match case : cell: " cell ", dir-x: " dir-x ", dir-y: " dir-y))))))
-
-
-(defn process-contraption [m]
-  (let [limits             {:max-x (dec (count (first m)))
-                            :max-y (dec (count m))}
-        check-diffs-number 30]
-    (loop [beams     [{:pos [0 0]
-                       :dir (dirs :E)}]
-           energized #{[0 0]}
-           diffs     []]
-      (if (and (>= (count diffs) check-diffs-number) (every? #(= % #{}) diffs))
-        {:beams           beams
-         :tiles-energized energized}
-        (let [moved-beams   (->>
-                             beams
-                             (map #(move % limits))
-                             (remove nil?))
-              new-energized (apply conj energized (mapv :pos moved-beams))
-              new-beams     (mapcat #(action m %) moved-beams)
-              diff          (difference new-energized energized)]
-          (recur new-beams new-energized (into [] (take-last check-diffs-number (conj diffs diff)))))))))
-
+      [[new-y new-x] d])))
 
 ;; ## Part 1
 (defn part-1
   [m]
-  (-> m
-      process-contraption
-      :tiles-energized
-      count)
+  (let [{:keys [width height cells]} (pf/decode-matrix m)
+        initial-beam                 [[0 0] :E]
+        diffs-check                  10]
+
+    (letfn [(move-beam [beams b]
+              (let [beam (move b [height width])]
+                (if beam
+                  (let [[pos d] beam
+                        v       (get cells pos)]
+                    (letfn [(add
+                              ([]
+                               (add beam))
+                              ([& rest]
+                               (apply conj beams rest)))
+                            (dir [d]
+                              (assoc beam 1 d))]
+                      (match [v d]
+                        [\. _] (add)
+
+                        [\| :E] (add (dir :N) (dir :S))
+                        [\| :W] (add (dir :N) (dir :S))
+                        [\| :N] (add)
+                        [\| :S] (add)
+
+                        [\- :E] (add)
+                        [\- :W] (add)
+                        [\- :N] (add (dir :E) (dir :W))
+                        [\- :S] (add (dir :W) (dir :E))
+
+                        [\/ :E] (add (dir :N))
+                        [\/ :W] (add (dir :S))
+                        [\/ :S] (add (dir :W))
+                        [\/ :N] (add (dir :E))
+
+                        [\\ :E] (add (dir :S))
+                        [\\ :W] (add (dir :N))
+                        [\\ :N] (add (dir :W))
+                        [\\ :S] (add (dir :E))
+
+                        :else (throw (Exception. (str "Bad match case : v: " v ", dir: " d))))))
+
+
+
+
+                  beams)))]
+
+      (->>
+       (loop [beams     [initial-beam]
+              energized #{(first initial-beam)}
+              diffs     []
+              step      0]
+
+         (if (and (>= (count diffs) diffs-check) (every? empty? diffs))
+           energized
+           (let [moved-beams   (reduce move-beam [] beams)
+                 new-energized (union energized (set (map first moved-beams)))
+                 diff          (difference new-energized energized)]
+             (recur moved-beams new-energized (into [] (take-last diffs-check (conj diffs diff))) (inc step)))))
+
+       #_create-grid
+       count
+
+       ;
+       )))
+  #_(-> m
+        process-contraption
+        :tiles-energized
+        count)
   ;
   )
 
@@ -148,25 +169,6 @@
 ;; ## Suite
 (deftest test-2023-16
 
-  #_(testing "moves "
-      (let [limits {:max-x 9
-                    :max-y 9}]
-        (is (= nil (move {:pos [9 0]
-                          :dir [1 0]} limits)))
-        (is (= {:pos [2 0]
-                :dir [1 0]} (move {:pos [1 0]
-                                   :dir [1 0]} limits)))
-        (is (= nil (move {:pos [0 0]
-                          :dir [-1 0]} limits)))
-        (is (= {:pos [0 0]
-                :dir [-1 0]} (move {:pos [1 0]
-                                    :dir [-1 0]} limits)))
-        (is (= {:pos [0 1]
-                :dir [0 1]} (move {:pos [0 0]
-                                   :dir [0 1]} limits)))
-        (is (= nil (move {:pos [0 0]
-                          :dir [0 -1]} limits)))))
-
   (testing "part one - example"
     (is (= 46 (part-1 input-example))))
 
@@ -180,6 +182,6 @@
                                 :result :show}}
 ;; ## Results
 
-#_(part-1 input)
+(part-1 input)
 
 ;; 7736 -> too high
