@@ -3,22 +3,19 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [clojure.core.matrix :as ma]
             [clojure.core.match :refer [match]]
             [pp-grid.api :as g]
             [clojure.set :refer [union difference]]
             [util :as u]
-            [test-util :as t]
-            [clojure.string :as str]
             [pathfinding :as pf]
             [clojure.test :refer :all]))
 
 ;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "16" "2023"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
+;; {:nextjournal.clerk/visibility {:code   :hide
+;;                                 :result :show}}
+;; (clerk/html (u/load-problem "16" "2023"))
+;; {:nextjournal.clerk/visibility {:code   :show
+;;                                 :result :show}}
 
 ;; # Solution
 ;;
@@ -72,8 +69,11 @@
 (defn part-1
   [m]
   (let [{:keys [width height cells]} (pf/decode-matrix m)
-        initial-beam                 [[0 0] :E]
-        diffs-check                  10]
+        initial-beam                 [[0 0] (case (get cells [0 0])
+                                              \. :E
+                                              \/ :N
+                                              \\ :S)]
+        diffs-check                  6]
 
     (letfn [(move-beam [beams b]
               (let [beam (move b [height width])]
@@ -111,28 +111,23 @@
                         [\\ :S] (add (dir :E))
 
                         :else (throw (Exception. (str "Bad match case : v: " v ", dir: " d))))))
-
-
-
-
                   beams)))]
 
       (->>
        (loop [beams     [initial-beam]
               energized #{(first initial-beam)}
-              diffs     []
-              step      0]
+              diffs     []]
 
          (if (and (>= (count diffs) diffs-check) (every? empty? diffs))
            energized
            (let [moved-beams   (reduce move-beam [] beams)
                  new-energized (union energized (set (map first moved-beams)))
                  diff          (difference new-energized energized)]
-             (recur moved-beams new-energized (into [] (take-last diffs-check (conj diffs diff))) (inc step)))))
-
-       #_create-grid
+             (recur
+              moved-beams
+              new-energized
+              (into [] (take-last diffs-check (conj diffs diff)))))))
        count
-
        ;
        )))
   #_(-> m
@@ -169,8 +164,8 @@
 ;; ## Suite
 (deftest test-2023-16
 
-  (testing "part one - example"
-    (is (= 46 (part-1 input-example))))
+  #_(testing "part one - example"
+      (is (= 46 (part-1 input-example))))
 
   #_(testing "part one"
       (is (= 1 (part-1 input))))
@@ -182,6 +177,7 @@
                                 :result :show}}
 ;; ## Results
 
-(part-1 input)
+(time (part-1 input-example))
 
 ;; 7736 -> too high
+

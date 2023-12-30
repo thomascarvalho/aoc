@@ -6,7 +6,9 @@
             [util :as u]
             [clojure.core.matrix :as ma]
             [ubergraph.core :as uber]
+            [clojure.set :refer [union]]
             [ubergraph.alg :as alg]
+            [pathfinding :as pf]
             [test-util :as t]
             [clojure.string :as str]
             [clojure.test :refer :all]))
@@ -25,7 +27,7 @@
 (defn parser [data]
   (->> data
        (u/to-matrix (fn [s] (-> s str parse-long)))
-       ma/matrix))
+       pf/decode-matrix))
 
 (def input (->> (slurp (io/resource "inputs/2023/17.txt")) ;; Load the resource
                 parser))                             ;; Split into lines
@@ -56,32 +58,59 @@
 (defn to-target-coords [[y x] [ty tx]]
   [(+ y ty) (+ x tx)])
 
+(defn neighbors [cell grid]
+  (let [[y x] cell]
+    (filter #(grid %) [[(dec y) x] [(inc y) x] [y (dec x)] [y (inc x)]])))
+
+
+#_(defn bfs
+  [grid start end]
+  (loop [frontier  (conj clojure.lang.PersistentQueue/EMPTY start)
+         came-from {start nil}
+         visited   #{start}]
+    (when (seq frontier)
+      (let [current     (peek frontier)
+            new-visited (conj visited current)]
+        (if (= current end)
+          (reverse (cons end (take-while #(not (nil? %)) (iterate came-from (came-from end)))))
+          (let [next-neighbors (filter #(not (visited %))
+                                       (neighbors current grid))]
+            (recur
+             (reduce conj (pop frontier) next-neighbors)
+             (reduce #(assoc %1 %2 current) came-from next-neighbors)
+             (union new-visited (set next-neighbors)))))))))
+
 ;; ## Part 1
 (defn part-1
-  [m]
-  (let [max-y (dec (count m))
-        max-x (dec (count (first m)))
-        edges (for [current (ma/index-seq m)
-                    target  (map #(to-target-coords current %) targets)
-                    :let    [v (mget m target)]
-                    :when   v]
-                [current target v])
-        g     (->
-               (uber/digraph)
-               (uber/add-edges* edges))]
+  [{:keys [cells width height]}]
 
-    (alg/shortest-path g {:start-node  [0 0]
-                          :end-node    [max-y max-x]
-                          :cost-attr   :weight
+  (let [max-y (dec height)
+        max-x (dec width)
+
+        ;; edges (for [current (ma/index-seq m)
+        ;;             target  (map #(to-target-coords current %) targets)
+        ;;             :let    [v (mget m target)]
+        ;;             :when   v]
+        ;;         [current target v])
+        ;; g     (->
+        ;;        (uber/digraph)
+        ;;        (uber/add-edges* edges))
+        ]
+
+    #_(bfs cells [0 0] [max-y max-x])
+    #_(alg/shortest-path g {:start-node  [0 0]
+                            :end-node    [max-y max-x]
+                            :cost-attr   :weight
                           ;; :traverse    true
-                          :edge-filter (fn [e]
-                                         (println e)
-                                         e)
+                            :edge-filter (fn [e]
+                                           (println e)
+                                           e)
                           ;; :node-filter (fn [n]
                           ;;                (println n)
                           ;;                n
                           ;;                )
-                          })
+                            })
+    
 
 
 
@@ -127,4 +156,50 @@
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 ;; ## Results
-(part-1 input-example)
+#_(part-1 input-example)
+
+
+(def ^:private inf (Long/MAX_VALUE))
+
+(defn neighbors
+  "Returns n's neighbors, optionally filtered if unvisited"
+  ([g n] (get g n {}))
+  ([g n uv] (select-keys (neighbors g n) uv)))
+
+(defn update-costs
+  "Returns costs updated with any shorter paths found to curr's unvisisted
+  neighbors by using curr's shortest path"
+  [g costs curr unvisited]
+  (let [curr-cost (costs curr)]
+    (reduce
+     (fn [c [nbr nbr-cost]] (update-in c [nbr] (partial min (+ curr-cost nbr-cost))))
+     costs
+     (neighbors g curr unvisited))))
+
+(defn dijkstra
+  "Returns a mapping of nodes to minimum cost from src using Dijkstra algorithm.
+  Graph is a mapping of nodes to map of neighboring nodes and associated cost.
+  Optionally, specify :target node to return only the min price for target"
+  [g src & {:keys [target]}]
+  (loop [costs     (assoc (zipmap (keys g) (repeat inf)) src 0)
+         curr      src
+         unvisited (disj (apply hash-set (keys g)) src)]
+    (if (or (empty? unvisited) (= inf (costs curr)))
+      costs
+      (let [costs' (update-costs g costs curr unvisited)
+            curr'  (first (sort-by costs' unvisited))]
+        (if (= target curr)
+          (costs' target)
+          (recur costs'
+                 curr'
+                 (disj unvisited curr')))))))
+
+
+(let [{:keys [cells height width]} input-example
+      m                            (reduce (fn [m [pos v]]
+                                             (let [[y x]     pos
+                                                   neighbors (filter #(cells %) [[(dec y) x] [(inc y) x] [y (dec x)] [y (inc x)]])]
+                                               (assoc m pos (reduce (fn [ns p2]
+                                                                      (assoc ns p2 (cells p2))) {} neighbors)))) {} cells)]
+
+  (dijkstra m [0 0] {:target [(dec height) (dec width)]}))

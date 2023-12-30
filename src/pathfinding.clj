@@ -18,7 +18,7 @@
 
 (defn neighbors [cell grid]
   (let [[y x] cell]
-    (filter #(and (grid %) #_(not= (grid %) 0))
+    (filter #(and (grid %))
             [[(dec y) x] [(inc y) x] [y (dec x)] [y (inc x)]])))
 
 (defn bfs
@@ -38,11 +38,9 @@
              (reduce #(assoc %1 %2 current) came-from next-neighbors)
              (union new-visited (set next-neighbors)))))))))
 
-#_(let [g (decode-matrix grid)]
+(let [g (decode-matrix grid)]
   (time (bfs (:cells g) [0 0] [2 2]))
-
   #_(loop [queue [[[0 0] 1]]]
-
       queue
       #_(let [[]])
       #_(dissoc queue [0 0])))

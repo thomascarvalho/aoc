@@ -133,14 +133,20 @@
 
 ;; ## Suite
 (deftest test-2023-23
-  #_(testing "part one"
-      (is (= 1 (part-1 input))))
+  (testing "part one - example"
+      (is (= 94 (part-1 input-example))))
+  
+  (testing "part one"
+    (is (= 2086 (part-1 input))))
 
+  (testing "part two - example"
+    (is (= 154 (part-2 input-example))))
+  
   #_(testing "part two"
       (is (= 1 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
+#_{:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 ;; ## Results
 
-#_(part-2 input-example)
+(part-2 input)

@@ -33,7 +33,8 @@
 {:nextjournal.clerk/visibility {:result :hide}}
 
 ;;  Example
-(def input-example (parser "#.##..##.
+(def input-example (parser
+                    "#.##..##.
 ..#.##.#.
 ##......#
 ##......#
@@ -49,8 +50,6 @@
 ..##..###
 #....#..#"))
 
-(def initial-gaps [[0 0] [1 0] [0 1] [1 1] [2 0] [0 2] [1 2] [2 1] [2 2] [3 0] [0 3] [3 1] [1 3] [3 2] [2 3] [3 3] [4 0] [0 4] [4 1] [1 4] [4 2] [2 4] [4 3] [3 4] [4 4]])
-
 (defn palindrome? [vec]
   (let [s (seq vec)]
     (= s (reverse s))))
@@ -62,20 +61,34 @@
                           :let  [subvec (subvec vec i j)]
                           :when (palindrome? subvec)]
                       subvec)]
-    #_(println palindromes)
     (apply max-key count palindromes)))
-
 
 (defn all-subvectors-palindromes [vec]
   (let [n (count vec)]
-    (for [start (range n)
-          end   (range (inc start) (inc n))
-          :let  [s (subvec vec start end)
-                 s-count (count s)]
-          :when (and (palindrome? s) (even? s-count))]
-      {:start start
-       ;; :mid (+ (/ s-count 2) start)
-       :count s-count})))
+
+    (into []
+          (concat
+           (for [start (range n)
+                 end   (range (inc start) (inc n))
+                 :let  [s (subvec vec start end)
+                        s-count (count s)]
+                 :when (and (palindrome? s) (even? s-count))]
+             {:start start
+              :end   end
+              :count s-count})
+
+           (for [start [0]
+                 end   (range n 0 -1)
+          ;; end   (range (inc start) (inc n))
+                 :let  [s (subvec vec start end)
+                        s-count (count s)]
+                 :when (and (palindrome? s) (even? s-count))]
+             {:start start
+              :end   end
+              :count s-count})))
+
+    ;
+    ))
 
 
 (defn vertical-reflection [m]
@@ -134,62 +147,38 @@
        )))
 
 (defn process-matrix [m]
-  (ma/pm m)
-  (let [row-start  0
-        row-length (- (count m) row-start)
-        col-start  1
-        col-length (- (count (first m)) col-start)
-        sub-m      (ma/submatrix m row-start row-length col-start col-length)
-        
-        
+  ;; (ma/pm m)
+  ;; (let [row-start  0
+  ;;       row-length (- (count m) row-start)
+  ;;       col-start  1
+  ;;       col-length (- (count (first m)) col-start)
+  ;;       sub-m      (ma/submatrix m row-start row-length col-start col-length)
+  ;;       v1         (take (quot col-length 2) sub-m)]
+  ;;   (ma/pm sub-m)
+  ;;   (ma/pm v1))
+  [(or (vertical-reflection m) [0 0]) (or (horizontal-reflection m) [0 0])]
 
-        v1 (take (quot col-length 2) sub-m)
-        ]
-    (ma/pm sub-m)
-    (ma/pm v1)
-
-
-    )
-
-  #_(for [r (range (count m))]
-      (ma/symmetric? (drop r m)))
-  #_(let [[v v-count] (vertical-reflection m)
-          [h h-count] (horizontal-reflection m)]
-      #_(println [v h])
-      [(or v 0)  (or h 0)]
-      #_(cond
-          (and v (not h)) [v 0]
-          (and h (not v)) [0 h]
-          (and v-count h-count (> v-count h-count)) [v 0]
-          (and v-count h-count (< v-count h-count)) [0 h]
-          :else (do
-                  #_(println [v h])
-                  [0 0]))
-      #_(if (< v-step h-step)
-
-          [v 0 {:v      v
-                :h      h
-                :v-step v-step
-                :h-step h-step}]
-          [0 h {:v      v
-                :h      h
-                :v-step v-step
-                :h-step h-step}])))
+  #_(->>
+   (all-subvectors-palindromes m)
+   (sort-by :count >))
+  ;
+  )
 
 ;; ## Part 1
 (defn part-1
   [all-matrices]
 
-  (for [m all-matrices]
+  #_(for [m all-matrices]
     (process-matrix m))
 
-  #_(let [[v h] (->>
-                 all-matrices
-                 (reduce (fn [[v-total h-total] m]
-                           (let [[v h] (process-matrix m)]
-                             [(+ v-total v) (+ h-total h)])) [0 0]))]
+  (let [[v h] (->>
+               all-matrices
+               (reduce (fn [[v-total h-total] m]
+                         (let [[v h] (process-matrix m)]
+                           (println v h)
+                           [(+ v-total (first v)) (+ h-total (first h))])) [0 0]))]
 
-      (+ v (* h 100)))
+    (+ v (* h 100)))
   ;
   )
 
@@ -231,6 +220,5 @@
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 ;; ## Results
-#_(t/render-results (t/run #'test-2023-13))
 
-(part-1 input-example)
+(part-1 input)
