@@ -1,5 +1,5 @@
 ^{:nextjournal.clerk/visibility :hide-ns}
-(ns aoc.YEAR.DAY
+(ns aoc.2015.10
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
@@ -9,7 +9,7 @@
 
 ;; # Problem
 ;; {:nextjournal.clerk/visibility {:code :hide :result :show}}
-;; (clerk/html (u/load-problem "DAY" "YEAR"))
+;; (clerk/html (u/load-problem "10" "2015"))
 ;; {:nextjournal.clerk/visibility {:code :show :result :show}}
 
 ;; # Solution
@@ -18,37 +18,60 @@
 
 (defn parser [data]
   (->> data
-       u/to-lines))
+       u/to-lines
+       (map #(str/trim %))))
 
-(def input (->> (slurp (io/resource "inputs/YEAR/DAY.txt")) ;; Load the resource
+(def input (->> (slurp (io/resource "inputs/2015/10.txt")) ;; Load the resource
                 parser))                             ;; Split into lines
 {:nextjournal.clerk/visibility {:result :hide}}
 
 ;;  Example
-(def input-example (parser ""))
+(def input-example (parser "1"))
 
 ;; ## Part 1
 (defn part-1
   [data]
-  data
-  ;
-  )
+  (->>
+   (loop [l    (first data)
+          step 0]
+     (if (= step 40)
+       l
+       (recur
+        (->> l
+             (re-seq #"(.)\1{0,}")
+             (map (fn [[s]]
+                    (reduce-kv (fn [t k v]
+                                 (str t v k)) "" (frequencies s))))
+             (apply str))
+        (inc step))))
+   count))
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code :hide :result :show}}
-#_(part-1 input)
+(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code :show :result :hide}}
 (defn part-2
-  [input]
-  
-  ;
-  )
+  [data]
+  (->>
+   (loop [l    (first data)
+          step 0]
+     (if (= step 50)
+       l
+       (recur
+        (->> l
+             (re-seq #"(.)\1{0,}")
+             (map (fn [[s]]
+                    (reduce-kv (fn [t k v]
+                                 (str t v k)) "" (frequencies s))))
+             (apply str))
+        (inc step))))
+   count))
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code :hide :result :show}}
-#_(part-2 input)
+(part-2 input)
 
 
 ;; # Tests
@@ -56,15 +79,13 @@
                                 :result :hide}}
 
 ;; ## Suite
-(deftest test-YEAR-DAY
-  #_(testing "part one"
-    (is (= 1 (part-1 input))))
+(deftest test-2015-10
+  (testing "part one"
+    (is (= 329356 (part-1 input))))
 
-  #_(testing "part two"
-    (is (= 1 (part-2 input)))))
+  (testing "part two"
+    (is (= 4666278 (part-2 input)))))
 
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 ;; ## Results
-
-(part-1 input-example)
