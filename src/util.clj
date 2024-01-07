@@ -153,3 +153,15 @@
               (apply concat (map #(find-paths %1 (conj path %1))
                                  (remove #(contains? (set path) %) (uber/successors graph node))))))]
     (find-paths start [start])))
+
+(defn assoc-at [data i item]
+  (if (associative? data)
+    (assoc data i item)
+    (if-not (neg? i)
+      (letfn [(assoc-lazy [i data]
+                (cond (zero? i) (cons item (rest data))
+                      (empty? data) data
+                      :else (lazy-seq (cons (first data)
+                                            (assoc-lazy (dec i) (rest data))))))]
+        (assoc-lazy i data))
+      data)))
