@@ -8,9 +8,11 @@
             [clojure.test :refer :all]))
 
 ;; # Problem
-;; {:nextjournal.clerk/visibility {:code :hide :result :show}}
-;; (clerk/html (u/load-problem "08" "2015"))
-;; {:nextjournal.clerk/visibility {:code :show :result :show}}
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :show}}
+(clerk/html (u/load-problem "08" "2015"))
+{:nextjournal.clerk/visibility {:code   :show
+                                :result :show}}
 
 ;; # Solution
 ;;
@@ -32,42 +34,44 @@
   (count l))
 
 (defn nb-memory [l]
-  (let [r (read-string
-           (-> l
-               (str/replace #"\"" "D")
-               (str/replace #"\\x\w{2}" "D")
-               #_(str/replace #"\\\\" "D")))]
-
-    (count (pr-str r))))
+  (let [s1 (str/replace l #"\\\\" "Z")
+        s2 (str/replace (subs s1 1 (dec (count s1))) #"\\\"" "Z")
+        s3 (str/replace s2 #"\\x\w{2}" "D")
+        r  (read-string (str "\"" s3 "\""))]
+    (count r)))
 
 ;; ## Part 1
 (defn part-1
   [lines]
   (let [r (mapv #(vector (nb-code %) (nb-memory %)) lines)]
-    #_(map second r)
     (- (reduce + (map first r))
-       (reduce + (map second r))))
-  ;
-  )
+       (reduce + (map second r)))))
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
-#_(part-1 input)
+(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
-(defn part-2
-  [input]
 
-  ;
-  )
+(defn nb-encoded [l]
+  (let [r (str "\"" (str/escape l {\\ "\\\\"
+                                   \" "\\\""}) "\"")]
+    (count r)))
+
+(defn part-2
+  [lines]
+  (let [r       (mapv #(vector (nb-encoded %) (nb-code %)) lines)
+        encoded (reduce + (map first r))
+        coded   (reduce + (map second r))]
+    (- encoded coded)))
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
-#_(part-2 input)
+(part-2 input)
 
 
 ;; # Tests
@@ -76,15 +80,12 @@
 
 ;; ## Suite
 (deftest test-2015-08
-  #_(testing "part one"
-      (is (= 1 (part-1 input))))
+  (testing "part one"
+    (is (= 1333 (part-1 input))))
 
-  #_(testing "part two"
-      (is (= 1 (part-2 input)))))
+  (testing "part two"
+    (is (= 2046 (part-2 input)))))
 
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 ;; ## Results
-;; 1220 too low
-;; 2588 too high
-(part-1 input)

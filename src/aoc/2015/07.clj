@@ -35,11 +35,11 @@
                             "
                            {:INT  parse-long
                             :S    (fn [from to]
-                                    (assoc from :to to))
+                                    (cons to from))
                             :COND (fn [[t a b]]
-                                    {:cmd  t
-                                     :deps (cond-> [a]
-                                             b (conj b))})
+                                    [t
+                                     (cond-> [a]
+                                       b (conj b))])
                             :EVAL keyword
                             :PRED (fn [a ev b]
                                     [ev a b])
@@ -59,31 +59,29 @@ y RSHIFT 2 -> g
 NOT x -> h
 NOT y -> i"))
 
+(defn get-target [data target]
+  (->> data
+       (filter #(-> % first (= target)))
+       first))
+
+(defn get-parents [data path target]
+  (when (and target (not (some #{target} path)))
+    (let [[_ _ parents] (get-target data target)]
+      parents)))
+
 
 ;; ## Part 1
 (defn part-1
   [data]
-  data
-  #_(filter #(-> % :to (= :b)) data)
 
-  #_(let [path (reverse
-              (loop [currents (filter #(-> % :to (= :a)) data)
-                     path     []
-                     step     0]
-                (if (>= step 4030)
-                  path
-                  (let [deps (set (mapcat (fn [{:keys [deps]}]
-                                            deps
-                                            #_(filter #(keyword? %) deps)) currents))]
+  (loop [current :a]
+    (get-parents data #{} current))
 
-                    (if (= (union (set path) deps) path)
-                      path
-                      (recur
-                       (filter (fn [l] (some #{(l :to)} deps)) data)
-                       (concat path (filter (fn [d] (not (some #{d} path))) (concat deps (map :to currents))))
-                       (inc step)))))))]
+  #_(loop [currents [:a]])
 
-    path)
+
+
+
 
 
   #_(reduce (fn [m {:keys [from to]}]
@@ -103,19 +101,22 @@ NOT y -> i"))
   )
 
 ;; Which gives our answer
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :show}}
 #_(part-1 input)
 
 ;; ## Part 2
-{:nextjournal.clerk/visibility {:code :show :result :hide}}
+{:nextjournal.clerk/visibility {:code   :show
+                                :result :hide}}
 (defn part-2
   [input]
-  
+
   ;
   )
 
 ;; Which gives our answer
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :show}}
 #_(part-2 input)
 
 
@@ -126,10 +127,10 @@ NOT y -> i"))
 ;; ## Suite
 (deftest test-2015-07
   #_(testing "part one"
-    (is (= 1 (part-1 input))))
+      (is (= 1 (part-1 input))))
 
   #_(testing "part two"
-    (is (= 1 (part-2 input)))))
+      (is (= 1 (part-2 input)))))
 
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
