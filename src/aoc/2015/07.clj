@@ -80,11 +80,10 @@ NOT y -> i"))
                       path
                       (recur
                        (filter (fn [l] (some #{(l :to)} deps)) data)
-                       (concat path (filter (fn [d] (not (some #{d} path))) (concat deps (map :to currents) )))
+                       (concat path (filter (fn [d] (not (some #{d} path))) (concat deps (map :to currents))))
                        (inc step)))))))]
-    
-    path
-    )
+
+    path)
 
 
   #_(reduce (fn [m {:keys [from to]}]
