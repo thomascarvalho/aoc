@@ -1,6 +1,7 @@
 {
     "calva.testOnSave": false,
     "testing.automaticallyOpenPeekView": "never",
+    "calva.useLegacyReplWindowPath": false,
     "calva.jackInEnv": {
         "JAVA_TOOL_OPTIONS": "${env:JAVA_TOOL_OPTIONS} -Xmx2G"
     }

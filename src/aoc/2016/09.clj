@@ -25,7 +25,55 @@
 {:nextjournal.clerk/visibility {:result :hide}}
 
 ;;  Example
-(def input-example (parser ""))
+(def input-example (parser "X(8x2)(3x3)ABCY"))
+
+(let [data  (first input)
+      groups (u/re-pos #"\((\d+)x(\d+)\)" data)]
+
+(println groups)  
+  (loop [res ""
+         start  0
+         [current & groups] groups]
+    
+    (if (and current (< start (count data)))
+      (let [[idx-group group]  current
+            [n-chars n-repeat] (u/parse-out-longs group)
+            group-length       (count group)
+
+            repeat-start       (+ idx-group group-length)
+            repeat-end         (+ idx-group group-length n-chars)
+            _                  (prn repeat-end)
+            next-group-idx     (if (seq groups)
+                                 (first (first groups))
+                                 (inc (count data)))
+            
+            _                  (prn next-group-idx)
+
+            next-str           (if (and next-group-idx (< repeat-end next-group-idx))
+                                 (subs data repeat-end (dec next-group-idx))
+                                 "")]
+        
+
+        (recur (str
+                res
+                (subs data start idx-group)
+                (str/join "" (repeat n-repeat (subs data repeat-start repeat-end)))
+                next-str)
+               (+ idx-group group-length n-chars)
+               groups))
+      
+      (count res)
+    
+
+
+      )
+
+    
+    
+    )
+  
+  
+  )
 
 ;; ## Part 1
 (defn part-1

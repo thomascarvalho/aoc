@@ -64,17 +64,27 @@ NOT y -> i"))
        (filter #(-> % first (= target)))
        first))
 
+
 (defn get-parents [data path target]
   (when (and target (not (some #{target} path)))
     (let [[_ _ parents] (get-target data target)]
       parents)))
 
 
+(let [data input]
+  (loop [queue [:a]
+         path  #{}]
+    (let [[current & next-queue] queue
+          nexts                  (get-parents data path current)]
+      (if current
+        (recur (concat next-queue nexts) (conj path current))
+        path))))
+
 ;; ## Part 1
 (defn part-1
   [data]
 
-  (loop [current :a]
+  #_(loop [current :a]
     (get-parents data #{} current))
 
   #_(loop [currents [:a]])
@@ -83,7 +93,7 @@ NOT y -> i"))
 
 
 
-
+data
   #_(reduce (fn [m {:keys [from to]}]
               (let [[t a b] from]
                 (assoc m to
@@ -99,6 +109,8 @@ NOT y -> i"))
 
   ;
   )
+
+(part-1 input-example)
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
