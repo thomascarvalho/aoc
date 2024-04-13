@@ -25,61 +25,68 @@
 {:nextjournal.clerk/visibility {:result :hide}}
 
 ;;  Example
-(def input-example (parser "X(8x2)(3x3)ABCY"))
+(def input-example (parser "(27x3)ZFPNOWLAEAEMVDZHFYHXDUVOFWJ(6x3)SBKNUX(26x2)JEAITUGDSJCXZBKGKMKEQKTZCN(21x1)LYEAWHPDVHFAAZNAZJRFF(254x15)(77x8)(2x8)BK(13x13)J"))
 
-(let [data           (first input-example)
+(let [data           #_"A(2x2)BCD(2x2)EFG" (first input)
       groups         (u/re-pos #"\((\d+)x(\d+)\)" data)
       ;; groups-indexed (map-indexed (fn [i v] [i v]) groups)
       ]
 
-  (loop [res ""
-         current-index 0
-         group-index   0]
-    
-    (if-let [g (nth groups group-index)]
-      
-      []
-      
-      (str res (subs data current-index (count data)))
-      )
+  (->
+   (loop [res           ""
+          current-index 0
+          group-index   0]
 
+     (prn res)
+     (if-let [g (try
+                  (nth groups group-index)
+                  (catch Exception e
+                    nil))]
+       (let [[idx-group group]  g
+             [n-chars n-repeat] (u/parse-out-longs group)
+             group-length       (count group)
 
-    
-    )
+             _                  (prn idx-group)
+             _                  (prn group-length)
+             _                  (prn n-chars)
 
+             repeat-start       (+ idx-group group-length)
+             repeat-end         (+ idx-group group-length n-chars)
 
-  #_(loop [res                ""
-           start              0
-           [current & groups] groups]
+             _                  (prn repeat-start)
+             _                  (prn repeat-end)
 
-      (if (and current (< start (count data)))
-        (let [[idx-group group]  current
-              [n-chars n-repeat] (u/parse-out-longs group)
-              group-length       (count group)
+             repeat-str         (subs data repeat-start #_(min repeat-start (count data)) repeat-end #_(min repeat-end (count data)))
 
-              repeat-start       (+ idx-group group-length)
-              repeat-end         (+ idx-group group-length n-chars)
-            ;; _                  (prn repeat-end)
-              next-group-idx     (if (seq groups)
-                                   (first (first groups))
-                                   (inc (count data)))
+             _                  (prn repeat-str)
+             included-groups    (count (u/re-pos #"\((\d+)x(\d+)\)" repeat-str))
 
-            ;; _                  (prn next-group-idx)
+             _                  (prn included-groups)
+             next-group-nth     (+ 1 current-index included-groups)
 
-              next-str           (if (and next-group-idx (< repeat-end next-group-idx))
-                                   (subs data repeat-end (dec next-group-idx))
-                                   "")]
+             next-group-i       (try
+                                  (if-let [[next-g-idx] (nth groups next-group-nth)]
+                                    next-g-idx
+                                    (count data))
+                                  (catch Exception e
+                                    (count data)))
+;  19473 too low
+             _                  (prn next-group-i)
 
+             next-str           (subs data repeat-end #_(min repeat-end (count data)) (min next-group-i (count data)))]
+         (recur (str
+                 res
+                 (subs data current-index #_(min current-index (count data)) idx-group #_(min idx-group (dec (count data))))
+                 (str/join "" (repeat n-repeat repeat-str))
+                 next-str)
+                next-group-i
+                next-group-nth))
 
-          (recur (str
-                  res
-                  (subs data start idx-group)
-                  (str/join "" (repeat n-repeat (subs data repeat-start repeat-end)))
-                  next-str)
-                 (+ idx-group group-length n-chars)
-                 groups))
-
-        (count res))))
+       
+       (str res (subs data (min current-index (dec (count data))) (dec (count data))))))
+   (str/replace #" " "")
+   count)
+)
 
 ;; ## Part 1
 (defn part-1
@@ -123,5 +130,3 @@
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 ;; ## Results
-
-(part-1 input-example)
