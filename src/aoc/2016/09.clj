@@ -3,7 +3,7 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [util :as u] 
+            [util :as u]
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
@@ -27,53 +27,59 @@
 ;;  Example
 (def input-example (parser "X(8x2)(3x3)ABCY"))
 
-(let [data  (first input)
-      groups (u/re-pos #"\((\d+)x(\d+)\)" data)]
+(let [data           (first input-example)
+      groups         (u/re-pos #"\((\d+)x(\d+)\)" data)
+      ;; groups-indexed (map-indexed (fn [i v] [i v]) groups)
+      ]
 
-(println groups)  
   (loop [res ""
-         start  0
-         [current & groups] groups]
+         current-index 0
+         group-index   0]
     
-    (if (and current (< start (count data)))
-      (let [[idx-group group]  current
-            [n-chars n-repeat] (u/parse-out-longs group)
-            group-length       (count group)
-
-            repeat-start       (+ idx-group group-length)
-            repeat-end         (+ idx-group group-length n-chars)
-            _                  (prn repeat-end)
-            next-group-idx     (if (seq groups)
-                                 (first (first groups))
-                                 (inc (count data)))
-            
-            _                  (prn next-group-idx)
-
-            next-str           (if (and next-group-idx (< repeat-end next-group-idx))
-                                 (subs data repeat-end (dec next-group-idx))
-                                 "")]
-        
-
-        (recur (str
-                res
-                (subs data start idx-group)
-                (str/join "" (repeat n-repeat (subs data repeat-start repeat-end)))
-                next-str)
-               (+ idx-group group-length n-chars)
-               groups))
+    (if-let [g (nth groups group-index)]
       
-      (count res)
-    
-
-
+      []
+      
+      (str res (subs data current-index (count data)))
       )
 
-    
+
     
     )
-  
-  
-  )
+
+
+  #_(loop [res                ""
+           start              0
+           [current & groups] groups]
+
+      (if (and current (< start (count data)))
+        (let [[idx-group group]  current
+              [n-chars n-repeat] (u/parse-out-longs group)
+              group-length       (count group)
+
+              repeat-start       (+ idx-group group-length)
+              repeat-end         (+ idx-group group-length n-chars)
+            ;; _                  (prn repeat-end)
+              next-group-idx     (if (seq groups)
+                                   (first (first groups))
+                                   (inc (count data)))
+
+            ;; _                  (prn next-group-idx)
+
+              next-str           (if (and next-group-idx (< repeat-end next-group-idx))
+                                   (subs data repeat-end (dec next-group-idx))
+                                   "")]
+
+
+          (recur (str
+                  res
+                  (subs data start idx-group)
+                  (str/join "" (repeat n-repeat (subs data repeat-start repeat-end)))
+                  next-str)
+                 (+ idx-group group-length n-chars)
+                 groups))
+
+        (count res))))
 
 ;; ## Part 1
 (defn part-1
@@ -83,19 +89,22 @@
   )
 
 ;; Which gives our answer
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :show}}
 #_(part-1 input)
 
 ;; ## Part 2
-{:nextjournal.clerk/visibility {:code :show :result :hide}}
+{:nextjournal.clerk/visibility {:code   :show
+                                :result :hide}}
 (defn part-2
   [input]
-  
+
   ;
   )
 
 ;; Which gives our answer
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :show}}
 #_(part-2 input)
 
 
@@ -106,10 +115,10 @@
 ;; ## Suite
 (deftest test-2016-09
   #_(testing "part one"
-    (is (= 1 (part-1 input))))
+      (is (= 1 (part-1 input))))
 
   #_(testing "part two"
-    (is (= 1 (part-2 input)))))
+      (is (= 1 (part-2 input)))))
 
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
