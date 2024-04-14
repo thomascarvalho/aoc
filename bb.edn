@@ -50,4 +50,4 @@
                                     (clojure (str "-M:test --focus aoc." (second args) "." (first args) (if watch " --watch" "")))
                                     (clojure (str "-M:test" (if watch " --watch" "")))))}
          serve           {:task (clojure "-M:clerk/serve")}
-         build           {:task (clojure "-M:nextjournal/clerk")}}}
+         build           {:task (clojure "-X:nextjournal/clerk")}}}

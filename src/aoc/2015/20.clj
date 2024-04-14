@@ -27,8 +27,6 @@
 ;;  Example
 (def input-example (parser ""))
 
-(apply concat (repeat 3 [1 2 3]))
-
 ;; ## Part 1
 (defn part-1
   [data]
@@ -109,5 +107,3 @@
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 ;; ## Results
-
-(part-1 input-example)

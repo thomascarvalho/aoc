@@ -148,5 +148,3 @@
 #_{:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 ;; ## Results
-
-(part-2 input)
