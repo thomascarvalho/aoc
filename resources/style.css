@@ -1,26 +1,49 @@
 em {
-    font-style: normal !important;
+  font-style: normal !important;
+}
+
+html:not(.dark) {
+  background-color: #f4f3f3;
+}
+
+html.dark {
+  background-color: #222831 !important;
+}
+
+body {
+  background: transparent !important;
 }
 
 html:not(.dark) pre {
-    background-color: #f1f5f9 !important;
-    color: #7aaac4 !important;
+  background-color: #f1f5f9 !important;
+  color: #7aaac4 !important;
 }
 
 .dark em {
-    color: #fff !important;
-    text-shadow: 0 0 5px #fff !important;
+  color: #fff !important;
+  text-shadow: 0 0 5px #fff !important;
 }
 
 .dark pre {
-    background-color: rgb(31 41 55 / var(--tw-bg-opacity)) !important;
+  background-color: rgb(31 41 55 / var(--tw-bg-opacity)) !important;
 }
 
 html:not(.dark) em {
-    color: #000 !important;
-    text-shadow: 0 0 2px #000 !important;
+  color: #000 !important;
+  text-shadow: 0 0 2px #000 !important;
 }
 
 .viewer-result:first-child {
-    display: none !important;
+  display: none !important;
+}
+
+.notebook-viewer > pre > code {
+  background: transparent !important;
+}
+
+.notebook-viewer
+  :is(:where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))),
+.markdown-viewer
+  :is(:where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))) {
+  background-color: transparent;
 }

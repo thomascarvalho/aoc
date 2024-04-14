@@ -1,6 +1,6 @@
 ^{:nextjournal.clerk/visibility :hide-ns}
 (ns aoc.2023.25
-  {:nextjournal.clerk/toc true}
+  {:nextjournal.clerk/toc false}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
             [util :as u]
@@ -11,11 +11,11 @@
             [clojure.test :refer :all]))
 
 ;; # Problem
-;; {:nextjournal.clerk/visibility {:code   :hide
-;;                                 :result :show}}
-;; (clerk/html (u/load-problem "25" "2023"))
-;; {:nextjournal.clerk/visibility {:code   :show
-;;                                 :result :show}}
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :show}}
+(clerk/html (u/load-problem "25" "2023"))
+{:nextjournal.clerk/visibility {:code   :show
+                                :result :show}}
 
 ;; # Solution
 ;;

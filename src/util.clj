@@ -121,7 +121,7 @@
           (spit (str path) (:body resp)))))
 
     (let [doc   (h/as-hickory (h/parse (slurp (str path))))
-          parts (map #(hr/hickory-to-html %) (s/select (s/child (s/tag :article)) doc))]
+          parts (map #(hr/hickory-to-html %) (s/select (s/child (s/tag :article)) doc))] 
       (apply str (mapcat str parts)))))
 
 (defn load-title

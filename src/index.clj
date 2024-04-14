@@ -1,7 +1,6 @@
 ;; # 🎄 Advent of Code
 ;;
-;; [Advent of Code](https://adventofcode.com) with
-;; [Clerk](https://clerk.vision) + Kaocha.
+;; My solutions for [Advent of Code](https://adventofcode.com) in **clojure** with [Clerk](https://clerk.vision) + Kaocha.
 ;;
 ;; Thanks [advent of clerk](https://github.com/nextjournal/advent-of-clerk) and [@elken](https://github.com/elken/) for the template
 (ns index
