@@ -2,8 +2,10 @@
   (:require [clj-http.client :as client]
             [clojure.string :as str]
             [hickory.core :as h]
+            [nextjournal.clerk :as clerk]
             [ubergraph.core :as uber]
             [hickory.render :as hr]
+            [hiccup2.core :as hi]
             [hickory.select :as s]
             [clojure.pprint :refer [pprint]]
             [babashka.fs :as fs]
@@ -114,20 +116,30 @@
         file-name (format "day%s-%s.html" day year)
         path      (fs/path (fs/temp-dir) file-name)]
     (when-not (fs/exists? path)
-      (let [resp (->> {:headers {"Cookie" (str "session=" (get-session))
-                                 }}
+      (let [resp (->> {:headers {"Cookie" (str "session=" (get-session))}}
                       (client/get (format "https://adventofcode.com/%s/day/%s" year day)))]
         (when (= 200 (:status resp))
           (spit (str path) (:body resp)))))
 
     (let [doc   (h/as-hickory (h/parse (slurp (str path))))
-          parts (map #(hr/hickory-to-html %) (s/select (s/child (s/tag :article)) doc))] 
-      (apply str (mapcat str parts)))))
+          parts (map #(hr/hickory-to-html %) (s/select (s/child (s/tag :article)) doc))]
+
+      (str (hi/html [:details
+                     [:summary.cursor-pointer
+                      [:span.text-xl.font-bold (str "Details")]]
+                     (hi/raw (apply str (mapcat str parts)))])))))
+
+#_(load-problem "01" "2023")
+
+(hi/html [:details
+          [:summary
+           "2023"
+           (hi/raw (load-problem "01" "2023"))]])
 
 (defn load-title
   "Given a DAY and a YEAR, return the title of the problem."
   [day year]
-  (let [day       (str (parse-long day))
+  (let [day       (if (number? day) (str day) (str (parse-long day)))
         file-name (format "day%s-%s.html" day year)
         _         (load-problem day year)
         path      (fs/path (fs/temp-dir) file-name)
@@ -165,3 +177,19 @@
                                             (assoc-lazy (dec i) (rest data))))))]
         (assoc-lazy i data))
       data)))
+
+(def star
+  [:span {:class "text-right font-bold text-xl"} "*"])
+
+(defn list-problems [year days]
+  (clerk/html
+   [:div.flex.flex-col.gap-4
+    (for [[day {:keys [stars]}] (sort days)
+          :let                  [title (load-title day year)]]
+      [:div.flex.flex-row.gap-4
+       [:div {:class (str "flex basis-[30px] items-center justify-end "
+                          (if (>= stars 2) "text-yellow-300"  "text-yellow-100"))}
+        (repeat stars star)]
+       [:a {:href (clerk/doc-url (str "src/aoc/" year "/" (format "%02d" day)))}
+        title]
+       [:div]])]))

@@ -3,6 +3,7 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
+            [test-util :as t]
             [util :as u] 
             [clojure.string :as str]
             [clojure.test :refer :all]))
@@ -54,8 +55,6 @@
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
-
-;; ## Suite
 (deftest test-YEAR-DAY
   #_(testing "part one"
     (is (= 1 (part-1 input))))
@@ -65,6 +64,5 @@
 
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
-;; ## Results
 
-(part-1 input-example)
+(t/test-render #'test-YEAR-DAY)

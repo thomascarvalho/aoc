@@ -1,6 +1,6 @@
 ^{:nextjournal.clerk/visibility :hide-ns}
 (ns aoc.2023.25
-  {:nextjournal.clerk/toc false}
+  {:nextjournal.clerk/toc :collapsed}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
             [util :as u]

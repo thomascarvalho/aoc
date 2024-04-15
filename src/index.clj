@@ -1,6 +1,6 @@
 ;; # 🎄 Advent of Code
 ;;
-;; My solutions for [Advent of Code](https://adventofcode.com) in **clojure** with [Clerk](https://clerk.vision) + Kaocha.
+;; My solutions for [Advent of Code](https://adventofcode.com) in **clojure** with [Clerk](https://clerk.vision).
 ;;
 ;; Thanks [advent of clerk](https://github.com/nextjournal/advent-of-clerk) and [@elken](https://github.com/elken/) for the template
 (ns index
@@ -11,6 +11,14 @@
    [nextjournal.clerk.view :as clerk.view]
    [clojure.java.io :as io]
    [clojure.string :as str]
+   [aoc.2023.index]
+   [aoc.2015.index]
+   [aoc.2016.index]
+   [aoc.2018.index]
+   [aoc.2019.index]
+   [aoc.2020.index]
+   [aoc.2021.index]
+   [aoc.2022.index]
    [util :as u]))
 
 (alter-var-root #'clerk.view/include-css+js
@@ -24,7 +32,7 @@
   (->>
    (-> "src/aoc"
        fs/list-dir
-       (fs/list-dirs "*.clj"))
+       (fs/list-dirs "index.clj"))
    (sort #(compare %2 %1))))
 
 (defn group-solutions []
@@ -35,22 +43,22 @@
             (str year))))
        (sort-by first #(compare %2 %1))))
 
+(defn get-days-for-year [year]
+  (let [ns-symbol (symbol (str "aoc." year ".index"))
+        publics   (ns-publics ns-symbol)
+        days      (publics (symbol "days"))]
+    (days)))
+
+
 {:nextjournal.clerk/visibility {:result :show}}
 ^::clerk/no-cache
 (clerk/html
- (into [:div]
+ (into [:div.grid.grid-cols-4.gap-10]
        (mapv (fn [[year paths]]
-               [:details
-                [:summary.cursor-pointer.w-full
-                 [:span.flex-grow.text-2xl.font-bold year]
-                 [:span.ml-10 (format "(%s solutions)" (count paths))]]
-                (into [:ul.flex.flex-col.gap-1.w-full]
-                      (mapv (fn [path]
-                              (when-let [day (second (re-find #"(\d+).clj" path))]
-                                [:li
-                                 [:a {:href (-> path
-                                                (str/replace ".clj" "")
-                                                clerk/doc-url)}
-                                  (u/load-title day year)]]))
-                            (map str paths)))])
+               (let [completed-days (get-days-for-year year)]
+                 [:a {:class "block flex flex-col !text-[#331832] hover:no-underline border hover:border-[#127475] gap-6 items-center p-6 bg-[#C6D8D3] rounded-sm hover:shadow-md cursor-pointer"
+                      :href  (clerk/doc-url (str "src/aoc/" year "/index"))}
+                  [:span.text-2xl.font-bold year]
+                  [:span.text-right.text-lg (format "%s/25" (count (keys completed-days)))]
+                  [:span {:class "text-right font-bold text-xl text-[#127475]"} (format "%s*" (apply + (map :stars (vals completed-days))))]]))
              (group-solutions))))

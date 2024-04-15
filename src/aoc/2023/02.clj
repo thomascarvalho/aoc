@@ -120,7 +120,6 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"))
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 
-;; ## Suite
 (deftest test-2023-02
   (testing "part one"
       (is (= 2486 (part-1 input))))
@@ -130,5 +129,4 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"))
 
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
-;; ## Results
-#_(t/render-results (t/run #'test-2023-02))
+(t/test-render #'test-2023-02)

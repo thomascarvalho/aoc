@@ -9,7 +9,7 @@
            org.clojure/math.numeric-tower {:mvn/version "0.0.5"}
            defun/defun                    {:mvn/version "0.4.0"}
            ;;   io.github.nextjournal/clerk    {:mvn/version "0.15.957"}
-           io.github.nextjournal/clerk    {:git/sha "eb89e0b2e9edf8937c7c4a14c6df0ebc3217adeb"}
+           io.github.nextjournal/clerk    {:git/sha "58c7b75c91585b9947f323b753e07cecdeec2a30" #_"eb89e0b2e9edf8937c7c4a14c6df0ebc3217adeb"}
            clj-http/clj-http              {:mvn/version "3.12.3"}
            org.babashka/cli               {:mvn/version "0.7.53"}
            org.clj-commons/hickory        {:mvn/version "0.7.3"}
@@ -31,7 +31,7 @@
                                                          "src/aoc/2019/*.clj"
                                                          "src/aoc/2020/*.clj"
                                                          "src/aoc/2021/*.clj"
-                                                         ;; "src/aoc/2022/*.clj" ;; FIXME: clerk build crashes with 2022 => find why 
+                                                        ;;  "src/aoc/2022/*.clj" ;; FIXME: clerk build crashes with 2022 => find why 
                                                          "src/aoc/2023/*.clj"
                                                          "src/*.clj"]}
                                :main-opts ["-m" "babashka.cli.exec"]}

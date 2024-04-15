@@ -8,26 +8,15 @@
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :hide}}
+
+;; # Problem 01 2023
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 (clerk/html (u/load-problem "01" "2023"))
 {:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
-
-
-(def all-numbers ["one" "two" "three" "four" "five" "six" "seven" "eight" "nine"
-                  "1" "2" "3" "4" "5" "6" "7" "8" "9"])
-
-(def mapping {"one"   1
-              "two"   2
-              "three" 3
-              "four"  4
-              "five"  5
-              "six"   6
-              "seven" 7
-              "eight" 8
-              "nine"  9})
+                                :result :hide}}
 
 ;; # Solution
 ;;
@@ -37,22 +26,13 @@
   (->> data
        str/split-lines))
 
-(defn parse-n [[_i digits-or-letters]]
-  (or (get mapping digits-or-letters) digits-or-letters))
-
-(defn get-indexes [s value]
-  (loop [index   (str/index-of s value)
-         indexes []]
-    (if index
-      (recur (str/index-of s value (+ index (count value))) (conj indexes index))
-      indexes)))
-
-(def input (->> (slurp (io/resource "inputs/2023/01.txt")) ;; Load the resource
-                parser))                             ;; Split into lines
-
-{:nextjournal.clerk/visibility {:result :hide}}
+(def input (->> (slurp (io/resource "inputs/2023/01.txt"))
+                parser))
 
 ;;  Example
+
+{:nextjournal.clerk/visibility {:code   :show
+                                :result :show}}
 (def input-example (parser "1abc2
 pqr3stu8vwx
 a1b2c3d4e5f
@@ -75,9 +55,7 @@ zoneight234
               (->
                (str (first nums) (last nums))
                parse-long)))
-       (reduce +))
-  ;
-  )
+       (reduce +)))
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
@@ -87,6 +65,33 @@ zoneight234
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
+
+(def mapping
+  {"one"   1
+   "two"   2
+   "three" 3
+   "four"  4
+   "five"  5
+   "six"   6
+   "seven" 7
+   "eight" 8
+   "nine"  9})
+
+(def all-numbers
+  (reduce-kv (fn [arr k v]
+               (conj arr k (str v))) [] mapping))
+
+
+(defn parse-n [[_i digits-or-letters]]
+  (get mapping digits-or-letters digits-or-letters))
+
+(defn get-indexes [s value]
+  (loop [index   (str/index-of s value)
+         indexes []]
+    (if index
+      (recur (str/index-of s value (+ index (count value))) (conj indexes index))
+      indexes)))
+
 (defn part-2
   [lines]
   (->> lines
@@ -107,11 +112,12 @@ zoneight234
 (part-2 input)
 
 
+
+
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 
-;; ## Suite
 (deftest test-2023-01
   (testing "part one"
     (is (= 54644 (part-1 input))))
@@ -122,8 +128,8 @@ zoneight234
   (testing "part two"
     (is (= 53348 (part-2 input)))))
 
-
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
-;; ## Results
-#_(t/render-results (t/run #'test-2023-01))
+
+(t/test-render #'test-2023-01)
+

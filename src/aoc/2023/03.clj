@@ -20,7 +20,7 @@
 ;;
 ;; First things first, let's load our input and parse it
 
-(def directions [[-1 -1] [-1 0] [-1 1] [0 -1] [0 1]  [1 -1] [1 0] [1 1]])
+(def directions [[-1 -1] [-1 0] [-1 1] [0 -1] [0 1] [1 -1] [1 0] [1 1]])
 
 (defn neighbours-symbols [[x y] cells]
   (for [[x2 y2] directions
@@ -51,7 +51,6 @@
    (apply concat)
    (group-by first) ;; group by unique index
    (map #(-> % second first second)))) ;; and get values
-
 
 (defn parser [data]
   (->> data
@@ -189,15 +188,14 @@
 .......15.....")))))
 
   (testing "part one - example"
-      (is (= 4361 (part-1 input-example))))
+    (is (= 4361 (part-1 input-example))))
 
   (testing "part one"
-      (is (= 533784 (part-1 input))))
+    (is (= 533784 (part-1 input))))
 
   (testing "part two"
     (is (= 78826761 (part-2 input)))))
 
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
-;; ## Results
-#_(t/render-results (t/run #'test-2023-03))
+(t/test-render #'test-2023-03)
