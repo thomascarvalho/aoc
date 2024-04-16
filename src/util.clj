@@ -183,13 +183,31 @@
 
 (defn list-problems [year days]
   (clerk/html
-   [:div.flex.flex-col.gap-4
-    (for [[day {:keys [stars]}] (sort days)
-          :let                  [title (load-title day year)]]
-      [:div.flex.flex-row.gap-4
-       [:div {:class (str "flex basis-[30px] items-center justify-end "
-                          (if (>= stars 2) "text-yellow-300"  "text-yellow-100"))}
-        (repeat stars star)]
-       [:a {:href (clerk/doc-url (str "src/aoc/" year "/" (format "%02d" day)))}
-        title]
-       [:div]])]))
+   [:<>
+    [:h2.flex.flex-row.gap-6.items-center
+     "🎄"
+     [:a {:href  "/"
+          :class "!text-white hover:text-white"} "Advent of Code"]
+     [:svg
+      {:class       "rtl:rotate-180 w-3 h-3 text-gray-400 mx-1"
+       :aria-hidden "true"
+       :xmlns       "http://www.w3.org/2000/svg"
+       :fill        "none"
+       :viewBox     "0 0 6 10"}
+      [:path
+       {:stroke          "currentColor"
+        :stroke-linecap  "round"
+        :stroke-linejoin "round"
+        :stroke-width    "2"
+        :d               "m1 9 4-4-4-4"}]]
+     year]
+    [:div.flex.flex-col.gap-4
+     (for [[day {:keys [stars]}] (sort days)
+           :let                  [title (load-title day year)]]
+       [:div.flex.flex-row.gap-4
+        [:div {:class (str "flex basis-[30px] items-center justify-end "
+                           (if (>= stars 2) "text-yellow-300"  "text-yellow-100"))}
+         (repeat stars star)]
+        [:a {:href (clerk/doc-url (str "src/aoc/" year "/" (format "%02d" day)))}
+         title]
+        [:div]])]]))

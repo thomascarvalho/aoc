@@ -2,8 +2,6 @@
 (ns aoc.2023.index
   (:require [util :as u]))
 
-;; # 2023
-
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :hide}}
 (defn days []

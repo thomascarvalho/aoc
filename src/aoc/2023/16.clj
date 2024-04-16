@@ -73,7 +73,7 @@
                                               \. :E
                                               \/ :N
                                               \\ :S)]
-        diffs-check                  6]
+        diffs-check                  3]
 
     (letfn [(move-beam [beams b]
               (let [beam (move b [height width])]
@@ -84,7 +84,7 @@
                               ([]
                                (add beam))
                               ([& rest]
-                               (apply conj beams rest)))
+                               (concat beams rest)))
                             (dir [d]
                               (assoc beam 1 d))]
                       (match [v d]
@@ -177,7 +177,7 @@
                                 :result :show}}
 ;; ## Results
 
-(time (part-1 input-example))
+(time (part-1 input))
 
 ;; 7736 -> too high
 

@@ -56,9 +56,9 @@
  (into [:div.grid.grid-cols-4.gap-10]
        (mapv (fn [[year paths]]
                (let [completed-days (get-days-for-year year)]
-                 [:a {:class "block flex flex-col !text-[#331832] hover:no-underline border hover:border-[#127475] gap-6 items-center p-6 bg-[#C6D8D3] rounded-sm hover:shadow-md cursor-pointer"
+                 [:a {:class "font-display block flex flex-col !text-[#331832] hover:no-underline border hover:border-[#127475] gap-6 items-center p-6 bg-[#C6D8D3] rounded-sm hover:shadow-md cursor-pointer"
                       :href  (clerk/doc-url (str "src/aoc/" year "/index"))}
                   [:span.text-2xl.font-bold year]
                   [:span.text-right.text-lg (format "%s/25" (count (keys completed-days)))]
-                  [:span {:class "text-right font-bold text-xl text-[#127475]"} (format "%s*" (apply + (map :stars (vals completed-days))))]]))
+                  [:span {:class "text-right font-bold text-xl text-yellow-500"} (format "%s*" (apply + (map :stars (vals completed-days))))]]))
              (group-solutions))))

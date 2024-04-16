@@ -27,12 +27,13 @@
        (map #(let [[t nums] (str/split % #" ")]
                [t (u/parse-out-longs nums)]))))
 
-(def input (->> (slurp (io/resource "inputs/2023/12.txt")) ;; Load the resource
-                parser))                             ;; Split into lines
+(def input (->> (slurp (io/resource "inputs/2023/12.txt"))
+                parser))
 {:nextjournal.clerk/visibility {:result :hide}}
 
 ;;  Example
-(def input-example (parser "???.### 1,1,3
+(def input-example (parser
+                    "???.### 1,1,3
 .??..??...?##. 1,1,3
 ?#?#?#?#?#?#?#? 1,3,1,6
 ????.#...#... 4,1,1
@@ -46,6 +47,10 @@
                (filter (fn [[i group]] (every? #(= % \#) group))))]
     (when (= 1 (count r)) (first r))))
 
+(let [[l n] ["???.###" '(1 1 3)]]
+
+  (u/re-pos #"\#+" l))
+
 ;; ## Part 1
 (defn part-1
   [data]
@@ -55,8 +60,7 @@
                             [n (->
                                 (str "\\.?(#{" n "})\\.?")
                                 re-pattern
-                                (re-seq s))]
-                            ) nums)]]
+                                (re-seq s))]) nums)]]
     (do
       (cons groups d)))
 
@@ -99,4 +103,4 @@
                                 :result :show}}
 ;; ## Results
 
-(part-1 input-example)
+#_(part-1 input-example)

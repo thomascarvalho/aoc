@@ -19,6 +19,10 @@ html:not(.dark) pre {
   color: #7aaac4 !important;
 }
 
+.font-display {
+  font-family: 'Fira Sans Condensed', sans-serif;
+}
+
 .dark em {
   color: #fff !important;
   text-shadow: 0 0 5px #fff !important;
