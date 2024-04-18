@@ -31,26 +31,13 @@
 ;; ## Part 1
 (defn part-1
   [data]
-  data
-  ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
-#_(part-1 input)
+  data)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code :show :result :hide}}
 (defn part-2
-  [input]
-  
-  ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
-#_(part-2 input)
-
+  [data]
+  data)
 
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
@@ -65,4 +52,4 @@
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 
-(t/test-render #'test-YEAR-DAY)
+#_(t/test-render #'test-YEAR-DAY)
