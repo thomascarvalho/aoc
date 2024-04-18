@@ -7,6 +7,7 @@
            org.clojars.rorokimdim/pp-grid {:mvn/version "0.1.18"}
            net.mikera/core.matrix         {:mvn/version "0.63.0"}
            org.clojure/math.numeric-tower {:mvn/version "0.0.5"}
+           org.flatland/ordered           {:mvn/version "1.15.11"}
            defun/defun                    {:mvn/version "0.4.0"}
            ;;   io.github.nextjournal/clerk    {:mvn/version "0.15.957"}
            io.github.nextjournal/clerk    {:git/sha "eb89e0b2e9edf8937c7c4a14c6df0ebc3217adeb"}
