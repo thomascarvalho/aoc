@@ -22,7 +22,7 @@
        u/parse-out-longs))
 
 (def input (->> (slurp (io/resource "inputs/2017/10.txt")) ;; Load the resource
-                ))                             ;; Split into lines
+))                             ;; Split into lines
 {:nextjournal.clerk/visibility {:result :hide}}
 
 (defn get-num [nums idx]
@@ -64,7 +64,44 @@
                                 :result :hide}}
 (defn part-2
   [data]
-  data)
+  (let [lengths     (concat (as-> data $
+                              (str/replace $ #"\n" "")
+                              (char-array $)
+                              (map int $))
+                            [17, 31, 73, 47, 23])
+        nums        (into [] (range 0 256))
+        sparse-hash (loop [idx    0
+                           skip   0
+                           rounds 0
+                           nums   nums]
+
+                      (if (= rounds 64)
+                        nums
+                        (let [[idx skip new-nums] (loop [nums               nums
+                                                         idx                idx
+                                                         skip               skip
+                                                         [l & next-lengths] lengths]
+                                                    (if l
+                                                      (let [reversed-sub (into [] (reverse (get-range nums idx l)))]
+                                                        (recur
+                                                         (reduce (fn [nums i]
+                                                                   (set-num nums (+ idx i) (get reversed-sub i))) nums (range 0 l))
+                                                         (+ idx l skip)
+                                                         (inc skip)
+                                                         next-lengths))
+                                                      [idx skip nums]))]
+                          (recur
+                           idx
+                           skip
+                           (inc rounds)
+                           new-nums))))]
+
+    (->>
+     (partition 16 sparse-hash)
+     (map (fn [p]
+            (apply bit-xor p)))
+     (mapcat #(format "%02x" %))
+     (apply str))))
 
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
@@ -73,16 +110,10 @@
   (testing "part one"
     (is (= 1935 (part-1 (parser input)))))
 
-  #_(testing "part two"
-      (is (= 1 (part-2 input)))))
-
-(int \,)
+  (testing "part two"
+    (is (= "dc7e7dee710d4c7201ce42713e6b8359" (part-2 input)))))
 
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 
-#_(t/test-render #'test-2017-10)
-
-(-> input
-    (str/replace  #"\n" "")
-    char-array)
+(t/test-render #'test-2017-10)

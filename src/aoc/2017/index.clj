@@ -15,9 +15,10 @@
    7  {:stars 2}
    8  {:stars 2}
 
-   10 {:stars 1}
+   10 {:stars 2}
    11 {:stars 2}
-   12 {:stars 2}})
+   12 {:stars 2}
+   13 {:stars 2}})
 
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
