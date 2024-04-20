@@ -177,7 +177,7 @@
                                 :result :show}}
 ;; ## Results
 
-(time (part-1 input))
+;; (time (part-1 input))
 
 ;; 7736 -> too high
 
