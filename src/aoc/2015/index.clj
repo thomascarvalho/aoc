@@ -2,8 +2,6 @@
 (ns aoc.2015.index
   (:require [util :as u]))
 
-;; # 2015
-
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :hide}}
 

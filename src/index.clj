@@ -14,6 +14,7 @@
    [aoc.2023.index]
    [aoc.2015.index]
    [aoc.2016.index]
+   [aoc.2017.index]
    [aoc.2018.index]
    [aoc.2019.index]
    [aoc.2020.index]

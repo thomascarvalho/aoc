@@ -2,8 +2,6 @@
 (ns aoc.2020.index
   (:require [util :as u]))
 
-;; # 2020
-
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :hide}}
 

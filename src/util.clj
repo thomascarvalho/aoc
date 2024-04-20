@@ -187,7 +187,7 @@
     [:h2.flex.flex-row.gap-6.items-center
      "🎄"
      [:a {:href  "/"
-          :class "!text-white hover:text-white"} "Advent of Code"]
+          :class "!text-black hover:text-black dark:!text-white dark:hover:!text-white"} "Advent of Code"]
      [:svg
       {:class       "rtl:rotate-180 w-3 h-3 text-gray-400 mx-1"
        :aria-hidden "true"
