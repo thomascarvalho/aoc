@@ -4,52 +4,104 @@
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
             [test-util :as t]
-            [util :as u] 
+            [pathfinding :as pf]
+            [util :as u]
+            [ubergraph.core :as uber]
+            [ubergraph.alg :as alg]
+            [aoc.2017.10 :refer [knot-hash-output]]
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
 ;; # Problem
-;; {:nextjournal.clerk/visibility {:code :hide :result :show}}
-;; (clerk/html (u/load-problem "14" "2017"))
-;; {:nextjournal.clerk/visibility {:code :show :result :show}}
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :show}}
+(clerk/html (u/load-problem "14" "2017"))
+{:nextjournal.clerk/visibility {:code   :show
+                                :result :show}}
 
 ;; # Solution
 ;;
 ;; First things first, let's load our input and parse it
 
 (defn parser [data]
-  (->> data
-       u/to-lines))
+  (-> data
+      (str/replace #"\n" "")))
 
 (def input (->> (slurp (io/resource "inputs/2017/14.txt")) ;; Load the resource
                 parser))                             ;; Split into lines
 {:nextjournal.clerk/visibility {:result :hide}}
 
 ;;  Example
-(def input-example (parser ""))
+(def input-example (parser "flqrgnkx"))
+
+(defn unhexify [hex]
+  (apply str
+         (map
+          (fn [[x y]] (char (Integer/parseInt (str x y) 16)))
+          (partition 2 hex))))
+
+(defn knot->binary-numbers [k]
+  (->> k
+       char-array
+       (mapcat #(as-> (-> (str "0x" %)
+                          read-string
+                          (Integer/toString 2)
+                          parse-long) $
+                  (format "%04d" $)
+                  (str/split $ #"")
+                  (map parse-long $)))))
 
 ;; ## Part 1
 (defn part-1
   [data]
-  data)
+  (->
+   (->> (range 0 128)
+        (mapcat (fn [suffix]
+                  (->>
+                   (knot-hash-output (str data "-" suffix))
+                   knot->binary-numbers)))
+        frequencies)
+   (get 1)))
 
 ;; ## Part 2
-{:nextjournal.clerk/visibility {:code :show :result :hide}}
+{:nextjournal.clerk/visibility {:code   :show
+                                :result :hide}}
 (defn part-2
   [data]
-  data)
+  (let [m           (->> (range 0 128)
+                         (map (fn [suffix]
+                                (->>
+                                 (knot-hash-output (str data "-" suffix))
+                                 knot->binary-numbers))))
+        valid-cells (->> (pf/decode-matrix m)
+                         :cells
+                         (filter (fn [[_ n]]
+                                   (= n 1)))
+                         (map (fn [[coords]]
+                                coords)))
+        edges       (mapcat (fn [coords]
+                              (let [[y x]     coords
+                                    neighbors (filter #(some #{%} valid-cells)
+                                                      [[(dec y) x] [(inc y) x] [y (dec x)] [y (inc x)]])]
+                                (map #(vector coords %) neighbors))) valid-cells)
+        g           (-> (uber/graph)
+                        (uber/add-nodes* valid-cells)
+                        (uber/add-undirected-edges* edges))]
+    (->
+     (alg/connected-components g)
+     count)))
 
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 (deftest test-2017-14
-  #_(testing "part one"
-    (is (= 1 (part-1 input))))
+  (testing "part one"
+    (is (= 8316 (part-1 input))))
 
-  #_(testing "part two"
-    (is (= 1 (part-2 input)))))
+  (testing "part two"
+    (is (= 1074 (part-2 input)))))
 
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 
-#_(t/test-render #'test-2017-14)
+(t/test-render #'test-2017-14)

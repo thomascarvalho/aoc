@@ -62,9 +62,9 @@
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
-(defn part-2
-  [data]
-  (let [lengths     (concat (as-> data $
+
+(defn knot-hash-output [s]
+  (let [lengths     (concat (as-> s $
                               (str/replace $ #"\n" "")
                               (char-array $)
                               (map int $))
@@ -102,6 +102,10 @@
             (apply bit-xor p)))
      (mapcat #(format "%02x" %))
      (apply str))))
+
+(defn part-2
+  [data]
+  (knot-hash-output data))
 
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
