@@ -22,7 +22,8 @@
    14 {:stars 2}
    15 {:stars 2}
    16 {:stars 2}
-   17 {:stars 1}})
+   17 {:stars 1}
+   18 {:stars 1}})
 
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
