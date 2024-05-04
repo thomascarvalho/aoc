@@ -109,7 +109,7 @@ jgz a -2"))
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
-(let [data (parser "snd 1
+#_(let [data (parser "snd 1
 snd 2
 snd p
 rcv a
