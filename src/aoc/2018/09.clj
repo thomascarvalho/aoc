@@ -34,23 +34,23 @@
 
 
 
-(loop [circle [0]
-       current 0
-       players (cycle (range 1 10))
-       step 0]
-  (println current)
-  (if (= step 7)
-    {:circle circle
-     :current current
-     :players players}
-   (let [player (first players)
-         v (count circle)
-         [new-current new-circle] (insert-relative circle current 2 v)]
-     (println circle new-circle)
-     (recur new-circle
-            new-current
-            (next players)
-            (inc step)))))
+#_(loop [circle [0]
+         current 0
+         players (cycle (range 1 10))
+         step 0]
+    (println current)
+    (if (= step 7)
+      {:circle circle
+       :current current
+       :players players}
+     (let [player (first players)
+           v (count circle)
+           [new-current new-circle] (insert-relative circle current 2 v)]
+       (println circle new-circle)
+       (recur new-circle
+              new-current
+              (next players)
+              (inc step)))))
     
     
   
@@ -72,14 +72,11 @@
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 (deftest test-2018-09
-  (testing "inserting"
-    (let [circle [0 1]])
-   (is (= [] (add-marble []))))
-  #_(testing "part one"
-      (is (= 1 (part-1 input))))
+  #_#_(testing "part one")
+   (is (= 1 (part-1 i))
 
-  #_(testing "part two"
-      (is (= 1 (part-2 input)))))
+     #_(testing "part two"
+         (is (= 1 (part-2 input))))))
 
 {:nextjournal.clerk/visibility {:code   :hide
                                  :result :show}}

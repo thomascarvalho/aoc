@@ -41,7 +41,7 @@
      :children (if (pos? child-nodes-qty)
                  (loop [current-queue (drop-last metadata-qty data)
                         qty child-nodes-qty]
-                   (if (zero? qty))))}))
+                   ))}))
 
 
 
