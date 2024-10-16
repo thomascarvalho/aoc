@@ -114,10 +114,10 @@ fold along x=5"))
      (if (seq instructions)
        (recur (fold coords (first instructions)) (next instructions))
        coords))
-   create-grid)
+   create-grid))
 
   ;
-  )
+  
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide

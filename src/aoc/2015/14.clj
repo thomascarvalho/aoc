@@ -41,9 +41,9 @@ Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds."))
 
 ;; ## Part 1
 (defn part-1
-  [comets]
-  (let [max-seconds #_2503 1000]
-    (->>
+  [comets max-seconds]
+  comets
+  #_(->>
      (loop [comets  comets
             seconds 0]
 
@@ -67,7 +67,6 @@ Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds."))
 
                                  (and (not flying?) (zero? current-rest-time)) (assoc
                                                                                 :flying? true
-                                                                                ;; :current-distance (+ current-distance speed)
                                                                                 :current-rest-time rest-time)
 
                                  (and (not flying?) (> current-rest-time 0)) (->
@@ -76,10 +75,10 @@ Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds."))
 
                            (conj v new-comet))) []))
           (inc seconds))))
-     (reduce (fn [t {:keys [current-distance]}]
-               (max t current-distance)) 0)))
+     #_(reduce (fn [t {:keys [current-distance]}]
+                 (max t current-distance)) 0)))
   ;
-  )
+  
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
@@ -91,10 +90,10 @@ Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds."))
                                 :result :hide}}
 (defn part-2
   [data]
-  data
+  data)
 
   ;
-  )
+  
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
@@ -108,8 +107,8 @@ Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds."))
 
 ;; ## Suite
 (deftest test-2015-14
-  #_(testing "part one"
-      (is (= 1 (part-1 input))))
+  (testing "part one"
+    (is (= 1120 (part-1 input-example 1000))))
 
   #_(testing "part two"
       (is (= 1 (part-2 input)))))
@@ -120,4 +119,7 @@ Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds."))
 
 ;; 2530, 2585 too low
 
-(part-1 input-example)
+#_(part-1 input 2503)
+#_(part-1 input-example 1000)
+
+

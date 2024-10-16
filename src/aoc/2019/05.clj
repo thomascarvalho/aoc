@@ -30,8 +30,13 @@
 ;; ## Part 1
 (defn part-1
   [input]
+ input)
 
-  (->
+
+(let [data (str/split (first input-example) #",")]
+  data)
+  
+#_(->
    (loop [data        (assoc input 1 12 2 2)
           group-index 0]
      (let [groups (partition 4 data)
@@ -48,7 +53,7 @@
    first)
   
   ;
-  )
+  
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code :hide :result :show}}
@@ -57,10 +62,10 @@
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code :show :result :hide}}
 (defn part-2
-  [input]
+  [input])
   
   ;
-  )
+  
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code :hide :result :show}}
@@ -70,9 +75,9 @@
 ;; Tests
 (deftest test-2019-05
   #_(testing "part one"
-    (is (= 1 (part-1 input))))
+     (is (= 1 (part-1 input))))
 
   #_(testing "part two"
-    (is (= 1 (part-2 input)))))
+     (is (= 1 (part-2 input)))))
 
-#_(part-1 input-example)
+(part-1 input-example)

@@ -5,6 +5,7 @@
             [nextjournal.clerk :as clerk]
             [test-util :as t]
             [util :as u]
+            [clojure.core.matrix :as m]
             [clojure.pprint :refer [pprint]]
             [clojure.string :as str]
             [clojure.test :refer :all]))
@@ -42,29 +43,40 @@
                   [\. \. \. \. \. \.]])
 
 (defn split-program [program]
-  (let [program big-program
-        size            (count program)
-        divisible-by-3? (zero? (mod size 3))]
-  
-    #_(if divisible-by-3?
-      (let [ranges (partition 3 (range size))]
-        ranges
-        (for [y-group ranges]
-          (for [x-group ranges]
-            (mapv #() x-group))
-          )
-        )
-      #_(let [rows (into [] (partition 3 program))]
-        (for [r rows]
-          (mapv #(partition 3 %) r)
-          )
+  (let [size            (count program)
+        divisible-by-3? (zero? (mod size 3))
+        subsize         (if divisible-by-3? 3 2)
+        ranges          (partition subsize (range size))] 
+    
+    (for [[first-y] ranges
+          [first-x] ranges]
+      (-> (m/submatrix program [[first-y subsize] [first-x subsize]])
+          (m/matrix)
+          ))))
 
-        #_(nth rows 0)
-        #_(map #(partition 3 %) rows)
-        ;; rows
-        )
-      nil))
+
+
+
+#_(defn transform-squares [squares rules]
+  
   )
+
+
+(let [pattern (m/matrix [[\. \# \.]
+                         [\. \. \#]
+                         [\# \# \#]])]
+
+  (->
+   (m/rotate pattern 10 2)
+   m/pm)
+  )
+
+(let [squares (split-program big-program)
+      rules   input-example]
+
+  (map (fn [s]
+         (prn s)
+         (.indexOf rules s)) squares))
 
 
 (let [rules input-example]

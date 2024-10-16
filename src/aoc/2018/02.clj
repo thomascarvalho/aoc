@@ -38,14 +38,12 @@ ababab"))
         data          (map #(let [has-two?   (contains? % 2)
                                   has-three? (contains? % 3)]
                               [(if has-two? 1 0) (if has-three? 1 0)]) grouped-freqs)]
-    (* (reduce + 0 (map first data)) (reduce + 0 (map second data)))
-    
-    ))
+    (* (reduce + 0 (map first data)) (reduce + 0 (map second data)))))
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
-#_(part-1 input)
+(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -53,6 +51,11 @@ ababab"))
 (defn part-2
   [input]
   nil)
+
+(let [d (map #(let [se (-> % first set)]
+                 [(if (se 2) 1 0) (if (se 3) 1 0)]) (group-by vals (map frequencies input)))]
+     (* (reduce + 0 (map first d)) (reduce + 0 (map second d))))
+     
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
@@ -63,9 +66,9 @@ ababab"))
 ;; Tests
 (deftest test-2018-02
   #_(testing "part one"
-    (is (= 1 (part-1 input))))
+      (is (= 1 (part-1 input))))
 
   #_(testing "part two"
-    (is (= 1 (part-2 input)))))
+      (is (= 1 (part-2 input)))))
 
 #_(part-1 input)

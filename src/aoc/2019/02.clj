@@ -48,10 +48,10 @@
             (assoc data output-index (operator (nth data input-index-1) (nth data input-index-2)))
             (inc group-index)))
          data)))
-   first)
+   first))
 
   ;
-  )
+  
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
@@ -84,9 +84,9 @@
                      [address noun verb]))
                  (filter #(= (first %) 19690720))
                  first)]
-    (+ (* 100 n) v))
+    (+ (* 100 n) v)))
   ;
-  )
+  
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide

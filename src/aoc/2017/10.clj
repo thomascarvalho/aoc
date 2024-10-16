@@ -21,8 +21,8 @@
   (->> data
        u/parse-out-longs))
 
-(def input (->> (slurp (io/resource "inputs/2017/10.txt")) ;; Load the resource
-))                             ;; Split into lines
+(def input (->> (slurp (io/resource "inputs/2017/10.txt")))) ;; Load the resource
+                             ;; Split into lines
 {:nextjournal.clerk/visibility {:result :hide}}
 
 (defn get-num [nums idx]
@@ -120,4 +120,4 @@
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 
-(t/test-render #'test-2017-10)
+; (t/test-render #'test-2017-10)

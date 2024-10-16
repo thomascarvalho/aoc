@@ -127,15 +127,15 @@
               moved-beams
               new-energized
               (into [] (take-last diffs-check (conj diffs diff)))))))
-       count
+       count)))
        ;
-       )))
+
   #_(-> m
         process-contraption
         :tiles-energized
-        count)
+        count))
   ;
-  )
+
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
@@ -146,10 +146,10 @@
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 (defn part-2
-  [input]
+  [input])
 
   ;
-  )
+
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
@@ -177,7 +177,7 @@
                                 :result :show}}
 ;; ## Results
 
-;; (time (part-1 input))
+; (time (part-1 input))
 
 ;; 7736 -> too high
 

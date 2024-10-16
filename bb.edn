@@ -1,4 +1,25 @@
 {:paths ["src" "resources"]
+ :deps {aysylu/loom                    {:mvn/version "1.0.2"}
+           org.clojure/clojure            {:mvn/version "1.11.1"}
+           org.babashka/http-client       {:mvn/version "0.4.15"}
+           instaparse/instaparse          {:mvn/version "1.4.12"}
+           ubergraph/ubergraph            {:mvn/version "0.8.2"}
+           org.clojars.rorokimdim/pp-grid {:mvn/version "0.1.18"}
+           net.mikera/core.matrix         {:mvn/version "0.63.0"}
+           org.clojure/math.numeric-tower {:mvn/version "0.0.5"}
+           org.flatland/ordered           {:mvn/version "1.15.11"}
+           defun/defun                    {:mvn/version "0.4.0"}
+           ;;   io.github.nextjournal/clerk    {:mvn/version "0.15.957"}
+           io.github.nextjournal/clerk    {:git/sha "eb89e0b2e9edf8937c7c4a14c6df0ebc3217adeb"}
+           clj-http/clj-http              {:mvn/version "3.12.3"}
+           org.babashka/cli               {:mvn/version "0.7.53"}
+           org.clj-commons/hickory        {:mvn/version "0.7.3"}
+           org.clojure/core.match         {:mvn/version "1.0.1"}
+           org.mentat/emmy-viewers        {:mvn/version "0.3.1"}
+           org.slf4j/slf4j-nop            {:mvn/version "2.0.7"}
+           org.clojure/test.check         {:mvn/version "1.1.1"}
+           lambdaisland/kaocha            {:mvn/version "1.87.1366"}
+           org.clojure/math.combinatorics {:mvn/version "0.2.0"}}
  :tasks {:requires       ([babashka.fs :as fs]
                           [clojure.string :as str]
                           [babashka.cli :as cli]

@@ -50,22 +50,51 @@
 (let [[l n] ["???.###" '(1 1 3)]]
 
   (u/re-pos #"\#+" l))
+(defn get-groups [data]
+  (->> data
+       (map (fn [[initial lengths]]
+              {:initial initial
+               :lengths lengths
+               :groups (str/split initial #"\.+")}))))
 
+(def regex #"((.)\2*)")
+
+(defn split-string [s]
+  (map first (re-seq regex s)))
+(defn decode [data]
+  (->> data
+       (map (fn [[line lengths]]
+              {:initial line
+               :lengths lengths
+               :groups (loop [[group & groups] (split-string line)
+                              x 0
+                              res []]
+                         (if group
+                           (recur groups (+ x (count group)) (conj res {:type (first group)
+                                                                        :n (count group)
+                                                                        :x x}))
+                           res))}))
+       #_get-groups
+       #_(map (fn [{:keys [lengths groups] :as data}]
+                (let [valid-groups-count? (= (count lengths) (count groups))]
+                  (assoc data :valid-groups-count? valid-groups-count?))))
+       #_(map (fn [{:keys [valid-groups-count? lengths groups] :as data}]
+                (if valid-groups-count?)))))
 ;; ## Part 1
 (defn part-1
   [data]
-  (for [d    data
-        :let [[s nums] d
-              groups (map (fn [n]
-                            [n (->
-                                (str "\\.?(#{" n "})\\.?")
-                                re-pattern
-                                (re-seq s))]) nums)]]
-    (do
-      (cons groups d)))
+  (let [data (->> data decode)]
+    (for [{:keys [lengths groups] :as line} data]
+      (assoc line :groups (reduce (fn [grps]) [] groups)))))
 
-  ;
-  )
+
+
+
+
+
+
+
+
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
@@ -76,10 +105,10 @@
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 (defn part-2
-  [input]
+  [input])
 
   ;
-  )
+
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
@@ -103,4 +132,4 @@
                                 :result :show}}
 ;; ## Results
 
-#_(part-1 input-example)
+(part-1 input-example)

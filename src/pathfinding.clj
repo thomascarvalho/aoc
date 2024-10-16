@@ -1,5 +1,6 @@
 (ns pathfinding
-  (:require [clojure.set :refer [union]]))
+  (:require [clojure.set :refer [union]]
+            [pp-grid.api :as pg]))
 
 (def grid [[1 2 3]
            [4 5 6]
@@ -22,24 +23,41 @@
             [[(dec y) x] [(inc y) x] [y (dec x)] [y (inc x)]])))
 
 (defn bfs
-  [grid start end]
-  (loop [frontier  (conj clojure.lang.PersistentQueue/EMPTY start)
-         came-from {start nil}
-         visited   #{start}]
-    (when (seq frontier)
-      (let [current     (peek frontier)
-            new-visited (conj visited current)]
-        (if (= current end)
-          (reverse (cons end (take-while #(not (nil? %)) (iterate came-from (came-from end)))))
-          (let [next-neighbors (filter #(not (visited %))
-                                       (neighbors current grid))]
-            (recur
-             (reduce conj (pop frontier) next-neighbors)
-             (reduce #(assoc %1 %2 current) came-from next-neighbors)
-             (union new-visited (set next-neighbors)))))))))
+  ([grid start end]
+   (bfs grid start end neighbors))
+  ([grid start end neighbors-fn]
+   (loop [frontier  (conj clojure.lang.PersistentQueue/EMPTY start)
+          came-from {start nil}
+          visited   #{start}]
+     (when (seq frontier)
+       (let [current     (peek frontier)
+             new-visited (conj visited current)]
+         (if (= current end)
+           (reverse (cons end (take-while #(not (nil? %)) (iterate came-from (came-from end)))))
+           (let [next-neighbors (filter #(not (visited %))
+                                        (neighbors-fn current grid))]
+             (recur
+              (reduce conj (pop frontier) next-neighbors)
+              (reduce #(assoc %1 %2 current) came-from next-neighbors)
+              (union new-visited (set next-neighbors))))))))))
 
-(let [g (decode-matrix grid)]
+(defn draw-grid 
+  ([cells]
+   (draw-grid cells {:reverse? false}))
+  ([cells {:keys [reverse?]}]
+   (let [assoc-data (fn [grid items] (reduce (fn [acc [k v]] (assoc acc (if reverse? 
+                                                                          (into [] (reverse k))
+                                                                          k) (str v))) grid items))]
+     (-> (pg/empty-grid)
+         (assoc-data cells) #_(assoc-data cells)
+         #_(pg/box :left-padding 1 :right-padding 1)))))
+
+(let [g (decode-matrix grid)
+      cells (:cells g)]
   (time (bfs (:cells g) [0 0] [2 2]))
+  (draw-grid cells)
+  #_(reduce (fn [g [k v]]
+              (assoc g k (str v))) (pg/empty-grid) cells)
   #_(loop [queue [[[0 0] 1]]]
       queue
       #_(let [[]])

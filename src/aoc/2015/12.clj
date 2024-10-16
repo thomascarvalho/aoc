@@ -4,8 +4,9 @@
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
             [clojure.data.json :as json]
+            [jsonista.core :as j]
             [ubergraph.core :as uber]
-            [util :as u] 
+            [util :as u]
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
@@ -33,9 +34,9 @@
   [data]
   (->> data
        u/parse-out-longs
-       (reduce +))
+       (reduce +)))
   ;
-  )
+
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code :hide :result :show}}
@@ -49,24 +50,24 @@
 {:nextjournal.clerk/visibility {:code :show :result :hide}}
 (defn part-2
   [data]
-(let [s data #_"{\"e\":-48,\"a\":6,\"d\":-6,\"c\":4,\"h\":\"yellow\",\"b\":\"blue\",\"g\":\"red\",\"f\":\"red\"}"]
-  (->> s
-       (re-seq #"\{[^{]{0,}\"\w*\":\"red\"[^\}]{0,}\}")
-       (reduce (fn [s r]
-                 (str/replace s r "")) s)
-       u/parse-out-longs
-       (reduce +)))
+  (let [s data #_"{\"e\":-48,\"a\":6,\"d\":-6,\"c\":4,\"h\":\"yellow\",\"b\":\"blue\",\"g\":\"red\",\"f\":\"red\"}"]
+    (->> s
+         (re-seq #"\{[^{]{0,}\"\w*\":\"red\"[^\}]{0,}\}")
+         (reduce (fn [s r]
+                   (str/replace s r "")) s)
+         u/parse-out-longs
+         (reduce +)))
   #_(->>
-   (str/replace data #"\{[^{]*\"\w*\":\"red\"[^\}]*\}" "")
-   u/parse-out-longs
-   (reduce +))
+     (str/replace data #"\{[^{]*\"\w*\":\"red\"[^\}]*\}" "")
+     u/parse-out-longs
+     (reduce +))
 
   #_(let [j (json/read-str data)]
       #_(flatten-tree j)
-      (vals j))
+      (vals j)))
 
   ;
-  )
+
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code :hide :result :show}}
@@ -80,13 +81,18 @@
 ;; ## Suite
 (deftest test-2015-12
   #_(testing "part one"
-    (is (= 1 (part-1 input))))
+      (is (= 1 (part-1 input))))
 
   #_(testing "part two"
-    (is (= 1 (part-2 input)))))
+      (is (= 1 (part-2 input)))))
 
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 ;; ## Results
 ;; 91709, 105394 - too high
-(part-2 input)
+; (part-2 input)
+
+(let [data (j/read-value input j/keyword-keys-object-mapper)]
+                         
+  (loop [d data
+         sum-red 0]))
