@@ -51,7 +51,7 @@
 ;; ## Part 1
 (defn part-1
   [input-numbers]
-  (loop [numbers       input-numbers
+  (loop [numbers       input-example
          current-index 0
          step          1]
     (if (= step 4)

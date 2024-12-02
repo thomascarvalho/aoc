@@ -42,41 +42,40 @@ Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds."))
 ;; ## Part 1
 (defn part-1
   [comets max-seconds]
-  comets
-  #_(->>
-     (loop [comets  comets
-            seconds 0]
+  (->>
+   (loop [comets  comets
+          seconds 0]
 
-       (if (= seconds max-seconds)
-         comets
+     (if (= seconds max-seconds)
+       comets
 
-         (recur
-          (->> comets
-               (reduce (fn [v {:keys [flying? speed travel-time rest-time current-travel-time current-distance current-rest-time]
-                               :as   comet}]
-                         (let [new-comet
-                               (cond-> comet
-                                 (and flying? (zero? current-travel-time)) (assoc
-                                                                            :flying? false
-                                                                            :current-travel-time travel-time
-                                                                            :current-rest-time (dec current-rest-time))
+       (recur
+        (->> comets
+             (reduce (fn [v {:keys [flying? speed travel-time rest-time current-travel-time current-distance current-rest-time]
+                             :as   comet}]
+                       (let [new-comet
+                             (cond-> comet
+                               (and flying? (zero? current-travel-time)) (assoc
+                                                                          :flying? false
+                                                                          :current-travel-time travel-time
+                                                                          :current-rest-time (dec current-rest-time))
 
-                                 (and flying? (> current-travel-time 0)) (->
-                                                                          (update :current-distance + speed)
-                                                                          (update :current-travel-time dec))
+                               (and flying? (> current-travel-time 0)) (->
+                                                                        (update :current-distance + speed)
+                                                                        (update :current-travel-time dec))
 
-                                 (and (not flying?) (zero? current-rest-time)) (assoc
-                                                                                :flying? true
-                                                                                :current-rest-time rest-time)
+                               (and (not flying?) (zero? current-rest-time)) (assoc
+                                                                              :flying? true
+                                                                              :current-rest-time rest-time)
 
-                                 (and (not flying?) (> current-rest-time 0)) (->
-                                                                              (update :current-rest-time dec)))]
+                               (and (not flying?) (> current-rest-time 0)) (->
+                                                                            (update :current-rest-time dec)))]
 
 
-                           (conj v new-comet))) []))
-          (inc seconds))))
-     #_(reduce (fn [t {:keys [current-distance]}]
-                 (max t current-distance)) 0)))
+                         (conj v new-comet))) []))
+        (inc seconds))))
+   (reduce (fn [t {:keys [current-distance]}]
+             (max t current-distance)) 0)))
   ;
   
 
@@ -119,7 +118,7 @@ Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds."))
 
 ;; 2530, 2585 too low
 
-#_(part-1 input 2503)
+(part-1 input 2503)
 #_(part-1 input-example 1000)
 
 

@@ -78,9 +78,9 @@ CN -> C"))
                              frequencies
                              (sort-by second)
                              (map second))]
-    (- (last freqs) (first freqs)))
+    (- (last freqs) (first freqs))))
   ;
-  )
+  
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
@@ -111,9 +111,9 @@ CN -> C"))
                              frequencies
                              (sort-by second)
                              (map second))]
-    (- (last freqs) (first freqs)))
+    (- (last freqs) (first freqs))))
   ;
-  )
+  
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide

@@ -1,27 +1,35 @@
-(ns aoc.YEAR.DAY
+^{:nextjournal.clerk/visibility :hide-ns}
+(ns aoc.2021.18
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [test-util :refer [test-render]]
+            [test-util :as t]
             [util :as u] 
             [clojure.string :as str]
-            [clojure.test :refer [deftest is testing]]))
+            [clojure.test :refer :all]))
 
 ;; # Problem
 ;; {:nextjournal.clerk/visibility {:code :hide :result :show}}
-;; (clerk/html (u/load-problem "DAY" "YEAR"))
+;; (clerk/html (u/load-problem "18" "2021"))
 ;; {:nextjournal.clerk/visibility {:code :show :result :show}}
 
 ;; # Solution
+;;
+;; First things first, let's load our input and parse it
+
 (defn parser [data]
   (->> data
        u/to-lines))
 
-(def input (->> (slurp (io/resource "inputs/YEAR/DAY.txt"))
-                parser))
+(def input (->> (slurp (io/resource "inputs/2021/18.txt")) ;; Load the resource
+                parser))                             ;; Split into lines
+{:nextjournal.clerk/visibility {:result :hide}}
 
 ;;  Example
 (def input-example (parser ""))
+
+
+(defn explode-first-pair [s])
 
 ;; ## Part 1
 (defn part-1
@@ -37,7 +45,9 @@
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
-(deftest test-YEAR-DAY
+(deftest test-2021-18
+  (testing "exploding pairs"
+    (is (= (explode-first-pair "[[[[[9,8],1],2],3],4]") "[[[[0,9],2],3],4]")))
   #_(testing "part one"
      (is (= 1 (part-1 input))))
 
@@ -47,4 +57,4 @@
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 
-(test-render #'test-YEAR-DAY)
+#_(t/test-render #'test-2021-18)

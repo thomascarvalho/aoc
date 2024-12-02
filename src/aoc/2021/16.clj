@@ -8,8 +8,8 @@
             [clojure.test :refer :all]))
 
 ;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
+#_#_#_{:nextjournal.clerk/visibility {:code   :hide
+                                      :result :show}}
 (clerk/html (u/load-problem "16" "2021"))
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :show}}
@@ -80,10 +80,10 @@
   (->> s
        char-array
        (map hexa-char->bit-vec)
-       (apply concat))
+       (apply concat)))
 
   ;
-  )
+  
 
 (defn binary->decimal [b]
   (Long/parseLong (if (vector? b) (join-to-str b) b) 2))
@@ -152,9 +152,9 @@
 ;; ## Part 1
 (defn part-1
   [data]
-  data
+  data)
   ;
-  )
+  
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
@@ -165,10 +165,10 @@
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 (defn part-2
-  [input]
+  [input])
 
   ;
-  )
+  
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
@@ -220,50 +220,50 @@
     (is (= 4 (get-type-id [1 1 0 1 0 0 1 0 1 1 1 1 1 1 1 0 0 0 1 0 1 0 0 0])))
 
     #_(is (= [{:version 6
-             :value   2021}] (decode-level-1 [1 1 0 1 0 0 1 0 1 1 1 1 1 1 1 0 0 0 1 0 1 0 0 0])))
+               :value   2021}] (decode-level-1 [1 1 0 1 0 0 1 0 1 1 1 1 1 1 1 0 0 0 1 0 1 0 0 0])))
 
     ;; operators 
     #_(is (= [{:version         1
-             :length-type-id  0
-             :subpackets-bits [1 1 0 1 0 0 0 1 0 1 0 0 1 0 1 0 0 1 0 0 0 1 0 0 1 0 0]}] (decode-level-1 (decode-hexa-to-bits "38006F45291200")))) ;; length type id 0
+               :length-type-id  0
+               :subpackets-bits [1 1 0 1 0 0 0 1 0 1 0 0 1 0 1 0 0 1 0 0 0 1 0 0 1 0 0]}] (decode-level-1 (decode-hexa-to-bits "38006F45291200")))) ;; length type id 0
 
     #_(is (= [{:version         1
-             :length-type-id  0
-             :subpackets-bits [1 1 0 1 0 0 0 1 0 1 0 0 1 0 1 0 0 1 0 0 0 1 0 0 1 0 0]
-             :subpackets      [{:version 6
-                                :value   10}
-                               {:version 2
-                                :value   20}]}] (decode-level-2 [{:version         1
-                                                                  :length-type-id  0
-                                                                  :subpackets-bits [1 1 0 1 0 0 0 1 0 1 0 0 1 0 1 0 0 1 0 0 0 1 0 0 1 0 0]}])))
+               :length-type-id  0
+               :subpackets-bits [1 1 0 1 0 0 0 1 0 1 0 0 1 0 1 0 0 1 0 0 0 1 0 0 1 0 0]
+               :subpackets      [{:version 6
+                                  :value   10}
+                                 {:version 2
+                                  :value   20}]}] (decode-level-2 [{:version         1
+                                                                    :length-type-id  0
+                                                                    :subpackets-bits [1 1 0 1 0 0 0 1 0 1 0 0 1 0 1 0 0 1 0 0 0 1 0 0 1 0 0]}])))
 
     ;; full decode 
     #_(is (= [{:version         1
-             :length-type-id  0
-             :subpackets-bits [1 1 0 1 0 0 0 1 0 1 0 0 1 0 1 0 0 1 0 0 0 1 0 0 1 0 0]
-             :subpackets      [{:version 6
-                                :value   10}
-                               {:version 2
-                                :value   20}]}] (decode "38006F45291200")))
+               :length-type-id  0
+               :subpackets-bits [1 1 0 1 0 0 0 1 0 1 0 0 1 0 1 0 0 1 0 0 0 1 0 0 1 0 0]
+               :subpackets      [{:version 6
+                                  :value   10}
+                                 {:version 2
+                                  :value   20}]}] (decode "38006F45291200")))
 
     #_(is (= [{:version         7
-             :length-type-id  1
-             :subpackets-bits [0 1 0 1 0 0 0 0 0 0 1 1 0 0 1 0 0 0 0 0 1 0 0 0 1 1 0 0 0 0 0 1 1]
-             :subpackets      [{:version 2
-                                :value   1}
-                               {:version 4
-                                :value   2}
-                               {:version 1
-                                :value   3}]}] (decode "EE00D40C823060")))
+               :length-type-id  1
+               :subpackets-bits [0 1 0 1 0 0 0 0 0 0 1 1 0 0 1 0 0 0 0 0 1 0 0 0 1 1 0 0 0 0 0 1 1]
+               :subpackets      [{:version 2
+                                  :value   1}
+                                 {:version 4
+                                  :value   2}
+                                 {:version 1
+                                  :value   3}]}] (decode "EE00D40C823060")))
 
     #_(is (= "" (decode "8A004A801A8002F478")))
 
-    #_(is (= "" (decode "620080001611562C8802118E34")))
+    #_(is (= "" (decode "620080001611562C8802118E34"))))
   
 
 
     ;
-    )
+    
   #_(testing "part one"
       (is (= 1 (part-1 input))))
 

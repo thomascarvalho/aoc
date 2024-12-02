@@ -3,7 +3,7 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [util :as u] 
+            [util :as u]
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
@@ -28,32 +28,101 @@
                 parser))                             ;; Split into lines
 {:nextjournal.clerk/visibility {:result :hide}}
 
-;;  Example
-(def input-example (parser "Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8
-Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3"))
-
 ;; ## Part 1
 (defn part-1
-  [data]
-  data
-  ;
-  )
+  [input]
+  (let [nb-ingredients 4
+        teespoons (->> (for [a (range 1 (- 101 nb-ingredients))
+                             b (range 1 (- 101 nb-ingredients a))
+                             c (range 1 (- 101 nb-ingredients a b))
+                             :let [d (- 100 a b c)]
+                             :when (pos? d)]
+                         [a b c d])
+                       set)]
+    (reduce (fn [v spoons]
+              (let [{:keys [capacity durability flavor texture]}
+                    (reduce (fn [t [i n]]
+                              (let [{:keys [capacity durability flavor texture calories]} (first (vals (nth input i)))]
+                                (-> t
+                                    (update :capacity + (* capacity n))
+                                    (update :durability + (* durability n))
+                                    (update :flavor + (* flavor n))
+                                    (update :texture + (* texture n)))))
+                            {:capacity 0
+                             :durability 0
+                             :flavor 0
+                             :texture 0
+                             :calories 0}
+                            (map-indexed (fn [i s] [i s]) spoons))
+                    total (* (if (pos? capacity)
+                               capacity
+                               0)
+                             (if (pos? durability)
+                               durability
+                               0)
+                             (if (pos? flavor)
+                               flavor
+                               0)
+                             (if (pos? texture)
+                               texture
+                               0))]
+                (if (> total v)
+                  total
+                  v)))
+            0 teespoons)))
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code :hide :result :show}}
-#_(part-1 input)
+(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code :show :result :hide}}
 (defn part-2
   [input]
-  
-  ;
-  )
+  (let [nb-ingredients 4
+        teespoons (->> (for [a (range 1 (- 101 nb-ingredients))
+                             b (range 1 (- 101 nb-ingredients a))
+                             c (range 1 (- 101 nb-ingredients a b))
+                             :let [d (- 100 a b c)]
+                             :when (pos? d)]
+                         [a b c d])
+                       set)]
+    (reduce (fn [v spoons]
+              (let [{:keys [capacity durability flavor texture calories]}
+                    (reduce (fn [t [i n]]
+                              (let [{:keys [capacity durability flavor texture calories]} (first (vals (nth input i)))]
+                                (-> t
+                                    (update :capacity + (* capacity n))
+                                    (update :durability + (* durability n))
+                                    (update :flavor + (* flavor n))
+                                    (update :texture + (* texture n))
+                                    (update :calories + (* calories n)))))
+                            {:capacity 0
+                             :durability 0
+                             :flavor 0
+                             :texture 0
+                             :calories 0}
+                            (map-indexed (fn [i s] [i s]) spoons))
+                    total (* (if (pos? capacity)
+                               capacity
+                               0)
+                             (if (pos? durability)
+                               durability
+                               0)
+                             (if (pos? flavor)
+                               flavor
+                               0)
+                             (if (pos? texture)
+                               texture
+                               0))]
+                (if (and (= calories 500) (> total v))
+                  total
+                  v)))
+            0 teespoons)))
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code :hide :result :show}}
-#_(part-2 input)
+(part-2 input)
 
 
 ;; # Tests
@@ -62,14 +131,9 @@ Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3"))
 
 ;; ## Suite
 (deftest test-2015-15
-  #_(testing "part one"
-    (is (= 1 (part-1 input))))
+  (testing "part one"
+    (is (= 222870 (part-1 input))))
 
-  #_(testing "part two"
-    (is (= 1 (part-2 input)))))
+  (testing "part two"
+    (is (= 117936 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-;; ## Results
-
-(part-1 input-example)

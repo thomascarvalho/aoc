@@ -72,8 +72,6 @@ After:  [3, 2, 2, 1]"))
       :eqri (assoc-in m [:registers 2] (if (= (reg iA) iB) 1 0))
       :eqrr (assoc-in m [:registers 2] (if (= (reg iA) (reg iB)) 1 0))
 
-
-
       m)))
 
 (defn process-sample [{:keys [before instruction after] :as sample}]
@@ -89,15 +87,16 @@ After:  [3, 2, 2, 1]"))
                    (assoc :registers before)
                    (dissoc :before)))))
 
-
-
 (let [{:keys [samples]} input]
   (->> samples 
        (map process-sample)
-       ; last
-       (filter (fn [{:keys [matches]}]
-                 (>= (count matches) 3)))
+       last
+       #_#_(filter (fn [{:keys [matches]}]
+                     (>= (count matches) 3)))
        count))
+
+;; 257 too low
+;; 287 too low
 
 ;; ## Part 1
 (defn part-1
