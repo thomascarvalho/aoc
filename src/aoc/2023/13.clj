@@ -85,10 +85,10 @@
                  :when (and (palindrome? s) (even? s-count))]
              {:start start
               :end   end
-              :count s-count})))
+              :count s-count})))))
 
     ;
-    ))
+    
 
 
 (defn vertical-reflection [m]
@@ -139,12 +139,12 @@
                  v2          (into [] (reverse (take-last (- n start) (drop end m))))]
              (if (zero? (compare v1 v2))
                [(int (+ start n)) step]
-               (recur (next gaps) (inc step))))))
+               (recur (next gaps) (inc step)))))))))
 
 
     ;;  (when horizontal?
     ;;    (int (+ horizontal-from (nt/floor (/ row-count horizontal-div)))))
-       )))
+       
 
 (defn process-matrix [m]
   ;; (ma/pm m)
@@ -159,28 +159,27 @@
   [(or (vertical-reflection m) [0 0]) (or (horizontal-reflection m) [0 0])]
 
   #_(->>
-   (all-subvectors-palindromes m)
-   (sort-by :count >))
+     (all-subvectors-palindromes m)
+     (sort-by :count >)))
   ;
-  )
+  
 
 ;; ## Part 1
 (defn part-1
   [all-matrices]
 
   #_(for [m all-matrices]
-    (process-matrix m))
+     (process-matrix m))
 
   (let [[v h] (->>
                all-matrices
                (reduce (fn [[v-total h-total] m]
                          (let [[v h] (process-matrix m)]
-                           (println v h)
                            [(+ v-total (first v)) (+ h-total (first h))])) [0 0]))]
 
-    (+ v (* h 100)))
+    (+ v (* h 100))))
   ;
-  )
+  
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
@@ -191,10 +190,10 @@
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 (defn part-2
-  [input]
+  [input])
 
   ;
-  )
+  
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
@@ -221,4 +220,4 @@
                                 :result :show}}
 ;; ## Results
 
-(part-1 input)
+#_(part-1 input)

@@ -2,7 +2,7 @@
 ;;
 ;; My solutions for [Advent of Code](https://adventofcode.com) in **clojure** with [Clerk](https://clerk.vision).
 ;;
-;; Thanks [advent of clerk](https://github.com/nextjournal/advent-of-clerk) and [@elken](https://github.com/elken/) for the template
+;; Repository adapted from [advent of clerk](https://github.com/nextjournal/advent-of-clerk) and [@elken](https://github.com/elken/)'s template
 (ns index
   {:nextjournal.clerk/visibility {:code :hide :result :hide}}
   (:require
@@ -56,7 +56,6 @@
  (into [:div.grid.grid-cols-4.gap-10]
        (mapv (fn [[year paths]]
                (let [completed-days (get-days-for-year year)]
-                 (println completed-days)
                  [:a {:class "font-display block flex flex-col !text-[#331832] hover:no-underline border hover:border-[#127475] gap-6 items-center p-6 bg-[#C6D8D3] rounded-sm hover:shadow-md cursor-pointer"
                       :href  (clerk/doc-url (str "src/aoc/" year "/index"))}
                   [:span.text-2xl.font-bold year]

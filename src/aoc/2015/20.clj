@@ -27,42 +27,37 @@
 ;;  Example
 (def input-example (parser ""))
 
-(take 10 (filter (fn [house-i]
-                   (filter (fn [i]
-                             (zero? (mod i house-i))) (range 1 Double/MAX_VALUE)))
-                 (range 1 Double/MAX_VALUE)))
+#_(let [expected-max #_150 36000000
+        houses (atom (into [] (take 1000000 (repeat 0))))]
+    (loop [elf-idx 1]
+      (let [max-presents (apply max @houses)]
+        (if (> max-presents expected-max)
+          (ffirst (filter (fn [[_i v]]
+                            (>= v expected-max)) (map-indexed (fn [i v] [i v]) @houses)))
+          (let [[_ & elf-houses] (take 10 (iterate (partial + elf-idx) 0))]
+            (doseq [current-house elf-houses]
+              (swap! houses update current-house + (* 10 elf-idx)))
+            (recur
+             (inc elf-idx)))))))
 
-(let [expected-max #_150 36000000
-      houses (atom (into [] (take 1000000 (repeat 0))))]
-  (loop [elf-idx 1]
-    (let [max-presents (apply max @houses)]
-      (if (> max-presents expected-max)
-        (ffirst (filter (fn [[_i v]]
-                          (>= v expected-max)) (map-indexed (fn [i v] [i v]) @houses)))
-        (let [[_ & elf-houses] (take 10 (iterate (partial + elf-idx) 0))]
-          (doseq [current-house elf-houses]
-            (swap! houses update current-house + (* 10 elf-idx)))
-          (recur
-           (inc elf-idx)))))))
-
-(time (let [expected-max #_150 36000000
-            houses (sorted-map) #_(into [] (take 1000000 (repeat 0)))]
-        (loop [houses houses
-               elf-idx 1]
-          (let [[_ & elf-houses] (take 10 (iterate (partial + elf-idx) 0))
-                r (reduce (fn [houses current-house]
-                            (let [n (+ (get houses current-house 0) (* 10 elf-idx))]
-                              (if (and (>= n expected-max) (>= elf-idx current-house))
-                                (reduced [current-house (assoc houses current-house n)])
-                                (assoc houses current-house n)))) houses elf-houses)]
-            (if (vector? r)
-              (let [[current-max-house new-houses] r]
-                [current-max-house elf-idx]
-               (ffirst (filter (fn [[i v]]
-                                 (>= v expected-max)) (into (sorted-map) new-houses))))
-              (recur
-               r
-               (inc elf-idx)))))))
+#_(time (let [expected-max #_150 36000000
+              houses (sorted-map) #_(into [] (take 1000000 (repeat 0)))]
+          (loop [houses houses
+                 elf-idx 1]
+            (let [[_ & elf-houses] (take 10 (iterate (partial + elf-idx) 0))
+                  r (reduce (fn [houses current-house]
+                              (let [n (+ (get houses current-house 0) (* 10 elf-idx))]
+                                (if (and (>= n expected-max) (>= elf-idx current-house))
+                                  (reduced [current-house (assoc houses current-house n)])
+                                  (assoc houses current-house n)))) houses elf-houses)]
+              (if (vector? r)
+                (let [[current-max-house new-houses] r]
+                  [current-max-house elf-idx]
+                 (ffirst (filter (fn [[i v]]
+                                   (>= v expected-max)) (into (sorted-map) new-houses))))
+                (recur
+                 r
+                 (inc elf-idx)))))))
 
 ;; to high : 1272600
 ;; to high : 2708996
@@ -110,15 +105,14 @@
 
              (recur
               next-elves
-              res)))))
-     clojure.pprint/pprint)))
+              res))))))))
+     
 
   ;
 
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code :hide :result :show}}
-#_(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code :show :result :hide}}
