@@ -7,7 +7,7 @@
 (defn days []
   {1  {:stars 2}
    2  {:stars 2}
-   3  {:stars 3}
+   3  {:stars 2}
    4  {:stars 0}
    5  {:stars 0}
    6  {:stars 0}
