@@ -6,20 +6,20 @@
 (ns index
   {:nextjournal.clerk/visibility {:code :hide :result :hide}}
   (:require
-   [babashka.fs :as fs]
-   [nextjournal.clerk :as clerk]
-   [nextjournal.clerk.view :as clerk.view]
-   [clojure.java.io :as io]
-   [aoc.2023.index]
    [aoc.2015.index]
    [aoc.2016.index]
    [aoc.2017.index]
    [aoc.2018.index]
    [aoc.2019.index]
    [aoc.2020.index]
-   [aoc.2024.index]
    [aoc.2021.index]
-   [aoc.2022.index]))
+   [aoc.2022.index]
+   [aoc.2023.index]
+   [aoc.2024.index]
+   [babashka.fs :as fs]
+   [clojure.java.io :as io]
+   [nextjournal.clerk :as clerk]
+   [nextjournal.clerk.view :as clerk.view]))
 
 (alter-var-root #'clerk.view/include-css+js
                 (fn [include-css+js-orig extra-includes]

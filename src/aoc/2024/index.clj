@@ -8,7 +8,7 @@
   {1  {:stars 2}
    2  {:stars 2}
    3  {:stars 2}
-   4  {:stars 0}
+   4  {:stars 2}
    5  {:stars 0}
    6  {:stars 0}
    7  {:stars 0}
