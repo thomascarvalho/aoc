@@ -2,7 +2,6 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [test-util :refer [test-render]]
             [util :as u] 
             [clojure.string :as str]
             [clojure.test :refer [deftest is testing]]))
@@ -12,16 +11,18 @@
 ;; (clerk/html (u/load-problem "DAY" "YEAR"))
 ;; {:nextjournal.clerk/visibility {:code :show :result :show}}
 
-;; # Solution
+;; # Parser
 (defn parser [data]
   (->> data
        u/to-lines))
 
+;; Inputs
 (def input (->> (slurp (io/resource "inputs/YEAR/DAY.txt"))
                 parser))
 
-;;  Example
 (def input-example (parser ""))
+
+;; Logic
 
 ;; ## Part 1
 (defn part-1
@@ -29,7 +30,6 @@
   data)
 
 ;; ## Part 2
-{:nextjournal.clerk/visibility {:code :show :result :hide}}
 (defn part-2
   [data]
   data)
@@ -44,7 +44,3 @@
   #_(testing "part two"
      (is (= 1 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-
-(test-render #'test-YEAR-DAY)

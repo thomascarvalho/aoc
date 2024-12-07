@@ -9,9 +9,9 @@
    2  {:stars 2}
    3  {:stars 2}
    4  {:stars 2}
-   5  {:stars 0}
-   6  {:stars 0}
-   7  {:stars 0}
+   5  {:stars 2}
+   6  {:stars 2}
+   7  {:stars 2}
    8  {:stars 0}
    9  {:stars 0}
    10 {:stars 0}

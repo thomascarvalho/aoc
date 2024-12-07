@@ -2,17 +2,13 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [clojure.walk :as walk]
-            [test-util :refer [test-render]]
-            [clojure.math.numeric-tower :as nt]
             [util :as u]
-            [clojure.string :as str]
             [clojure.test :refer [deftest is testing]]))
 
 ;; # Problem
-;; {:nextjournal.clerk/visibility {:code :hide :result :show}}
-;; (clerk/html (u/load-problem "07" "2024"))
-;; {:nextjournal.clerk/visibility {:code :show :result :show}}
+{:nextjournal.clerk/visibility {:code :hide :result :show}}
+(clerk/html (u/load-problem "07" "2024"))
+{:nextjournal.clerk/visibility {:code :show :result :show}}
 
 ;; # Solution
 (defn parser [data]
@@ -34,51 +30,46 @@
 21037: 9 7 18 13
 292: 11 6 16 20"))
 
+;; Logic
+(defn solve-equation [[expected-result & numbers] operators]
+  (loop [temp-result #{(first numbers)}
+         numbers (rest numbers)]
+    (if-let [n2 (first numbers)]
+      (recur
+       (into #{} (mapcat (fn [n1] (map #(% n1 n2) operators)) temp-result))
+       (rest numbers))
+      (temp-result expected-result))))
+
+(defn solve-equations [equations operators]
+  (->> equations
+       (reduce (fn [total equation]
+                 (if-let [r (solve-equation equation operators)]
+                   (+ total r)
+                   total))
+               0)))
+
 ;; ## Part 1
 (defn part-1
   [data]
-  (->> (for [[expected-result & numbers] data
-             :when (loop [temp-result #{(first numbers)}
-                          numbers (rest numbers)]
-                     (if-let [n2 (first numbers)]
-                       (recur
-                        (into #{} (mapcat (fn [n1]
-                                            [(+ n1 n2)
-                                             (* n1 n2)]) temp-result))
-                        (rest numbers))
-                       (temp-result expected-result)))]
-         expected-result)
-       (reduce + 0)))
+  (solve-equations data [+ *]))
 
 ;; ## Part 2
-{:nextjournal.clerk/visibility {:code :show :result :hide}}
-
 (defn concat-numbers [n1 n2]
   (bigint (str n1 n2)))
 
 (defn part-2
   [data]
-  (->> (for [[expected-result & numbers] data
-             :when (loop [temp-result #{(first numbers)}
-                          numbers (rest numbers)]
-                     (if-let [n2 (first numbers)]
-                       (recur
-                        (into #{} (mapcat (fn [n1]
-                                            [(+ n1 n2)
-                                             (* n1 n2)
-                                             (concat-numbers n1 n2)]) temp-result))
-                        (rest numbers))
-                       (temp-result expected-result)))]
-         expected-result)
-       (reduce + 0)))
+  (solve-equations data [+ * concat-numbers]))
 
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 (deftest test-2024-07
   (testing "part one"
+    (is (= 3749 (part-1 input-example)))
     (is (= 538191549061 (part-1 input))))
 
   (testing "part two"
+    (is (= 11387 (part-2 input-example)))
     (is (= 34612812972206 (part-2 input)))))
 
