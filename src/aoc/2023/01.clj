@@ -3,25 +3,11 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [test-util :as t]
             [util :as u]
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :hide}}
-
-;; # Problem 01 2023
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "01" "2023"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :hide}}
-
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
-
 (defn parser [data]
   (->> data
        str/split-lines))
@@ -56,11 +42,6 @@ zoneight234
                (str (first nums) (last nums))
                parse-long)))
        (reduce +)))
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -106,14 +87,6 @@ zoneight234
                 (parse-long s))))
        (reduce +)))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-2 input)
-
-
-
-
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
@@ -127,9 +100,4 @@ zoneight234
 
   (testing "part two"
     (is (= 53348 (part-2 input)))))
-
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-
-(t/test-render #'test-2023-01)
 

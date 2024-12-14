@@ -4,20 +4,10 @@
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
             [util :as u]
-            [test-util :as t]
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "10" "2023"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
-
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 (def pipe-dirs {\| [:N :S]
                 \- [:W :E]
@@ -125,25 +115,15 @@ LJ..."))
                     (recur next-cell (conj path next-cell) (inc step)))))]
     (/ (count path) 2)))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 (defn part-2
   [input]
-  nil
+  nil)
   ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :hide}}
-#_(part-2 input)
-
+  
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :show}
@@ -154,9 +134,6 @@ LJ..."))
 
   #_(testing "part two"
       (is (= 1 (part-2 input)))))
-
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
 
 
 

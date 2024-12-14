@@ -9,12 +9,6 @@
             [clojure.set :as cset]))
 
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "03" "2022"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 (def input (->> (slurp (io/resource "inputs/2022/03.txt"))))
 
 (def input-example "vJrwpWtwJgWrhcsFMMfFFhFp

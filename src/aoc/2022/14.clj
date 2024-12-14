@@ -159,12 +159,12 @@
   (let [data input]
     0))
 
-(deftest test-2022-14
-  #_(testing " part one "
-    (is (= 1 (part-one))))
+#_(deftest test-2022-14
+    #_(testing " part one "
+       (is (= 1 (part-one))))
 
-  #_(testing " part two "
-    (is (= 1 (part-two)))))
+    #_(testing " part two "
+       (is (= 1 (part-two)))))
 
 
 

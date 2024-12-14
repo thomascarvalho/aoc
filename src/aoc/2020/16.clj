@@ -10,12 +10,6 @@
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "16" "2020"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 ;; # Solution
 ;;
@@ -37,10 +31,10 @@
 
 (def input (->> (slurp (io/resource "inputs/2020/16.txt"))))
 
-  {:nextjournal.clerk/visibility {:result :hide}}
+{:nextjournal.clerk/visibility {:result :hide}}
 
 ;;  Example
-  (def input-example (parser "light red bags contain 1 bright white bag, 2 muted yellow bags.
+(def input-example (parser "light red bags contain 1 bright white bag, 2 muted yellow bags.
 dark orange bags contain 3 bright white bags, 4 muted yellow bags.
 bright white bags contain 1 shiny gold bag.
 muted yellow bags contain 2 shiny gold bags, 9 faded blue bags.
@@ -51,50 +45,50 @@ faded blue bags contain no other bags.
 dotted black bags contain no other bags."))
 
 ;; ## Part 1
-  (defn part-1
-    [data]
+(defn part-1
+  [data]
 
-    (let [raw-edges (->>
-                     (for [[bag & contains] data]
-                       (for [[number children-bag] contains]
-                         (when children-bag
-                           [bag children-bag number])))
-                     (mapcat concat)
-                     (remove nil?))
-          g         (-> (uber/digraph)
-                        (uber/add-edges* raw-edges))]
+  (let [raw-edges (->>
+                   (for [[bag & contains] data]
+                     (for [[number children-bag] contains]
+                       (when children-bag
+                         [bag children-bag number])))
+                   (mapcat concat)
+                   (remove nil?))
+        g         (-> (uber/digraph)
+                      (uber/add-edges* raw-edges))]
 
-      #_(uber/pprint g)
-      #_(alg/path-to g "shiny gold")
-      #_(uber/viz-graph g)
-      (-> (alg/shortest-path g {;; :start-nodes ["faded blue" "dotted black"]
-                                :start-node "shiny gold"})
-          :depths
-          count
-          dec)
+    #_(uber/pprint g)
+    #_(alg/path-to g "shiny gold")
+    #_(uber/viz-graph g)
+    (-> (alg/shortest-path g {;; :start-nodes ["faded blue" "dotted black"]
+                              :start-node "shiny gold"})
+        :depths
+        count
+        dec)
 
-      #_(alg/all-destinations g))
+    #_(alg/all-destinations g)))
 
 
 
 
 
   ;
-    )
+    
 
 ;; Which gives our answer
-  {:nextjournal.clerk/visibility {:code   :hide
-                                  :result :show}}
-  #_(part-1 input)
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :show}}
+#_(part-1 input)
 
 ;; ## Part 2
   {:nextjournal.clerk/visibility {:code   :show
                                   :result :hide}}
   (defn part-2
-    [input]
+    [input])
 
   ;
-    )
+    
 
 ;; Which gives our answer
   {:nextjournal.clerk/visibility {:code   :hide
@@ -103,11 +97,10 @@ dotted black bags contain no other bags."))
 
 
 ;; Tests
-  (deftest test-2020-16
-    #_(testing "part one"
-      (is (= 1 (part-1 input))))
+  #_(deftest test-2020-16
+      #_(testing "part one"
+         (is (= 1 (part-1 input))))
 
-    #_(testing "part two"
-      (is (= 1 (part-2 input)))))
+      #_(testing "part two"
+         (is (= 1 (part-2 input)))))
 
-  #_(part-1 input)

@@ -4,20 +4,10 @@
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
             [util :as u]
-            [test-util :as t]
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "06" "2023"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
-
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 (defn parser [data]
   (->> data
@@ -49,14 +39,10 @@ Distance:  9  40  200"))
               :when (> total-dist dist-record)]
           1)
         (reduce +)))
-     (reduce *))
+     (reduce *))))
   ;
-    ))
+    
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -74,16 +60,10 @@ Distance:  9  40  200"))
                   total-dist (* speed rest)]
            :when (> total-dist dist-record)]
        1)
-     (reduce +)))
+     (reduce +))))
 
   ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-2 input)
-
+  
 
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
@@ -101,7 +81,3 @@ Distance:  9  40  200"))
       (is (= 34788142 (part-2 input)))))
 
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-;; ## Results
-#_(t/render-results (t/run #'test-2023-06))

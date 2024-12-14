@@ -60,13 +60,13 @@
 
 (let [{:keys [cells]} input-moves-example
       units (get-units cells)]
-  (println (pf/draw-grid cells))
   (loop [step 0
          cells cells]
     (let [units (get-units cells)]
       (if (= step 1)
-        (do (println "---")
-            (println (pf/draw-grid cells)))
+        (do #_#_(println "---")
+            (println (pf/draw-grid cells))
+            nil)
         (let [new-cells (reduce (fn [cells [coords cell-type]]
                                   (if (or (= cell-type \#) (= cell-type \.))
                                     cells
@@ -80,7 +80,7 @@
                                                                       path-to-opponent
                                                                       path)))
                                                                 nil opponents)]
-                                      (println shortest-path)
+                                      
                                       (if (= (count shortest-path) 1)
                                         cells
                                         (-> cells
@@ -107,12 +107,12 @@
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
-(deftest test-2018-15
-  #_(testing "part one"
-      (is (= 1 (part-1 input))))
+#_(deftest test-2018-15
+    #_(testing "part one"
+        (is (= 1 (part-1 input))))
 
-  #_(testing "part two"
-      (is (= 1 (part-2 input)))))
+    #_(testing "part two"
+        (is (= 1 (part-2 input)))))
 
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}

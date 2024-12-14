@@ -4,21 +4,11 @@
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
             [instaparse.core :as insta]
-            [test-util :as t]
             [util :as u :refer [parse-int instaparse]]
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "03" "2023"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
-
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 (def directions [[-1 -1] [-1 0] [-1 1] [0 -1] [0 1] [1 -1] [1 0] [1 1]])
 
@@ -112,14 +102,7 @@
        [index (parse-int v)])
      (into #{})
      (map second)
-     (reduce + 0)))
-  ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-1 input)
+     (reduce + 0))))
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -136,8 +119,8 @@
                        " {:R (fn [& cells]
                                (for [[t [min-x max-x] v] (map #(conj (spans %) (first %)) cells)
                                      x                   (range min-x max-x)]
-                                 [[x y] t v [y min-x max-x]]) ;; coords type value index
-                               )})))
+                                 [[x y] t v [y min-x max-x]]))}))) ;; coords type value index
+                               
                (apply concat))]
     (->>
      (for [[current-coords] (filter (fn [[_ _ v]]
@@ -145,16 +128,9 @@
            :let             [n (neighbours-digits current-coords cells)]
            :when            (>= (count n) 2)]
        (reduce * n))
-     (reduce + 0)))
+     (reduce + 0))))
   ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-2 input)
-
-
+  
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
@@ -196,6 +172,3 @@
   (testing "part two"
     (is (= 78826761 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(t/test-render #'test-2023-03)

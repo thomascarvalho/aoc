@@ -3,15 +3,9 @@
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
             [clojure.core.matrix :as ma]
-            [test-util :refer [test-render]]
             [util :as u]
             [clojure.string :as str]
             [clojure.test :refer [deftest is testing]]))
-
-;; # Problem
-;; {:nextjournal.clerk/visibility {:code :hide :result :show}}
-;; (clerk/html (u/load-problem "04" "2024"))
-;; {:nextjournal.clerk/visibility {:code :show :result :show}}
 
 {:nextjournal.clerk/visibility {:code :show :result :hide}}
 ;; # Solution
@@ -79,7 +73,3 @@ MXMXAXMASX")
 
   (testing "part two"
     (is (= 2005 (part-2 input)))))
-
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(test-render #'test-2024-04)

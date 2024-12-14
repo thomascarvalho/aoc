@@ -8,11 +8,6 @@
             [clojure.test :refer :all]
             [pp-grid.api :as pg]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
-(clerk/html (u/load-problem "18" "2015"))
-{:nextjournal.clerk/visibility {:code :show :result :show}}
-
 ;; # Solution
 ;;
 ;; First things first, let's load our input and parse it
@@ -67,10 +62,6 @@
                     (= v \.) (assoc coords (if (= n-on 3) \# \.))
                     (= v \#) (assoc coords (if (<= 2 n-on 3) \# \.))))) {} cells) (inc step)))))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -99,10 +90,6 @@
                   (= v \#) (assoc coords (if (<= 2 n-on 3) \# \.)))))) {} cells)
          (inc step))))))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-2 input)
 
 
 ;; # Tests

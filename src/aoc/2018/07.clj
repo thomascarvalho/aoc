@@ -49,14 +49,6 @@ Step F must be finished before step E can begin."))
 (defn compare-nodes [a b]
   (compare  b  a))
 
-
-
-
-
-
-
-
-
 {:nextjournal.clerk/visibility {:code :show :result :hide}}
 (defn part-1
   [data]
@@ -96,7 +88,3 @@ Step F must be finished before step E can begin."))
   #_(testing "part two"
       (is (= 1 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-
-#_(t/test-render #'test-2018-07)

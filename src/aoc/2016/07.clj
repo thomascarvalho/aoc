@@ -7,14 +7,7 @@
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-;; {:nextjournal.clerk/visibility {:code :hide :result :show}}
-;; (clerk/html (u/load-problem "07" "2016"))
-;; {:nextjournal.clerk/visibility {:code :show :result :show}}
-
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 (defn parser [data]
   (->> data
@@ -30,25 +23,19 @@
 ;; ## Part 1
 (defn part-1
   [data]
-  data
+  data)
   ;
-  )
+  
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
-#_(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code :show :result :hide}}
 (defn part-2
-  [input]
+  [input])
   
   ;
-  )
+  
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
-#_(part-2 input)
 
 
 ;; # Tests
@@ -56,15 +43,14 @@
                                 :result :hide}}
 
 ;; ## Suite
-(deftest test-2016-07
-  #_(testing "part one"
-    (is (= 1 (part-1 input))))
+#_(deftest test-2016-07
+    #_(testing "part one"
+       (is (= 1 (part-1 input))))
 
-  #_(testing "part two"
-    (is (= 1 (part-2 input)))))
+    #_(testing "part two"
+       (is (= 1 (part-2 input)))))
 
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 ;; ## Results
 
-(part-1 input-example)

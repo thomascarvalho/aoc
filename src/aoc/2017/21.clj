@@ -3,7 +3,6 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [test-util :as t]
             [util :as u]
             [clojure.core.matrix :as m]
             [clojure.pprint :refer [pprint]]
@@ -51,15 +50,15 @@
     (for [[first-y] ranges
           [first-x] ranges]
       (-> (m/submatrix program [[first-y subsize] [first-x subsize]])
-          (m/matrix)
-          ))))
+          (m/matrix)))))
+          
 
 
 
 
-#_(defn transform-squares [squares rules]
+#_(defn transform-squares [squares rules])
   
-  )
+  
 
 
 (let [pattern (m/matrix [[\. \# \.]
@@ -68,8 +67,8 @@
 
   (->
    (m/rotate pattern 10 2)
-   m/pm)
-  )
+   m/pm))
+  
 
 (let [squares (split-program big-program)
       rules   input-example]
@@ -93,10 +92,10 @@
           (map #(partition 3 %) rows))
         nil))
     
-    #_(pprint program)
+    #_(pprint program)))
     
     ;;
-    ))
+    
 
 ;; ## Part 1
 (defn part-1
@@ -123,4 +122,3 @@
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 
-#_(t/test-render #'test-2017-21)

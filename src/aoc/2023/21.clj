@@ -5,19 +5,12 @@
             [nextjournal.clerk :as clerk]
             [util :as u]
             [clojure.math.numeric-tower :as nt]
-            [test-util :as t]
             [pathfinding :as pf]
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
-(clerk/html (u/load-problem "21" "2023"))
-{:nextjournal.clerk/visibility {:code :show :result :show}}
 
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 (defn parser [data]
   (->> data
@@ -75,10 +68,6 @@
      count
      inc)))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
-#_(part-1 input)
-
 (defn neighbours-p2 [cells [y x] width height starting-coords]
   (for [[delta-y delta-x] dirs
         :let              [final-y (+ y delta-y)
@@ -100,43 +89,33 @@
 
   
   #_(let [[starting-coords _] (starting-cell cells)
-        total-steps         100]
-    (->>
-     (loop [distance  0
-            positions #{starting-coords}]
-       (if (= distance total-steps)
-         positions
-         (->>
-          (for [p positions
-                n (neighbours-p2 cells p width height starting-coords)]
-            n)
-          set
-          (recur (inc distance)))))
-     count
-     inc))
+          total-steps         100]
+     (->>
+      (loop [distance  0
+             positions #{starting-coords}]
+        (if (= distance total-steps)
+          positions
+          (->>
+           (for [p positions
+                 n (neighbours-p2 cells p width height starting-coords)]
+             n)
+           set
+           (recur (inc distance)))))
+      count
+      inc)))
 
   ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
-#_(part-2 input)
-
+  
 
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 
 ;; ## Suite
-(deftest test-2023-21
-  #_(testing "part one"
-    (is (= 3615 (part-1 input))))
+#_(deftest test-2023-21
+    #_(testing "part one"
+       (is (= 3615 (part-1 input))))
 
-  #_(testing "part two"
-      (is (= 1 (part-2 input)))))
+    #_(testing "part two"
+        (is (= 1 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-;; ## Results
-
-(part-2 input-example)

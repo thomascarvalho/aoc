@@ -3,22 +3,11 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [test-util :as t]
             [util :as u :refer [parse-int]]
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "02" "2023"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
-
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
-
 (defn parser [data]
   (->> data
        str/split-lines
@@ -71,10 +60,6 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"))
    (map #(get % :id))
    (reduce +)))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -105,16 +90,7 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"))
                 green (reduce max green)]
             (*  blue red   green))))
 
-   (reduce +))
-
-  ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-2 input)
-
+   (reduce +)))
 
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
@@ -126,7 +102,3 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"))
 
   (testing "part two"
     (is (= 87984 (part-2 input)))))
-
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(t/test-render #'test-2023-02)

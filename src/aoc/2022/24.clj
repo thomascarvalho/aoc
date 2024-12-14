@@ -51,9 +51,9 @@
 ;; ## Part 1
 (defn part-1
   [maze]
-  maze
+  maze)
   ;
-  )
+  
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
@@ -64,10 +64,10 @@
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 (defn part-2
-  [input]
+  [input])
 
   ;
-  )
+  
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
@@ -76,11 +76,11 @@
 
 
 ;; Tests
-(deftest test-2022-24
-  #_(testing "part one"
-      (is (= 1 (part-1 input))))
+#_(deftest test-2022-24
+    #_(testing "part one"
+        (is (= 1 (part-1 input))))
 
-  #_(testing "part two"
-      (is (= 1 (part-2 input)))))
+    #_(testing "part two"
+        (is (= 1 (part-2 input)))))
 
 #_(part-1 input-example)

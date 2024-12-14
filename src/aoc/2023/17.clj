@@ -9,20 +9,11 @@
             [clojure.set :refer [union]]
             [ubergraph.alg :as alg]
             [pathfinding :as pf]
-            [test-util :as t]
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "17" "2023"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 (defn parser [data]
   (->> data
@@ -64,81 +55,33 @@
 
 
 #_(defn bfs
-  [grid start end]
-  (loop [frontier  (conj clojure.lang.PersistentQueue/EMPTY start)
-         came-from {start nil}
-         visited   #{start}]
-    (when (seq frontier)
-      (let [current     (peek frontier)
-            new-visited (conj visited current)]
-        (if (= current end)
-          (reverse (cons end (take-while #(not (nil? %)) (iterate came-from (came-from end)))))
-          (let [next-neighbors (filter #(not (visited %))
-                                       (neighbors current grid))]
-            (recur
-             (reduce conj (pop frontier) next-neighbors)
-             (reduce #(assoc %1 %2 current) came-from next-neighbors)
-             (union new-visited (set next-neighbors)))))))))
+    [grid start end]
+    (loop [frontier  (conj clojure.lang.PersistentQueue/EMPTY start)
+           came-from {start nil}
+           visited   #{start}]
+      (when (seq frontier)
+        (let [current     (peek frontier)
+              new-visited (conj visited current)]
+          (if (= current end)
+            (reverse (cons end (take-while #(not (nil? %)) (iterate came-from (came-from end)))))
+            (let [next-neighbors (filter #(not (visited %))
+                                         (neighbors current grid))]
+              (recur
+               (reduce conj (pop frontier) next-neighbors)
+               (reduce #(assoc %1 %2 current) came-from next-neighbors)
+               (union new-visited (set next-neighbors)))))))))
 
 ;; ## Part 1
 (defn part-1
   [{:keys [cells width height]}]
-
-  (let [max-y (dec height)
-        max-x (dec width)
-
-        ;; edges (for [current (ma/index-seq m)
-        ;;             target  (map #(to-target-coords current %) targets)
-        ;;             :let    [v (mget m target)]
-        ;;             :when   v]
-        ;;         [current target v])
-        ;; g     (->
-        ;;        (uber/digraph)
-        ;;        (uber/add-edges* edges))
-        ]
-
-    #_(bfs cells [0 0] [max-y max-x])
-    #_(alg/shortest-path g {:start-node  [0 0]
-                            :end-node    [max-y max-x]
-                            :cost-attr   :weight
-                          ;; :traverse    true
-                            :edge-filter (fn [e]
-                                           (println e)
-                                           e)
-                          ;; :node-filter (fn [n]
-                          ;;                (println n)
-                          ;;                n
-                          ;;                )
-                            })
-    
-
-
-
-
-    #_(for [x (range 0 max-x)
-            y (range 0 max-y)]))
-
-  ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-1 input)
-
+  cells)
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 (defn part-2
-  [input]
+  [input])
 
   ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-2 input)
 
 
 ;; # Tests
@@ -146,17 +89,16 @@
                                 :result :hide}}
 
 ;; ## Suite
-(deftest test-2023-17
-  #_(testing "part one"
-      (is (= 1 (part-1 input))))
+#_(deftest test-2023-17
+    #_(testing "part one"
+        (is (= 1 (part-1 input))))
 
-  #_(testing "part two"
-      (is (= 1 (part-2 input)))))
+    #_(testing "part two"
+        (is (= 1 (part-2 input)))))
 
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 ;; ## Results
-#_(part-1 input-example)
 
 
 (def ^:private inf (Long/MAX_VALUE))
@@ -195,11 +137,11 @@
                  (disj unvisited curr')))))))
 
 
-(let [{:keys [cells height width]} input-example
-      m                            (reduce (fn [m [pos v]]
-                                             (let [[y x]     pos
-                                                   neighbors (filter #(cells %) [[(dec y) x] [(inc y) x] [y (dec x)] [y (inc x)]])]
-                                               (assoc m pos (reduce (fn [ns p2]
-                                                                      (assoc ns p2 (cells p2))) {} neighbors)))) {} cells)]
+#_(let [{:keys [cells height width]} input-example
+        m                            (reduce (fn [m [pos v]]
+                                               (let [[y x]     pos
+                                                     neighbors (filter #(cells %) [[(dec y) x] [(inc y) x] [y (dec x)] [y (inc x)]])]
+                                                 (assoc m pos (reduce (fn [ns p2]
+                                                                        (assoc ns p2 (cells p2))) {} neighbors)))) {} cells)]
 
-  (dijkstra m [0 0] {:target [(dec height) (dec width)]}))
+    (dijkstra m [0 0] {:target [(dec height) (dec width)]}))

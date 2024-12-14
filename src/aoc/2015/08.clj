@@ -7,16 +7,8 @@
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "08" "2015"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 (defn parser [data]
   (->> data
@@ -47,10 +39,6 @@
     (- (reduce + (map first r))
        (reduce + (map second r)))))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -68,10 +56,6 @@
         coded   (reduce + (map second r))]
     (- encoded coded)))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-2 input)
 
 
 ;; # Tests
@@ -86,6 +70,3 @@
   (testing "part two"
     (is (= 2046 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-;; ## Results

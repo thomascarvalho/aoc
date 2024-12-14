@@ -3,7 +3,6 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [test-util :as t]
             [util :as u]
             [clojure.string :as str]
             [clojure.test :refer :all]))
@@ -89,4 +88,3 @@
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 
-#_(t/test-render #'test-2017-17)

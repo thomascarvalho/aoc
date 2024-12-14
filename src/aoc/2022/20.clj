@@ -58,8 +58,7 @@
       numbers
       (let [move                       (nth numbers current-index)
             [new-numbers target-index] (move-element numbers current-index move)]
-        (println numbers)
-        (println current-index) ;; TODO: get correct current index
+         ;; TODO: get correct current index
         (recur new-numbers (if (> target-index current-index) current-index (inc current-index)) (inc step))))))
 
 ;; Which gives our answer
@@ -81,11 +80,11 @@
 
 
 ;; # Tests
-(deftest test-2022-20
-  #_(testing "part one"
-      (is (= 1 (part-1 input))))
+#_(deftest test-2022-20
+    #_(testing "part one"
+        (is (= 1 (part-1 input))))
 
-  #_(testing "part two"
-      (is (= 1 (part-2 input)))))
+    #_(testing "part two"
+        (is (= 1 (part-2 input)))))
 
 #_(part-1 input-example)

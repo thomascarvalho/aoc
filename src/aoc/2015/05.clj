@@ -6,16 +6,8 @@
             [util :as u]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "05" "2015"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 (defn parser [data]
   (->> data
@@ -57,10 +49,6 @@ dvszwmarrgswjxmb"))
                        true)) true (partition 2 1 s)))))
        count))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -80,10 +68,6 @@ dvszwmarrgswjxmb"))
              rule-2?))))
        count))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-2 input)
 
 
 ;; # Tests
@@ -98,6 +82,3 @@ dvszwmarrgswjxmb"))
   (testing "part two"
     (is (= 53 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-;; ## Results

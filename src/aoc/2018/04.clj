@@ -3,7 +3,6 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [test-util :as t]
             [util :as u]
             [clojure.string :as str]
             [clojure.test :refer :all]))
@@ -141,7 +140,3 @@
   #_(testing "part two"
       (is (= 1 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-
-#_(t/test-render #'test-2018-04)

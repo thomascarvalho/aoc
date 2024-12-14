@@ -7,16 +7,8 @@
             [clojure.test :refer :all]
             [clojure.math.combinatorics :as combo]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "09" "2015"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 (defn parser [data]
   (->> data
@@ -48,10 +40,6 @@ Dublin to Belfast = 141"))
                                     (+ d (get edges (sort edge)))) 0 (partition 2 1 locs))]
                  (min t dist))) Double/MAX_VALUE))))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -68,10 +56,6 @@ Dublin to Belfast = 141"))
                                     (+ d (get edges (sort edge)))) 0 (partition 2 1 locs))]
                  (max t dist))) 0))))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-2 input)
 
 
 ;; # Tests

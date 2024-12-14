@@ -6,26 +6,10 @@
              infinite? abs ref partial =])
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [emmy.clerk :as ec]
             [util :as u]
             [test-util :as t]
             [clojure.string :as str]
-            [clojure.test :refer :all]
-            #_[emmy.env :as e :refer :all]
-            [emmy.mafs :as mafs]
-            [emmy.mathbox.plot :as p]
-            [emmy.viewer :as ev]))
-
-^{::clerk/visibility {:code   :hide
-                      :result :hide}}
-(ec/install!)
-
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "22" "2023"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
+            [clojure.test :refer :all]))
 
 ;; # Solution 
 ;;
@@ -52,35 +36,23 @@
 ;; ## Part 1
 (defn part-1
   [bricks]
-  (->>  bricks
-        (reduce (fn [s [[x1 y1 z1] [x2 y2 z2]]]
-                  (conj s (p/line {:coords [[x1 y1 z1] [x2 y2 z2]]
-                                   :height 20
-                                   :width  20}))) (p/scene)))
+  #_(->>  bricks
+          (reduce (fn [s [[x1 y1 z1] [x2 y2 z2]]]
+                    (conj s (p/line {:coords [[x1 y1 z1] [x2 y2 z2]]
+                                     :height 20
+                                     :width  20}))) (p/scene))))
   ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-
-
-
-(part-1 input-example)
+  
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 (defn part-2
-  [input]
+  [input])
 
   ;
-  )
+  
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-2 input)
 
 
 ;; # Tests
@@ -88,13 +60,10 @@
                                 :result :hide}}
 
 ;; ## Suite
-(deftest test-2023-22
-  #_(testing "part one"
-      (is (= 1 (part-1 input))))
+#_(deftest test-2023-22
+    #_(testing "part one"
+        (is (= 1 (part-1 input))))
 
-  #_(testing "part two"
-      (is (= 1 (part-2 input)))))
+    #_(testing "part two"
+        (is (= 1 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-;; ## Results

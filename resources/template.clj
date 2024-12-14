@@ -6,11 +6,6 @@
             [clojure.string :as str]
             [clojure.test :refer [deftest is testing]]))
 
-;; # Problem
-;; {:nextjournal.clerk/visibility {:code :hide :result :show}}
-;; (clerk/html (u/load-problem "DAY" "YEAR"))
-;; {:nextjournal.clerk/visibility {:code :show :result :show}}
-
 ;; # Parser
 (defn parser [data]
   (->> data
@@ -37,10 +32,10 @@
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
-(deftest test-YEAR-DAY
-  #_(testing "part one"
-     (is (= 1 (part-1 input))))
+#_(deftest test-YEAR-DAY
+    #_(testing "part one"
+       (is (= 1 (part-1 input))))
 
-  #_(testing "part two"
-     (is (= 1 (part-2 input)))))
+    #_(testing "part two"
+       (is (= 1 (part-2 input)))))
 

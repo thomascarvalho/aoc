@@ -4,20 +4,11 @@
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
             [util :as u]
-            [test-util :as t]
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "15" "2023"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 (defn parser [data]
   (-> data
@@ -45,11 +36,6 @@
   (->>
    (map get-hash strings)
    (reduce +)))
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-1 input)
 
 (defn first-index-for-label [boxes label]
   (->>
@@ -86,16 +72,10 @@
                            (let [r (* (inc k) (inc i) (parse-long focal))]
                              (+ t r))) 0 (map-indexed vector boxes)))
         total))
-    0))
+    0)))
 
   ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-2 input)
-
+  
 
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
@@ -112,7 +92,4 @@
   (testing "part two"
     (is (= 264021 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-;; ## Results
 

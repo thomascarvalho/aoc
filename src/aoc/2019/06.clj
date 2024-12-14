@@ -9,17 +9,7 @@
             [ubergraph.alg :as alg]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "06" "2019"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
-
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
-
 (defn parser [data]
   (->> data
        str/split-lines
@@ -70,15 +60,8 @@ I)SAN"))
              (recur (first predecessors) (concat all-predecessors predecessors))
              all-predecessors))))
      flatten
-     count))
-  ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-1 input)
-
+     count)))
+  
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
@@ -88,16 +71,8 @@ I)SAN"))
               (uber/add-edges* input))]
     (-> (alg/shortest-path g "YOU" "SAN")
         :cost
-        (- 2)))
-  ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-2 input)
-
-
+        (- 2))))
+  
 ;; Tests
 (deftest test-2019-06
   (testing "part one"

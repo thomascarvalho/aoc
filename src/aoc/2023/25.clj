@@ -6,20 +6,11 @@
             [util :as u]
             [ubergraph.core :as uber]
             [ubergraph.alg :as alg]
-            [test-util :as t]
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "25" "2023"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 (defn parser [data]
   (->> data
@@ -108,31 +99,21 @@ frs: qnr lhk lsr"))
                                        (alg/connected-components))]
                 (if (= (count comps) 2)
                   (do
-                    #_(println (set (first comps)))
-                    #_(println (set (second comps)))
                     (reduced (* (-> comps first set count) (-> comps second set count))))
-                  []))) [] edges-to-remove))
+                  []))) [] edges-to-remove)))
   ;
-  )
+  
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 (defn part-2
-  [input]
+  [input])
 
   ;
-  )
+  
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-2 input)
 
 
 ;; # Tests
@@ -140,15 +121,10 @@ frs: qnr lhk lsr"))
                                 :result :hide}}
 
 ;; ## Suite
-(deftest test-2023-25
-  #_(testing "part one"
-      (is (= 1 (part-1 input))))
+#_(deftest test-2023-25
+    #_(testing "part one"
+        (is (= 1 (part-1 input))))
 
-  #_(testing "part two"
-      (is (= 1 (part-2 input)))))
+    #_(testing "part two"
+        (is (= 1 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-;; ## Results
-
-(part-1 input)

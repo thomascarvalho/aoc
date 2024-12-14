@@ -18,13 +18,15 @@
            org.clj-commons/hickory        {:mvn/version "0.7.3"}
            org.clojure/core.match         {:mvn/version "1.0.1"}
            org.mentat/emmy-viewers        {:mvn/version "0.3.1"}
+           eftest/eftest                  {:mvn/version "0.6.0"}
            org.slf4j/slf4j-nop            {:mvn/version "2.0.7"}
            org.clojure/test.check         {:mvn/version "1.1.1"}
-           lambdaisland/kaocha            {:mvn/version "1.87.1366"}
+           lambdaisland/kaocha            {:mvn/version "1.91.1392"}
+           io.github.cognitect-labs/test-runner {:git/tag "v0.5.1" :git/sha "dfb30dd"}
            org.clojure/math.combinatorics {:mvn/version "0.2.0"}}
- :aliases {:test              {:extra-deps {lambdaisland/kaocha        {:mvn/version "1.87.1366"}
-                                            nubank/matcher-combinators {:mvn/version "3.8.8"}}
-                               :main-opts  ["-m" "kaocha.runner"]}
+ :aliases {:dev {:jvm-opts ["-Xmx10g" "-XX:+UseG1GC"]}
+           :test {:exec-fn kaocha.runner/exec-fn
+                  :exec-args {}}
            :nextjournal/clerk {:exec-fn   nextjournal.clerk/build!
                                :jvm-opts  ["-Dclojure.main.report=stdout"]
                                :exec-args {:index       "src/index.clj"
@@ -36,7 +38,7 @@
                                                          "src/aoc/2019/*.clj"
                                                          "src/aoc/2020/*.clj"
                                                          "src/aoc/2021/*.clj"
-                                                        ;;  "src/aoc/2022/*.clj" ;; FIXME: clerk build crashes with 2022 => find why 
+                                                                         ;;  "src/aoc/2022/*.clj" ;; FIXME: clerk build crashes with 2022 => find why 
                                                          "src/aoc/2023/*.clj"
                                                          "src/aoc/2024/*.clj"
                                                          "src/*.clj"]}

@@ -6,6 +6,7 @@
 (ns index
   {:nextjournal.clerk/visibility {:code :hide :result :hide}}
   (:require
+   [eftest.runner :as ef]
    [aoc.2015.index]
    [aoc.2016.index]
    [aoc.2017.index]
@@ -15,11 +16,16 @@
    [aoc.2021.index]
    [aoc.2022.index]
    [aoc.2023.index]
-   [aoc.2024.index]
+   [aoc.2024.01]
+   [kaocha.repl :as k]
+   [kaocha.testable :as kt]
    [babashka.fs :as fs]
+   [clojure.test :as ct]
+   [test-util :as tu]
    [clojure.java.io :as io]
    [nextjournal.clerk :as clerk]
-   [nextjournal.clerk.view :as clerk.view]))
+   [nextjournal.clerk.view :as clerk.view]
+   [clojure.string :as str]))
 
 (alter-var-root #'clerk.view/include-css+js
                 (fn [include-css+js-orig extra-includes]
@@ -63,3 +69,19 @@
                                                                              (= stars 2)) completed-days)))]
                   [:span {:class "text-right font-bold text-xl text-yellow-500"} (format "%s*" (apply + (map :stars (vals completed-days))))]]))
              (group-solutions))))
+
+
+
+
+(defn run-aoc-tests [year]
+  (reduce (fn [m tns]
+            (let [[_ y d] (re-find #"(\d+).(\d+)" (str tns))]
+              (->> (ef/run-tests [tns] {:capture-output? false})
+                  (assoc-in m [y d]))))
+          {}
+          (ef/find-tests (str "src/aoc/" year))))
+
+(run-aoc-tests 2024)
+
+
+

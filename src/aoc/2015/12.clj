@@ -10,11 +10,6 @@
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-;; {:nextjournal.clerk/visibility {:code :hide :result :show}}
-;; (clerk/html (u/load-problem "12" "2015"))
-;; {:nextjournal.clerk/visibility {:code :show :result :show}}
-
 ;; # Solution
 ;;
 ;; First things first, let's load our input and parse it
@@ -79,12 +74,12 @@
                                 :result :hide}}
 
 ;; ## Suite
-(deftest test-2015-12
-  #_(testing "part one"
-      (is (= 1 (part-1 input))))
+#_(deftest test-2015-12
+    #_(testing "part one"
+        (is (= 1 (part-1 input))))
 
-  #_(testing "part two"
-      (is (= 1 (part-2 input)))))
+    #_(testing "part two"
+        (is (= 1 (part-2 input)))))
 
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
@@ -92,7 +87,4 @@
 ;; 91709, 105394 - too high
 ; (part-2 input)
 
-(let [data (j/read-value input j/keyword-keys-object-mapper)]
-                         
-  (loop [d data
-         sum-red 0]))
+

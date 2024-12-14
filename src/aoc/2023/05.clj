@@ -3,20 +3,10 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [test-util :as t]
             [util :as u]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "05" "2023"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
-
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 (defn parser [data]
   (let [[[seeds] & blocks] (->> data
@@ -88,14 +78,7 @@ humidity-to-location map:
   (->> seeds
        (reduce
         (fn [acc seed]
-          (min acc (get-seed-location seed maps)))))
-  ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-1 input)
+          (min acc (get-seed-location seed maps))))))
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -115,38 +98,28 @@ humidity-to-location map:
 
       (apply await agents)
       (reduce min (map deref agents)))
-(->> raw-seeds
-     (partition 2)
-     (pmap (fn [[start-seed length]]
-             (let [seeds        (range start-seed (+ start-seed length))
-                   mapped-seeds (pmap (fn [seed] (get-seed-location seed maps)) seeds)]
-               (reduce min Double/MAX_VALUE mapped-seeds))
-             #_(->> (range start-seed (+ start-seed length))
-                  (reduce (fn [acc seed]
-                            (min acc (get-seed-location seed maps)))
-                          Double/MAX_VALUE))))
-     (reduce min Double/MAX_VALUE))
-  #_(->> raw-seeds
+  (->> raw-seeds
        (partition 2)
-       (reduce
-        (fn [res [start-seed length]]
-          (->>
-           (range start-seed (+ start-seed length))
-           (reduce
-            (fn [acc seed]
-              (min acc (get-seed-location seed maps))))
-           (min res)))
-        Double/MAX_VALUE)))
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-2 input)
-
-
-;; # Tests
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :hide}}
+       (pmap (fn [[start-seed length]]
+               (let [seeds        (range start-seed (+ start-seed length))
+                     mapped-seeds (pmap (fn [seed] (get-seed-location seed maps)) seeds)]
+                 (reduce min Double/MAX_VALUE mapped-seeds))
+               #_(->> (range start-seed (+ start-seed length))
+                      (reduce (fn [acc seed]
+                                (min acc (get-seed-location seed maps)))
+                              Double/MAX_VALUE))))
+       (reduce min Double/MAX_VALUE))
+  #_(->> raw-seeds
+         (partition 2)
+         (reduce
+          (fn [res [start-seed length]]
+            (->>
+             (range start-seed (+ start-seed length))
+             (reduce
+              (fn [acc seed]
+                (min acc (get-seed-location seed maps))))
+             (min res)))
+          Double/MAX_VALUE)))
 
 ;; ## Suite
 (deftest test-2023-05
@@ -163,10 +136,7 @@ humidity-to-location map:
   (testing "part two - example"
     (is (= 46 (time (part-2 input-example))))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
 ;; ## Results
-#_(t/render-results (t/run #'test-2023-05))
 
 ;; (def sums (map agent (repeat 10 0)))
 

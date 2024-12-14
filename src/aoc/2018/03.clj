@@ -34,8 +34,6 @@
 #2 @ 3,1: 4x4
 #3 @ 5,5: 2x2"))
 
-
-
 ;; ## Part 1
 (defn part-1
   [input]
@@ -50,10 +48,6 @@
      frequencies
      (filter #(> (second %) 1))
      count)))
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
-(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code :show :result :hide}}
@@ -76,11 +70,6 @@
          (filter (fn [[_ cells]]
                    (every? non-overlaped-cells cells)))
          ffirst)))
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
-#_(part-2 input)
-
 
 ;; Tests
 (deftest test-2018-03

@@ -8,12 +8,6 @@
             [clojure.test :refer :all]
             [instaparse.core :as insta]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "10" "2021"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 ;; # Solution
 ;;
@@ -32,8 +26,8 @@
                                       " {}))
 
 (defn decode [line]
-  (re-seq #"((\((.*)?\))|(\[(.*)?\]))" line)
-  )
+  (re-seq #"((\((.*)?\))|(\[(.*)?\]))" line))
+  
 
 (defn parser [data]
   (->> data
@@ -99,10 +93,10 @@
   #_(let [rows (filter #(even? (count %)) lines)]
       (map lint lines))
 
-  #_(find-first-error [\{ \< \[ \[ \] \] \> \} \< \{ \[ \{ \[ \{ \[ \] \{ \( \) \[ \[ \[ \]])
+  #_(find-first-error [\{ \< \[ \[ \] \] \> \} \< \{ \[ \{ \[ \{ \[ \] \{ \( \) \[ \[ \[ \]]))
 
   ;
-  )
+  
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
@@ -113,10 +107,10 @@
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 (defn part-2
-  [input]
+  [input])
 
   ;
-  )
+  
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code   :hide
@@ -125,11 +119,11 @@
 
 
 ;; Tests
-(deftest test-2021-10
-  #_(testing "part one"
-      (is (= 1 (part-1 input))))
+#_(deftest test-2021-10
+    #_(testing "part one"
+        (is (= 1 (part-1 input))))
 
-  #_(testing "part two"
-      (is (= 1 (part-2 input)))))
+    #_(testing "part two"
+        (is (= 1 (part-2 input)))))
 
 #_(part-1 input-example)

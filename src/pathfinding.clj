@@ -1,5 +1,6 @@
 (ns pathfinding
   (:require [clojure.set :refer [union]]
+            [ubergraph.core :as uber]
             [pp-grid.api :as pg]))
 
 (def grid [[1 2 3]
@@ -8,14 +9,16 @@
 
 (defn decode-matrix
   "Get :width, :height and :cells {[y x] value, [y2 x2] value2 ... }"
-  [m]
-  {:width  (count (first m))
-   :height (count m)
-   :cells  (->>
-            (for [[y row] (map-indexed vector m)
-                  [x v]   (map-indexed vector row)]
-              (sorted-map [y x] v))
-            (apply merge))})
+  ([m]
+   (decode-matrix identity m))
+  ([decode-val-fn m]
+   {:width  (count (first m))
+    :height (count m)
+    :cells  (->>
+             (for [[y row] (map-indexed vector m)
+                   [x v]   (map-indexed vector row)]
+               (sorted-map [y x] (decode-val-fn v)))
+             (apply merge))}))
 
 (defn neighbors [cell grid]
   (let [[y x] cell]
@@ -52,15 +55,21 @@
          (assoc-data cells) #_(assoc-data cells)
          #_(pg/box :left-padding 1 :right-padding 1)))))
 
-(let [g (decode-matrix grid)
-      cells (:cells g)]
-  (time (bfs (:cells g) [0 0] [2 2]))
-  (draw-grid cells)
-  #_(reduce (fn [g [k v]]
-              (assoc g k (str v))) (pg/empty-grid) cells)
-  #_(loop [queue [[[0 0] 1]]]
-      queue
-      #_(let [[]])
-      #_(dissoc queue [0 0])))
-
-
+(defn find-all-paths
+  "Trouve tous les chemins possibles entre start-node et end-node dans un graphe orienté"
+  [graph start-node end-node]
+  (let [paths (atom [])
+        
+        find-paths
+        (fn find-paths [current-node current-path visited]
+          (if (= current-node end-node)
+            (swap! paths conj current-path)
+            ;; Utilisation de successors pour un graphe orienté
+            (doseq [neighbor (uber/successors graph current-node)]
+              (when-not (visited neighbor)
+                (find-paths neighbor 
+                           (conj current-path neighbor)
+                           (conj visited neighbor))))))]
+    
+    (find-paths start-node [start-node] #{start-node})
+    @paths))

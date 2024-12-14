@@ -3,18 +3,11 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [test-util :as t]
             [util :as u]
             [clojure.test :refer :all]
             [ubergraph.core :as uber]
             [ubergraph.alg :as alg]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "12" "2017"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 ;; # Solution
 ;;
@@ -82,4 +75,3 @@
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 
-(t/test-render #'test-2017-12)

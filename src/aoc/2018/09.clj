@@ -28,35 +28,6 @@
 ;;  Example
 (def input-example (parser ""))
 
-
-
-
-
-
-
-#_(loop [circle [0]
-         current 0
-         players (cycle (range 1 10))
-         step 0]
-    (println current)
-    (if (= step 7)
-      {:circle circle
-       :current current
-       :players players}
-     (let [player (first players)
-           v (count circle)
-           [new-current new-circle] (insert-relative circle current 2 v)]
-       (println circle new-circle)
-       (recur new-circle
-              new-current
-              (next players)
-              (inc step)))))
-    
-    
-  
-  
-
-
 ;; ## Part 1
 (defn part-1
   [data]
@@ -78,7 +49,3 @@
      #_(testing "part two"
          (is (= 1 (part-2 input))))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                 :result :show}}
-
-#_(t/test-render #'test-2018-09)

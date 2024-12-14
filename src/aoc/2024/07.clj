@@ -5,11 +5,6 @@
             [util :as u]
             [clojure.test :refer [deftest is testing]]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
-(clerk/html (u/load-problem "07" "2024"))
-{:nextjournal.clerk/visibility {:code :show :result :show}}
-
 ;; # Solution
 (defn parser [data]
   (->> data
@@ -72,4 +67,3 @@
   (testing "part two"
     (is (= 11387 (part-2 input-example)))
     (is (= 34612812972206 (part-2 input)))))
-

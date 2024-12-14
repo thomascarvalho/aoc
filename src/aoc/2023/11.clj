@@ -5,19 +5,10 @@
             [nextjournal.clerk :as clerk]
             [util :as u]
             [clojure.core.matrix :as ma]
-            [test-util :as t]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "11" "2023"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 (defn parser [data]
   (->> data
@@ -87,10 +78,6 @@
        get-pairs
        get-pairs-distance-sum))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -103,10 +90,6 @@
        get-pairs
        get-pairs-distance-sum))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-2 input)
 
 
 ;; # Tests
@@ -123,8 +106,4 @@
 
   (testing "part two"
     (is (= 685038186836 (part-2 input)))))
-
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-;; ## Results
 

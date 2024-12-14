@@ -49,18 +49,15 @@
 ###.# => #
 ####. => #"))
 
-(let [{:keys [initial-state notes]} input-example]
-  (loop [cur-state (into [] (concat ["." "."] initial-state ["." "."]))
-         step 0]
-    (let [combs (into [] (map-indexed (fn [x i] [x (into [] i)]) (partition 5 1 cur-state)))]
-      (println cur-state)
-      (reduce (fn [s [i comb]]
-                (if-let [v (get notes comb)]
-                  (do
-                    (println i)
-                   (assoc s (+ i 2) v))
-                  s)) cur-state combs)
-      #_combs)))
+#_(let [{:keys [initial-state notes]} input-example]
+    (loop [cur-state (into [] (concat ["." "."] initial-state ["." "."]))
+           step 0]
+      (let [combs (into [] (map-indexed (fn [x i] [x (into [] i)]) (partition 5 1 cur-state)))]
+        (reduce (fn [s [i comb]]
+                  (if-let [v (get notes comb)]
+                    (assoc s (+ i 2) v)
+                    s)) cur-state combs)
+        #_combs)))
       
 
 ;; ## Part 1
@@ -84,7 +81,3 @@
   #_(testing "part two"
      (is (= 1 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-
-#_(t/test-render #'test-2018-12)

@@ -3,17 +3,10 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [test-util :as t]
             [util :as u]
             [flatland.ordered.set :as oset]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "06" "2017"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 ;; # Solution
 ;;
@@ -104,4 +97,3 @@
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 
-(t/test-render #'test-2017-06)

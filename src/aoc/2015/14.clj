@@ -7,11 +7,6 @@
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-;; {:nextjournal.clerk/visibility {:code :hide :result :show}}
-;; (clerk/html (u/load-problem "14" "2015"))
-;; {:nextjournal.clerk/visibility {:code :show :result :show}}
-
 ;; # Solution
 ;;
 ;; First things first, let's load our input and parse it
@@ -79,10 +74,6 @@ Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds."))
   ;
   
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -94,10 +85,6 @@ Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds."))
   ;
   
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-2 input)
 
 
 ;; # Tests
@@ -118,7 +105,7 @@ Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds."))
 
 ;; 2530, 2585 too low
 
-(part-1 input 2503)
+#_(part-1 input 2503)
 #_(part-1 input-example 1000)
 
 

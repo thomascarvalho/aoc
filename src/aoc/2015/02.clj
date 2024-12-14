@@ -7,16 +7,8 @@
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "02" "2015"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 ;; 4x23x21
 ;; 2*l*w + 2*w*h + 2*h*l
@@ -47,10 +39,6 @@
       (+ (min lw hl wh))))
    (reduce +)))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -64,14 +52,10 @@
       (* 2 (first sorted))
       (+ (* 2 (second sorted)))
       (+ (* l h w))))
-   (reduce +))
+   (reduce +)))
   ;
-  )
+  
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-2 input)
 
 
 ;; Tests

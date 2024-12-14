@@ -74,9 +74,9 @@
 
 
 ;; Tests
-(deftest test-2018-03
-  #_(testing "part one"
-      (is (= 1 (part-1 input))))
+#_(deftest test-2018-03
+    #_(testing "part one"
+        (is (= 1 (part-1 input))))
 
-  #_(testing "part two"
-      (is (= 1 (part-2 input)))))
+    #_(testing "part two"
+        (is (= 1 (part-2 input)))))

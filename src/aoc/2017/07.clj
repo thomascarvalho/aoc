@@ -3,19 +3,12 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [test-util :as t]
             [util :as u]
             [ubergraph.core :as uber]
             [ubergraph.alg :as alg]
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "07" "2017"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 ;; # Solution
 ;;
@@ -96,12 +89,12 @@ cntj (57)"))
     #_(map (fn [n]
              [n (augmented-nodes n)]) (uber/successors g "kiatxq"))
 
-    (- (nodes "kiatxq") (- v t)))
+    (- (nodes "kiatxq") (- v t))))
 ; 148784 too high
 ; 1226 to test
 
   ;
-  )
+  
 
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
@@ -116,4 +109,3 @@ cntj (57)"))
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 
-(t/test-render #'test-2017-07)

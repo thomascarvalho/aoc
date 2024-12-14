@@ -30,9 +30,9 @@
 ;; ## Part 1
 (defn part-1
   [data]
-  data
+  data)
   ;
-  )
+  
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code :hide :result :show}}
@@ -41,10 +41,10 @@
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code :show :result :hide}}
 (defn part-2
-  [input]
+  [input])
   
   ;
-  )
+  
 
 ;; Which gives our answer
 {:nextjournal.clerk/visibility {:code :hide :result :show}}
@@ -52,11 +52,11 @@
 
 
 ;; Tests
-(deftest test-2022-25
-  (testing "part one"
-    (is (= 1 (part-1 input))))
+#_(deftest test-2022-25
+    (testing "part one"
+      (is (= 1 (part-1 input))))
 
-  (testing "part two"
-    (is (= 1 (part-2 input)))))
+    (testing "part two"
+      (is (= 1 (part-2 input)))))
 
 #_(part-1 input-example)

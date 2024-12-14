@@ -9,12 +9,6 @@
             [instaparse.core :as insta]))
 
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "02" "2022"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 (def input (->> (slurp (io/resource "inputs/2022/02.txt"))))
 
 (def SHAPES-POINTS {:R 1

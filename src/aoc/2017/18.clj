@@ -116,147 +116,147 @@ rcv a
 rcv b
 rcv c
 rcv d")
-      p0   (chan)
-      p1   (chan)]
-  (letfn [(program [id]
-                   (prn id)
-                   (let [queue (atom [])]
-                     (go (while true (let [v (async/<! (if (zero? id) p0 p1))]
-                                       (prn v)
-                                       (swap! queue conj v))))
-                     (loop [idx        0
-                            reg        {:p id}
-                            last-sound nil]
-                       (println id @queue)
-                       (if-let [[action [x y]] (get data idx)]
-                         (letfn [(v [t]
-                                   (get-v reg t))]
-                           (case action
-                             :set (recur
-                                   (inc idx)
-                                   (assoc reg x (v y))
-                                   last-sound)
+        p0   (chan)
+        p1   (chan)]
+   (letfn [(program [id]
+                    (prn id)
+                    (let [queue (atom [])]
+                      (go (while true (let [v (async/<! (if (zero? id) p0 p1))]
+                                        (prn v)
+                                        (swap! queue conj v))))
+                      (loop [idx        0
+                             reg        {:p id}
+                             last-sound nil]
+                        (println id @queue)
+                        (if-let [[action [x y]] (get data idx)]
+                          (letfn [(v [t]
+                                    (get-v reg t))]
+                            (case action
+                              :set (recur
+                                    (inc idx)
+                                    (assoc reg x (v y))
+                                    last-sound)
 
-                             :snd (do
-                                    (go (if (zero? id)
-                                          (async/>! p1 (v x))
-                                          (async/>! p0 (v x))))
-                                    (recur
-                                     (inc idx)
-                                     reg
-                                     (v x)))
+                              :snd (do
+                                     (go (if (zero? id)
+                                           (async/>! p1 (v x))
+                                           (async/>! p0 (v x))))
+                                     (recur
+                                      (inc idx)
+                                      reg
+                                      (v x)))
 
-                             :add (recur
-                                   (inc idx)
-                                   (assoc reg x (+ (v x) (v y)))
-                                   last-sound)
+                              :add (recur
+                                    (inc idx)
+                                    (assoc reg x (+ (v x) (v y)))
+                                    last-sound)
 
-                             :mul (recur
-                                   (inc idx)
-                                   (assoc reg x (* (v x) (v y)))
-                                   last-sound)
+                              :mul (recur
+                                    (inc idx)
+                                    (assoc reg x (* (v x) (v y)))
+                                    last-sound)
 
-                             :mod (recur
-                                   (inc idx)
-                                   (assoc reg x (mod (v x) (v y)))
-                                   last-sound)
+                              :mod (recur
+                                    (inc idx)
+                                    (assoc reg x (mod (v x) (v y)))
+                                    last-sound)
 
-                             :rcv
-                             (if (zero? (v x))
-                               (recur
-                                (inc idx)
-                                reg
-                                last-sound)
+                              :rcv
+                              (if (zero? (v x))
+                                (recur
+                                 (inc idx)
+                                 reg
+                                 last-sound))
+
+                              :jgz (if (pos? (v x))
+                                     (recur
+                                      (+ idx (v y))
+                                      reg
+                                      last-sound)
+
+                                     (recur
+                                      (inc idx)
+                                      reg
+                                      last-sound))))
+                          last-sound))))]
+
+     (dotimes [id 2]
+       (go
+         (loop []
+           (let [queue (atom [])]
+             (go (while true (let [v (async/<! (if (zero? id) p0 p1))]
+                               (prn v)
+                               (swap! queue conj v))))
+             (loop [idx        0
+                    reg        {:p id}
+                    last-sound nil]
+               (println id @queue)
+               (if-let [[action [x y]] (get data idx)]
+                 (letfn [(v [t]
+                           (get-v reg t))]
+                   (case action
+                     :set (recur
+                           (inc idx)
+                           (assoc reg x (v y))
+                           last-sound)
+
+                     :snd (do
+                            (go (if (zero? id)
+                                  (async/>! p1 (v x))
+                                  (async/>! p0 (v x))))
+                            (recur
+                             (inc idx)
+                             reg
+                             (v x)))
+
+                     :add (recur
+                           (inc idx)
+                           (assoc reg x (+ (v x) (v y)))
+                           last-sound)
+
+                     :mul (recur
+                           (inc idx)
+                           (assoc reg x (* (v x) (v y)))
+                           last-sound)
+
+                     :mod (recur
+                           (inc idx)
+                           (assoc reg x (mod (v x) (v y)))
+                           last-sound)
+
+                     :rcv
+                     (if (zero? (v x))
+                       (recur
+                        (inc idx)
+                        reg
+                        last-sound)
 
 
 
 
 
-                   ;; return last sound, stop
-                               last-sound)
-
-                             :jgz (if (pos? (v x))
-                                    (recur
-                                     (+ idx (v y))
-                                     reg
-                                     last-sound)
-
-                                    (recur
-                                     (inc idx)
-                                     reg
-                                     last-sound))))
-                         last-sound))))]
-
-    (dotimes [id 2]
-      (go
-        (loop []
-          (let [queue (atom [])]
-            (go (while true (let [v (async/<! (if (zero? id) p0 p1))]
-                              (prn v)
-                              (swap! queue conj v))))
-            (loop [idx        0
-                   reg        {:p id}
-                   last-sound nil]
-              (println id @queue)
-              (if-let [[action [x y]] (get data idx)]
-                (letfn [(v [t]
-                          (get-v reg t))]
-                  (case action
-                    :set (recur
-                          (inc idx)
-                          (assoc reg x (v y))
-                          last-sound)
-
-                    :snd (do
-                           (go (if (zero? id)
-                                 (async/>! p1 (v x))
-                                 (async/>! p0 (v x))))
-                           (recur
-                            (inc idx)
-                            reg
-                            (v x)))
-
-                    :add (recur
-                          (inc idx)
-                          (assoc reg x (+ (v x) (v y)))
-                          last-sound)
-
-                    :mul (recur
-                          (inc idx)
-                          (assoc reg x (* (v x) (v y)))
-                          last-sound)
-
-                    :mod (recur
-                          (inc idx)
-                          (assoc reg x (mod (v x) (v y)))
-                          last-sound)
-
-                    :rcv
-                    (if (zero? (v x))
-                      (recur
-                       (inc idx)
-                       reg
+                              ;; return last sound, stop
                        last-sound)
 
+                     :jgz (if (pos? (v x))
+                            (recur
+                             (+ idx (v y))
+                             reg
+                             last-sound)
 
-
-
-
-                             ;; return last sound, stop
-                      last-sound)
-
-                    :jgz (if (pos? (v x))
-                           (recur
-                            (+ idx (v y))
-                            reg
-                            last-sound)
+                            (recur
+                             (inc idx)
+                             reg
+                             last-sound))))
+                 last-sound)))
+           (recur
 
                            (recur
                             (inc idx)
                             reg
-                            last-sound))))
-                last-sound)))
-                (recur))))))
+                            last-sound)
+                last-sound
+                (recur)))))))
 
 (defn part-2
   [data]
@@ -272,7 +272,5 @@ rcv d")
   #_(testing "part two"
       (is (= 1 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
 
-#_(t/test-render #'test-2017-18)
+

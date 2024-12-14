@@ -7,12 +7,6 @@
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "14" "2021"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 ;; # Solution
 ;;
@@ -129,4 +123,3 @@ CN -> C"))
   #_(testing "part two"
       (is (= 1 (part-2 input)))))
 
-#_(part-2 input)

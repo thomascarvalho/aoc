@@ -8,13 +8,6 @@
             [clojure.set :as cset]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "03" "2019"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
-
 ;; # Solution
 
 (defn parser [data]
@@ -65,11 +58,6 @@ U62,R66,U55,R34,D71,R55,D58,R83"))
    (map #(u/manhattan-distance [0 0] %))
    (reduce min)))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-1 input)
-
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
@@ -96,12 +84,6 @@ U62,R66,U55,R34,D71,R55,D58,R83"))
                count
                inc)))
      (reduce min))))
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-2 input)
-
 
 ;; Tests
 (deftest test-2019-03

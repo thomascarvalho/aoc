@@ -40,17 +40,8 @@
     {:metadata (take-last metadata-qty data)
      :children (if (pos? child-nodes-qty)
                  (loop [current-queue (drop-last metadata-qty data)
-                        qty child-nodes-qty]
-                   ))}))
-
-
-
-
-
-
-(decode-node input-example)
-
-
+                        qty child-nodes-qty]))}))
+                   
 
 #_(when-let [node (first queue)]
     (let [[child-nodes-qty metadata-qty & data] node]
@@ -67,14 +58,10 @@
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
-(deftest test-2018-08
-  #_(testing "part one"
-      (is (= 1 (part-1 input))))
+#_(deftest test-2018-08
+    #_(testing "part one"
+        (is (= 1 (part-1 input))))
 
-  #_(testing "part two"
-      (is (= 1 (part-2 input)))))
+    #_(testing "part two"
+        (is (= 1 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-
-#_(t/test-render #'test-2018-08)

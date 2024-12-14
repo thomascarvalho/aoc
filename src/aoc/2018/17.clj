@@ -80,30 +80,30 @@ y=13, x=498..504"))
     (mapv (fn [tx] [tx y]) (range (inc left-x) right-x))))
 
 
-(let [cells input-example
-      start-water [500 0]
-      max-y (get-max-y cells)]
+#_(let [cells input-example
+        start-water [500 0]
+        max-y (get-max-y cells)]
 
-  (loop [last-inserted-cells []
-         starting-points [start-water]
-         cells cells
-         step 0]
-    (if (= step 5)
-      (pf/draw-grid cells)
-      (let [down-cell (get-next-available-cell-on-column cells (first starting-points))
-            horizontal-cells (get-nexts-available-cells-on-row cells down-cell)
-            inserted-cells horizontal-cells #_(concat down-cell horizontal-cells)]
-        (recur inserted-cells
-               starting-points
-               (reduce (fn [cells coords]
-                         (assoc cells coords \~)) cells inserted-cells)
-               (inc step)))))
-
-
+    (loop [last-inserted-cells []
+           starting-points [start-water]
+           cells cells
+           step 0]
+      (if (= step 5)
+        (pf/draw-grid cells)
+        (let [down-cell (get-next-available-cell-on-column cells (first starting-points))
+              horizontal-cells (get-nexts-available-cells-on-row cells down-cell)
+              inserted-cells horizontal-cells #_(concat down-cell horizontal-cells)]
+          (recur inserted-cells
+                 starting-points
+                 (reduce (fn [cells coords]
+                           (assoc cells coords \~)) cells inserted-cells)
+                 (inc step)))))
 
 
 
-  #_max-y)
+
+
+    #_max-y)
 
 
 
@@ -121,14 +121,10 @@ y=13, x=498..504"))
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
-(deftest test-2018-17
-  #_(testing "part one"
-      (is (= 1 (part-1 input))))
+#_(deftest test-2018-17
+    #_(testing "part one"
+        (is (= 1 (part-1 input))))
 
-  #_(testing "part two"
-      (is (= 1 (part-2 input)))))
+    #_(testing "part two"
+        (is (= 1 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-
-#_(t/test-render #'test-2018-17)

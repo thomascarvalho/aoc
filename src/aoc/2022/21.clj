@@ -100,10 +100,6 @@ hmdt: 32"))
          monkeys-map))
      (get-in ["root" :value]))))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -181,10 +177,6 @@ hmdt: 32"))
                                                    (get-value (second (:monkeys monkey)))))
              my-value-range)))))))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-2 input)
 
 
 ;; Tests
@@ -193,6 +185,5 @@ hmdt: 32"))
     (is (= 75147370123646 (part-1 input))))
 
   #_(testing "part two"
-    (is (= 1 (part-2 input)))))
+     (is (= 1 (part-2 input)))))
 
-#_(time (part-2 input))

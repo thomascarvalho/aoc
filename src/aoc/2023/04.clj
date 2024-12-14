@@ -4,20 +4,10 @@
   (:require [clojure.java.io :as io]
             [clojure.string :as str]
             [clojure.test :refer :all]
-            [test-util :as t]
             [nextjournal.clerk :as clerk]
             [util :as u :refer [instaparse parse-int]]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "04" "2023"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
-
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 (defn parser [data]
   (->> data
@@ -64,14 +54,7 @@ Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11"))
   [games]
   (->> games
        (map #(nth % 3))
-       (reduce +))
-  ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-1 input)
+       (reduce +)))
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -111,12 +94,6 @@ Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11"))
            [winning mine]) games)
    count-cards))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(time-it (part-2 input))
-
-
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
@@ -128,8 +105,4 @@ Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11"))
 
   (testing "part two"
     (is (= 19499881 (part-2 input)))))
-
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-;; ## Results
 

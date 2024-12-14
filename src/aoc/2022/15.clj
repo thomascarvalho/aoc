@@ -125,12 +125,12 @@ Sensor at x=20, y=1: closest beacon is at x=15, y=3")
   (let [data input]
     0))
 
-(deftest test-2022-15
-  #_(testing "part one"
-    (is (= 1 (part-one))))
+#_(deftest test-2022-15
+    #_(testing "part one"
+       (is (= 1 (part-one))))
 
-  #_(testing "part two"
-    (is (= 1 (part-two)))))
+    #_(testing "part two"
+       (is (= 1 (part-two)))))
 
 
 #_(let [data       (apply merge (map parser (cs/split-lines input-example)))

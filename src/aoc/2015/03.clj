@@ -7,16 +7,8 @@
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "03" "2015"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 (def directions-mapping {">" [1 0]
                          "v" [0 1]
@@ -55,14 +47,10 @@
        houses))
    (frequencies)
    keys
-   count)
+   count))
   ;
-  )
+  
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -89,15 +77,11 @@
        houses))
    (frequencies)
    keys
-   count)
+   count))
 
   ;
-  )
+  
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-2 input)
 
 
 ;; Tests

@@ -4,21 +4,12 @@
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
             [util :as u]
-            [test-util :as t]
             [clojure.math.numeric-tower :as math]
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "08" "2023"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 (defn parser [data]
   (let [lines       (->> data
@@ -50,11 +41,6 @@
             (reduced step)
             [(-> (get network-map current) grab) (inc step)])) ["AAA" 0])))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-1 input)
-
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
@@ -81,13 +67,6 @@
               (if (every? #(str/ends-with? % "Z") current-nodes)
                 (reduced step)
                 [(map #(-> (get network-map %) grab) current-nodes) (inc step)])) [starting-nodes 0]))))
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-2 input)
-
-
 
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
@@ -131,7 +110,3 @@ XXX = (XXX, XXX)")))))
   (testing "part two"
     (is (= 13385272668829 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-;; ## Results
-#_(t/render-results (t/run #'test-2023-08))

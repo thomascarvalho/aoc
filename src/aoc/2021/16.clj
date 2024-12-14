@@ -156,10 +156,6 @@
   ;
   
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -170,10 +166,6 @@
   ;
   
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-2 input)
 
 (defn decode-level-1 [initial-bits]
   (loop [prev-bits initial-bits
@@ -270,4 +262,3 @@
   #_(testing "part two"
       (is (= 1 (part-2 input)))))
 
-#_(part-1 input-example)

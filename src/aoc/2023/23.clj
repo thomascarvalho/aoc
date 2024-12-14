@@ -9,18 +9,8 @@
 
 ^{::clerk/visibility {:code   :hide
                       :result :hide}}
-#_(ec/install!)
-
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "23" "2023"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 (defn parser [data]
   (->> data
@@ -97,13 +87,6 @@
      sort
      last)))
 
-  ;
-
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-1 input-example)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -116,15 +99,10 @@
      (all-paths cells start end :p2)
      (map (comp dec count))
      sort
-     last))
+     last)))
   
   ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-2 input)
+  
 
 
 ;; # Tests
@@ -145,6 +123,3 @@
   #_(testing "part two"
       (is (= 1 (part-2 input)))))
 
-#_{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-;; ## Results

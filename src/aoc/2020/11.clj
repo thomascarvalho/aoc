@@ -8,12 +8,6 @@
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "11" "2020"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 ;; # Solution
 ;;
@@ -94,14 +88,10 @@ L.LLLLL.LL"))
          (recur new-cells cells))))
    vals
    (filter #(= "#" %))
-   count)
+   count))
   ;
-  )
+  
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -145,14 +135,10 @@ L.LLLLL.LL"))
    #_(create-grid)
    vals
    (filter #(= "#" %))
-   count)
+   count))
   ;
-  )
+  
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-2 input)
 
 
 ;; Tests
@@ -183,5 +169,5 @@ L.LLLLL.LL"))
       (is (= 26 (part-2 input-example))))
   
   #_(testing "part two"
-    (is (= 2076 (part-2 input))))
-  )
+     (is (= 2076 (part-2 input)))))
+  

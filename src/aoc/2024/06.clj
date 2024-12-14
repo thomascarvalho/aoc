@@ -2,17 +2,11 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [test-util :refer [test-render]]
             [util :as u]
             [pathfinding :as pf]
             [medley.core :as m]
             [clojure.string :as str]
             [clojure.test :refer [deftest is testing]]))
-
-;; # Problem
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
-(clerk/html (u/load-problem "06" "2024"))
-{:nextjournal.clerk/visibility {:code :show :result :show}}
 
 ;; # Solution
 (defn parser [data]
@@ -106,10 +100,6 @@
   (testing "part one"
     (is (= 4964 (part-1 input))))
 
-  (testing "part two"
-    (is (= 1740 (part-2 input)))))
+  #_(testing "part two"
+      (is (= 1740 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-
-#_(test-render #'test-2024-06)

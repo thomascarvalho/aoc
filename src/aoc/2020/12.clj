@@ -7,12 +7,6 @@
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "12" "2020"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 (def directions-mapping {:E [1 0]
                          :S [0 1]
@@ -81,29 +75,21 @@ F11"))
            (some #(= t %) [:N :E :S :W]) (recur (next actions) (move pos n t) directions)
            (some #(= t %) [:R :L]) (recur (next actions) pos (turn directions n t))
            (= :F t) (recur (next actions) (move pos n (first directions)) directions)))
-       pos)
+       pos))
   ;
-     )
+     
    (manhattan-distance [0 0])))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 (defn part-2
-  [input]
+  [input])
 
   ;
-  )
+  
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-2 input)
 
 ;; Tests
 (deftest test-2020-12
@@ -127,4 +113,3 @@ F11"))
   #_(testing "part two"
       (is (= 1 (part-2 input)))))
 
-#_(part-1 input-example)

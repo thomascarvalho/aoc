@@ -71,24 +71,24 @@
   [data]
   data)
 
-(let [serial-number 18
-      cells (get-cells serial-number)
-      l-max 300
-      cells-with-total (for [x (range 1 (inc l-max))
-                             y (range 1 (inc l-max))
-                             :let [n (inc (- l-max (max x y)))]]
-                         [[x y] n (reduce + (for [i (range (inc n))
-                                                  :let [tx (+ x i)
-                                                        ty (+ y i)
-                                                        coords [tx ty]]]
-                                                 (get cells coords 0)))])]
-  cells-with-total (->> cells-with-total
-                          (reduce (fn [acc [coords w power]]
-                                    (if (> power (nth acc 2))
-                                      [coords w power]
-                                      acc))
-                                  [[] 0 -99])
-                          #_(str/join ",")))
+#_(let [serial-number 18
+        cells (get-cells serial-number)
+        l-max 300
+        cells-with-total (for [x (range 1 (inc l-max))
+                               y (range 1 (inc l-max))
+                               :let [n (inc (- l-max (max x y)))]]
+                           [[x y] n (reduce + (for [i (range (inc n))
+                                                    :let [tx (+ x i)
+                                                          ty (+ y i)
+                                                          coords [tx ty]]]
+                                                   (get cells coords 0)))])]
+    cells-with-total (->> cells-with-total
+                            (reduce (fn [acc [coords w power]]
+                                      (if (> power (nth acc 2))
+                                        [coords w power]
+                                        acc))
+                                    [[] 0 -99])
+                            #_(str/join ",")))
 
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
@@ -100,7 +100,3 @@
   #_(testing "part two"
       (is (= 1 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-
-#_(t/test-render #'test-2018-11)

@@ -4,21 +4,12 @@
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
             [util :as u]
-            [test-util :as t]
             [clojure.string :as str]
             [clojure.core.match :refer [match]]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "07" "2023"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 (defn parser [data]
   (->> data
@@ -78,10 +69,6 @@ QQQJA 483"))
    (map-indexed (fn [idx [_ _ bid]] (* (inc idx) bid)))
    (reduce +)))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -124,19 +111,12 @@ QQQJA 483"))
   (->>
    data
    #_(map (fn [[hand bid]]
-          [(hand-rank-p2 hand) hand bid]))
+           [(hand-rank-p2 hand) hand bid]))
    (sort-by first compare-hands)
    (map-indexed (fn [idx [_ bid]] (* (inc idx) bid)))
-   (reduce +))
+   (reduce +)))
   ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-2 input)
-
-
+  
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
@@ -155,7 +135,3 @@ QQQJA 483"))
   (testing "part two"
       (is (= 254837398 (part-2 input)))))
 
-
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-;; ## Results

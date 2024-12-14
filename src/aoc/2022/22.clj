@@ -163,30 +163,22 @@
                                 :EAST 0
                                 :SOUTH 1
                                 :WEST 2)]
-        (+ (* 1000 final-y)  (* 4 final-x) direction-ratio))))
+        (+ (* 1000 final-y)  (* 4 final-x) direction-ratio)))))
 
 
   ;
-  )
+  
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 (defn part-2
-  [input]
+  [input])
 
   ;
-  )
+  
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-2 input)
 
 
 #_(second input-example)
@@ -254,13 +246,13 @@
       (is (= [8 0] (move-to m [8 0] :WEST 10)))
       (is (= [8 1] (move-to m [10 1] :EAST 4)))
       (is (= [10 4] (move-to m [10 1] :SOUTH 3)))
-      (is (= [10 10] (move-to m [10 1] :NORTH 3)))
+      (is (= [10 10] (move-to m [10 1] :NORTH 3)))))
 
       ;; 
-      )
+      
 
     ;;
-    )
+    
 
   #_(testing "part one"
       (is (= 1 (part-1 input))))
@@ -269,4 +261,3 @@
       (is (= 1 (part-2 input)))))
 
 
-#_(part-1 input)

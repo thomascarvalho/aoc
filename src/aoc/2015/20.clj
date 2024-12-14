@@ -91,7 +91,6 @@
                   (let [idx          (dec i)
                         [_ presents] (nth all idx)
                         new-count    (+ presents presents-counts)]
-                    #_(when (zero? (mod idx 100)) (println new-count))
                     (if (>= new-count 36000000)
                       (reduced {;;:all (take 10 all)
                                 :i        i
@@ -108,23 +107,10 @@
               res))))))))
      
 
-  ;
-
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
-
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code :show :result :hide}}
 (defn part-2
   [input])
-
-  ;
-
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
-#_(part-2 input)
 
 
 ;; # Tests
@@ -132,13 +118,10 @@
                                 :result :hide}}
 
 ;; ## Suite
-(deftest test-2015-20
-  #_(testing "part one"
-      (is (= 1 (part-1 input))))
+#_(deftest test-2015-20
+    #_(testing "part one"
+        (is (= 1 (part-1 input))))
 
-  #_(testing "part two"
-      (is (= 1 (part-2 input)))))
+    #_(testing "part two"
+        (is (= 1 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-;; ## Results

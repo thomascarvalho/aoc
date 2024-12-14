@@ -7,11 +7,6 @@
             [util :as u]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
-(clerk/html (u/load-problem "02" "2016"))
-{:nextjournal.clerk/visibility {:code :show :result :show}}
-
 ;; # Solution
 ;;
 ;; First things first, let's load our input and parse it
@@ -67,11 +62,6 @@ UUUUD"))
                  [(str code (mget m new-pos)) new-pos])) ["" [1 1]])
      first)))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-1 input)
-
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
@@ -90,11 +80,6 @@ UUUUD"))
                                          (or new-pos pos))) initial-pos moves)]
                  [(str code (mget m new-pos)) new-pos])) ["" [2 0]])
      first)))
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-2 input)
 
 
 ;; # Tests

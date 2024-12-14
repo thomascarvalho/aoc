@@ -8,12 +8,6 @@
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "11" "2021"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 ;; # Solution
 ;;
@@ -86,8 +80,8 @@
 
 (defn reset-flashes [total-flashes-a matrix]
   (let [cells (matrix-filter matrix (fn [_coords v] (= v :F)))]    
-    [(set-multiples matrix (map first cells) 0) (+ total-flashes-a (count cells)) (count cells)]
-    ))
+    [(set-multiples matrix (map first cells) 0) (+ total-flashes-a (count cells)) (count cells)]))
+    
 
 (defn process-flashes [matrix]
   (let [flashed-cells        (matrix-filter matrix (fn [_coords v] (= v :F)))
@@ -132,14 +126,10 @@
     (if (= step 100)
       total-flashes
       (let [[m total _current-flashes] (next-step total-flashes m)]
-        (recur m (inc step) total))))
+        (recur m (inc step) total)))))
   ;
-  )
+  
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -152,15 +142,11 @@
     (let [[m total current-flashes] (next-step total-flashes m)]
       (if (= current-flashes 100)
         (inc step)
-        (recur m (inc step) total))))
+        (recur m (inc step) total)))))
 
   ;
-  )
+  
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-2 input)
 
 
 ;; Tests

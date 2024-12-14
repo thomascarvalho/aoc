@@ -89,11 +89,10 @@ Valve JJ has flow rate=21; tunnel leads to valve II"))
 
 
 ;; Tests
-(deftest test-2022-16
-  #_(testing "part one"
-    (is (= 1 (part-1 input))))
+#_(deftest test-2022-16
+    #_(testing "part one"
+       (is (= 1 (part-1 input))))
 
-  #_(testing "part two"
-    (is (= 1 (part-2 input)))))
+    #_(testing "part two"
+       (is (= 1 (part-2 input)))))
 
-#_(part-1 input-example)

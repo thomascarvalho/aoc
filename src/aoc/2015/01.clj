@@ -5,18 +5,11 @@
             [nextjournal.clerk :as clerk]
             [util :as u :refer [parse-int]]
             [clojure.string :as str]
-            [clojure.test :refer :all]))
+            [clojure.test :refer :all
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "01" "2015"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
+                                :result :show]))
 
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 (defn parser [data]
   (-> data
@@ -42,10 +35,6 @@
                               ")" (dec floor)))
       floor)))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -64,10 +53,6 @@
        (inc index))
       index)))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-2 input)
 
 
 ;; Tests

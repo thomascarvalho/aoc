@@ -8,13 +8,6 @@
             [clojure.test :refer :all]
             [clojure.math.combinatorics :as combo]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "13" "2015"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
-
 ;; # Solution
 ;;
 ;; First things first, let's load our input and parse it
@@ -66,14 +59,10 @@ David would gain 41 happiness units by sitting next to Carol."))
 
      (sort-by second >)
      first
-     second))
+     second)))
   ;
-  )
+  
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -99,16 +88,10 @@ David would gain 41 happiness units by sitting next to Carol."))
 
      (sort-by second >)
      first
-     second))
+     second)))
 
   ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(part-2 input)
-
+  
 
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show

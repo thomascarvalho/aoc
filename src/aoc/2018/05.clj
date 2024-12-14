@@ -3,7 +3,6 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [test-util :as t]
             [util :as u]
             [clojure.string :as str]
             [clojure.test :refer :all]))
@@ -28,7 +27,6 @@
 (def input-example  "dabAcCaCBAcCcaDA")
 
 (def reg #"([a-zA-Z])(?!\1)(?i:\1)")
-
 
 ;; ## Part 1
 (defn part-1
@@ -62,6 +60,4 @@
 
   (testing "part two"
     (is (= 5446 (part-2 input)))))
-
-
 

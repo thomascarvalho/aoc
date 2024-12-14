@@ -8,16 +8,8 @@
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "24" "2023"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 (defn parser [data]
   (->> data
@@ -89,7 +81,7 @@
             intersection-point (mapv + p1 (scalar-mult mu p21))]
         #_intersection-point
         (if (and (point-on-line? intersection-point line1)
-                   (point-on-line? intersection-point line2))
+                 (point-on-line? intersection-point line2))
             (mapv float intersection-point)
             nil)))))
 
@@ -106,28 +98,18 @@
           [h2 p2]    paths
           :let  [intersect (line-intersection-3d [(first p1) (last p1)] [(first p2) (last p2)])]
           :when (and (not= p1 p2) intersect)]
-      [h1 h2 intersect]))
+      [h1 h2 intersect])))
   ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-1 input)
+  
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 (defn part-2
-  [input]
+  [input])
 
   ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-2 input)
+  
 
 
 ;; # Tests
@@ -135,15 +117,10 @@
                                 :result :hide}}
 
 ;; ## Suite
-(deftest test-2023-24
-  #_(testing "part one"
-      (is (= 1 (part-1 input))))
+#_(deftest test-2023-24
+    #_(testing "part one"
+        (is (= 1 (part-1 input))))
 
-  #_(testing "part two"
-      (is (= 1 (part-2 input)))))
+    #_(testing "part two"
+        (is (= 1 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-;; ## Results
-
-(part-1 input-example)

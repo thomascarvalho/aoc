@@ -111,7 +111,3 @@
   #_(testing "part two"
       (is (= 1 (part-1 input 1000000000)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-
-#_(t/test-render #'test-2018-18)

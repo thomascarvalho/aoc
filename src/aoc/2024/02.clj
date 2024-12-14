@@ -5,13 +5,7 @@
             [medley.core :as m]
             [util :as u]
             [clojure.string :as str]
-            [test-util :refer [test-render]]
             [clojure.test :refer [deftest is testing]]))
-
-;; # Problem
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
-(clerk/html (u/load-problem "02" "2024"))
-{:nextjournal.clerk/visibility {:code :show :result :show}}
 
 ;; # Solution
 (defn parser [data]
@@ -77,7 +71,3 @@
   (testing "part two"
     (is (= 459 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-
-(test-render #'test-2024-02)

@@ -5,20 +5,10 @@
             [nextjournal.clerk :as clerk]
             [clojure.core.match :refer [match]]
             [util :as u]
-            [test-util :as t]
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "20" "2023"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
-
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 (defn line-parser [l]
   (u/instaparse l "m = type? module <' -> '> dests
@@ -81,9 +71,6 @@
       [:f :high] [[] on (assoc-last-pulse) history]
 
       [:c _] (let [cons (last (map #(get lasts %) (get connected module)))]
-               #_(when (= module "con")
-                 (println cons #_(every? #(= % :high) cons)))
-
                (if (= cons :high) #_(-> history last second (= :high)) #_(every? #(= % :high) cons)
                    [(assoc-dests-pulse :low) on (assoc-last-pulse) (assoc-history-pulse :low)]
                    [(assoc-dests-pulse :high) on (assoc-last-pulse) (assoc-history-pulse :high)]))
@@ -121,7 +108,7 @@
                              (recur
                               (concat (next queue) items)
                               #_(conj history {:module current
-                                             :pulse  pulse})
+                                               :pulse  pulse})
                               new-history
                               new-on
                               new-lasts
@@ -141,29 +128,18 @@
      frequencies
      (map second)
      (map #(* % 1000))
-     (apply *))
+     (apply *)))
   ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-1 input)
+  
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 (defn part-2
-  [input]
+  [input])
 
   ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-2 input)
-
+  
 
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
@@ -182,12 +158,4 @@
   #_(testing "part two"
       (is (= 1 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-;; ## Results
-
-;; 11687500
-#_(part-1 input-example)
-
-#_(part-1 input-example-2)
 

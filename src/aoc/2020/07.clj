@@ -10,12 +10,6 @@
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "7" "2020"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 ;; # Solution
 ;;
@@ -69,47 +63,39 @@ dotted black bags contain no other bags."))
     #_(uber/viz-graph g)
     (uber/successors g "shiny gold")
     #_(-> (alg/shortest-path g {;; :start-nodes ["faded blue" "dotted black"]
-                              :end-node "shiny gold"})
+                                :end-node "shiny gold"}))
         ;; :depths
         ;; count
         ;; dec
-        )
+        
 
-    #_(alg/all-destinations g))
+    #_(alg/all-destinations g)))
 
 
 
 
 
   ;
-  )
+  
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 (defn part-2
-  [input]
+  [input])
 
   ;
-  )
+  
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-2 input)
 
 
 ;; Tests
-(deftest test-2020-16
-  #_(testing "part one"
-    (is (= 1 (part-1 input))))
+#_(deftest test-2020-16
+    #_(testing "part one"
+       (is (= 1 (part-1 input))))
 
-  #_(testing "part two"
-    (is (= 1 (part-2 input)))))
+    #_(testing "part two"
+       (is (= 1 (part-2 input)))))
 
 #_(part-1 input)

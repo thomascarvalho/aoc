@@ -5,20 +5,11 @@
             [nextjournal.clerk :as clerk]
             [util :as u]
             [clojure.core.matrix :as ma]
-            [test-util :as t]
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-(clerk/html (u/load-problem "14" "2023"))
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :show}}
 
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 (defn parser [data]
   (->> data
@@ -144,15 +135,10 @@ O.#..O.#.#
            c       row
            :when   (= c \O)]
        (- height y))
-     (reduce +)))
+     (reduce +))))
 
   ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-1 input)
+  
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
@@ -197,23 +183,23 @@ O.#..O.#.#
             (recur (inc start))))))))
 
 #_(defn find-first-repeating-pattern [min-pattern-length vector]
-  (let [n (count vector)]
-    (loop [start        0
-           first-repeat nil]
-      (if (>= start n)
-        first-repeat
-        (let [result (loop [end          (inc start)
-                            first-repeat first-repeat]
-                       (if (>= end n)
-                         first-repeat
-                         (let [pattern (subvec vector start end)]
-                           (if (and (>= (count pattern) min-pattern-length)
-                                    (some #(= pattern (subvec % 0 (count pattern)))
-                                          (map vec (partition (count pattern) 1 (drop end vector)))))
-                             {:pattern pattern
-                              :index   start}
-                             (recur (inc end) first-repeat)))))]
-          (recur (inc start) result))))))
+   (let [n (count vector)]
+     (loop [start        0
+            first-repeat nil]
+       (if (>= start n)
+         first-repeat
+         (let [result (loop [end          (inc start)
+                             first-repeat first-repeat]
+                        (if (>= end n)
+                          first-repeat
+                          (let [pattern (subvec vector start end)]
+                            (if (and (>= (count pattern) min-pattern-length)
+                                     (some #(= pattern (subvec % 0 (count pattern)))
+                                           (map vec (partition (count pattern) 1 (drop end vector)))))
+                              {:pattern pattern
+                               :index   start}
+                              (recur (inc end) first-repeat)))))]
+           (recur (inc start) result))))))
 
 
 
@@ -231,18 +217,12 @@ O.#..O.#.#
                                    [m (conj beams (north-support-beams m)) (inc cycles)])))) [m [] 0] (range 500)))]
 
 
-    (u/nth-cycling pattern (- 1000000000 cycles)))
+    (u/nth-cycling pattern (- 1000000000 cycles))))
 
 
 
   ;
-  )
-
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-2 input)
-
+  
 
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
@@ -258,7 +238,3 @@ O.#..O.#.#
 
   (testing "part two"
     (is (= 87273 (part-2 input)))))
-
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-;; ## Results

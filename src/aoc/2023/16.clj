@@ -10,16 +10,8 @@
             [pathfinding :as pf]
             [clojure.test :refer :all]))
 
-;; # Problem
-;; {:nextjournal.clerk/visibility {:code   :hide
-;;                                 :result :show}}
-;; (clerk/html (u/load-problem "16" "2023"))
-;; {:nextjournal.clerk/visibility {:code   :show
-;;                                 :result :show}}
 
 ;; # Solution
-;;
-;; First things first, let's load our input and parse it
 
 (defn parser [data]
   (->> data
@@ -34,9 +26,7 @@
                         parser))
 
 (defn create-grid [energized]
-  (println energized)
   (let [assoc-data (fn [grid items c] (reduce (fn [acc k]
-                                                (println (reverse k))
                                                 (assoc acc (into [] (reverse k)) c)) grid (vec items)))]
     (-> (g/empty-grid)
         (assoc-data energized "#")
@@ -137,11 +127,6 @@
   ;
 
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-1 input)
-
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
@@ -151,33 +136,19 @@
   ;
 
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-2 input)
-
-
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 
 ;; ## Suite
-(deftest test-2023-16
+#_(deftest test-2023-16
 
-  #_(testing "part one - example"
-      (is (= 46 (part-1 input-example))))
+    #_(testing "part one - example"
+        (is (= 46 (part-1 input-example))))
 
-  #_(testing "part one"
-      (is (= 1 (part-1 input))))
+    #_(testing "part one"
+        (is (= 1 (part-1 input))))
 
-  #_(testing "part two"
-      (is (= 1 (part-2 input)))))
-
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-;; ## Results
-
-; (time (part-1 input))
-
-;; 7736 -> too high
+    #_(testing "part two"
+        (is (= 1 (part-2 input)))))
 

@@ -119,13 +119,3 @@ position=<-3,  6> velocity=< 2, -1>"))
     (testing "part two"
       (is (= 10946 (part-2 input))))))
 
-
-
-
-
-
-
-
-
-
-

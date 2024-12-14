@@ -28,9 +28,9 @@
 (def input-example (parser "(27x3)ZFPNOWLAEAEMVDZHFYHXDUVOFWJ(6x3)SBKNUX(26x2)JEAITUGDSJCXZBKGKMKEQKTZCN(21x1)LYEAWHPDVHFAAZNAZJRFF(254x15)(77x8)(2x8)BK(13x13)J"))
 
 (let [data           #_"A(2x2)BCD(2x2)EFG" (first input)
-      groups         (u/re-pos #"\((\d+)x(\d+)\)" data)
+      groups         (u/re-pos #"\((\d+)x(\d+)\)" data)]
       ;; groups-indexed (map-indexed (fn [i v] [i v]) groups)
-      ]
+      
 
   (->
    (loop [res           ""
@@ -85,34 +85,26 @@
        
        (str res (subs data (min current-index (dec (count data))) (dec (count data))))))
    (str/replace #" " "")
-   count)
-)
+   count))
+
 
 ;; ## Part 1
 (defn part-1
   [data]
-  data
+  data)
   ;
-  )
+  
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
 (defn part-2
-  [input]
+  [input])
 
   ;
-  )
+  
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
-#_(part-2 input)
 
 
 ;; # Tests
@@ -120,12 +112,12 @@
                                 :result :hide}}
 
 ;; ## Suite
-(deftest test-2016-09
-  #_(testing "part one"
-      (is (= 1 (part-1 input))))
+#_(deftest test-2016-09
+    #_(testing "part one"
+        (is (= 1 (part-1 input))))
 
-  #_(testing "part two"
-      (is (= 1 (part-2 input)))))
+    #_(testing "part two"
+        (is (= 1 (part-2 input)))))
 
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}

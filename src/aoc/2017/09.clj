@@ -3,7 +3,6 @@
   {:nextjournal.clerk/toc true}
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
-            [test-util :as t]
             [util :as u]
             [clojure.string :as str]
             [clojure.test :refer :all]))
@@ -35,10 +34,10 @@
 (let [data "{{<!>},{<!>},{<!>},{<a>}}"] 
   
   (let [garbages (re-seq #"\<.*?[^!]\>" data)]
-    garbages
-    )
+    garbages))
+    
   
-  )
+  
 
 ;; ## Part 1
 (defn part-1
@@ -55,14 +54,13 @@
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
-(deftest test-2017-09
-  #_(testing "part one"
-      (is (= 1 (part-1 input))))
+#_(deftest test-2017-09
+    #_(testing "part one"
+        (is (= 1 (part-1 input))))
 
-  #_(testing "part two"
-      (is (= 1 (part-2 input)))))
+    #_(testing "part two"
+        (is (= 1 (part-2 input)))))
 
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}
 
-#_(t/test-render #'test-2017-09)

@@ -4,17 +4,9 @@
   (:require [clojure.java.io :as io]
             [nextjournal.clerk :as clerk]
             [util :as u]
-            [test-util :as t]
             [clojure.string :as str]
             [clojure.test :refer :all]))
 
-;; # Problem
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
-(clerk/html (u/load-problem "06" "2015"))
-{:nextjournal.clerk/visibility {:code :show :result :show}}
-
-;; # Solution
-;;
 ;; First things first, let's load our input and parse it
 
 (defn parser [data]
@@ -60,12 +52,9 @@
 
    vals
    frequencies
-   :on)
-  )
+   :on))
+  
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
-#_(part-1 input)
 
 ;; ## Part 2
 {:nextjournal.clerk/visibility {:code :show :result :hide}}
@@ -95,8 +84,6 @@
    vals
    (reduce +)))
 
-;; Which gives our answer
-{:nextjournal.clerk/visibility {:code :hide :result :show}}
 #_(part-2 input)
 
 
@@ -112,5 +99,3 @@
   (testing "part two"
     (is (= 14110788 (part-2 input)))))
 
-{:nextjournal.clerk/visibility {:code   :hide
-                                :result :show}}
