@@ -52,7 +52,7 @@
          test            {:task (let [{:keys [args opts]} (cli/parse-args *command-line-args*)
                                       watch               (:watch opts)]
                                   (if (= 2 (count args))
-                                    (clojure (str "-M:test --focus aoc." (second args) "." (first args) (if watch " --watch" "")))
-                                    (clojure (str "-M:test" (if watch " --watch" "")))))}
+                                    (clojure (str "-X:test --focus aoc." (second args) "." (first args) (if watch " --watch" "")))
+                                    (clojure (str "-X:test" (if watch " --watch" "")))))}
          serve           {:task (clojure "-M:clerk/serve")}
          build           {:task (clojure "-X:nextjournal/clerk")}}}

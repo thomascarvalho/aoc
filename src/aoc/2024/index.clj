@@ -26,11 +26,16 @@
    12 {:stars 1}
    13 {:stars 0}
    14 {:stars 2}
-   15 {:stars 0}
-   18 {:stars 0}
-   19 {:stars 0}
+   15 {:stars 1}
+   16 {:stars 1}
+   17 {:stars 2}
+   18 {:stars 2}
+   19 {:stars 1}
+   20 {:stars 1}
    21 {:stars 0}
-   23 {:stars 0}})
+   22 {:stars 2}
+   23 {:stars 1}
+   24 {:stars 1}})
 
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :show}}

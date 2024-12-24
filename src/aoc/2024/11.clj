@@ -36,7 +36,7 @@
     [(Long/parseLong (subs s 0 half))
      (Long/parseLong (subs s half))]))
 
-(def  multiplier 2024)
+(def multiplier 2024)
 
 (defn blink [stones]
   (persistent! (reduce
@@ -87,5 +87,5 @@
   #_(testing "part two"
       (is (= 1 (part-2 input)))))
 
-(time (process input 25))
+; (println (process input 75))
 

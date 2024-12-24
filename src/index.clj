@@ -17,15 +17,10 @@
    [aoc.2022.index]
    [aoc.2023.index]
    [aoc.2024.01]
-   [kaocha.repl :as k]
-   [kaocha.testable :as kt]
    [babashka.fs :as fs]
-   [clojure.test :as ct]
-   [test-util :as tu]
    [clojure.java.io :as io]
    [nextjournal.clerk :as clerk]
-   [nextjournal.clerk.view :as clerk.view]
-   [clojure.string :as str]))
+   [nextjournal.clerk.view :as clerk.view]))
 
 (alter-var-root #'clerk.view/include-css+js
                 (fn [include-css+js-orig extra-includes]
@@ -77,7 +72,7 @@
   (reduce (fn [m tns]
             (let [[_ y d] (re-find #"(\d+).(\d+)" (str tns))]
               (->> (ef/run-tests [tns] {:capture-output? false})
-                  (assoc-in m [y d]))))
+                   (assoc-in m [y d]))))
           {}
           (ef/find-tests (str "src/aoc/" year))))
 

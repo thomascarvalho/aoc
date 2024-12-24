@@ -5,6 +5,7 @@
             [util :as u]
             [clojure.string :as str]
             [pathfinding :as pf]
+            [clojure.math.numeric-tower :as math]
             [clojure.test :refer [deftest is testing]]
             [medley.core :as m]))
 
@@ -90,32 +91,97 @@ MMMISSJEEE"))
 
 ;; ## Part 2
 
-(defn count-sides-direction [points pred-coords]
-  (->> points
-       (reduce (fn [t [_ targets]]
-                 (if-let [segments (seq (->> (sort targets)
-                                             (filter (fn [coords]
-                                                       (nil? (pred-coords coords))))))]
-                   (let [ratio (double (/ 1 (count segments)))]
-                     (+ t (* ratio (count segments))))
-                   t))
-               0)))
+(defn consecutive-x?
+  "Vérifie si deux éléments sont consécutifs en comparant leur seconde valeur"
+  [[_ n1] [_ n2]]
+  (= (inc n1) n2))
+
+(defn consecutive-y?
+  "Vérifie si deux éléments sont consécutifs en comparant leur seconde valeur"
+  [[n1 _] [n2 _]]
+  (= (inc n1) n2))
+
+(defn group-consecutive
+  "Regroupe les éléments qui se suivent selon leur seconde valeur"
+  [consecutive-fn coll]
+  (if (empty? coll)
+    []
+    (loop [remaining (rest coll)
+           current-group [(first coll)]
+           result []]
+      (if (empty? remaining)
+        (conj result current-group)
+        (let [current (first remaining)
+              rest-coll (rest remaining)]
+          (if (consecutive-fn (last current-group) current)
+            (recur rest-coll
+                   (conj current-group current)
+                   result)
+            (recur rest-coll
+                   [current]
+                   (conj result current-group))))))))
+
+(defn count-sides-dir [consecutive-fn sort-fn pred-coords points]
+  (reduce (fn [t [_ y-points]]
+           (+ t (->> y-points
+                     (sort-by sort-fn)
+                     (group-consecutive consecutive-fn)
+                     (reduce (fn [t consec]
+                               (if-let [segments (seq (->> consec
+                                                           (filter (fn [coords]
+                                                                     (nil? (pred-coords coords))))))]
+                                 (let [d  (/ 1 (count segments))
+                                       ratio  (double d)]
+                                   (+ t (* ratio (count segments))))
+                                 t))
+                             0))))
+
+         0
+         points))
+
+
+
+
+#_(defn count-side-top [same-y-points pred]
+    (reduce (fn [t [_ y-points]]
+              (+ t (->> y-points
+                        (sort-by second)
+                        (group-consecutive consecutive-x?)
+                        (count-sides-dir pred))))
+            0
+            same-y-points))
+
 
 (defn count-sides [points]
-  (let [same-x-points (group-by second points)
-        same-y-points (group-by first points)]
-    (->> [(count-sides-direction same-x-points (fn [[y x]]
-                                                 (points [y (dec x)])))
-          (count-sides-direction same-x-points (fn [[y x]]
-                                                 (points [y (inc x)])))
-          (count-sides-direction same-y-points (fn [[y x]]
-                                                 (points [(dec y) x])))
-          (count-sides-direction same-y-points (fn [[y x]]
-                                                 (points [(inc y) x])))]
-         (reduce +)
-         )))
-
-
+  (let [same-y-points (group-by first points)
+        same-x-points (group-by second points)
+        r  (+
+            (count-sides-dir
+             consecutive-x?
+             second
+             (fn [[y x]]
+               (points [(inc y) x]))
+             same-y-points)
+            (count-sides-dir
+             consecutive-x?
+             second
+             (fn [[y x]]
+               (points [(dec y) x]))
+             same-y-points)
+            (count-sides-dir
+             consecutive-y?
+             first
+             (fn [[y x]]
+               (points [y (inc x)]))
+             same-x-points)
+            (count-sides-dir
+             consecutive-y?
+             first
+             (fn [[y x]]
+               (points [y (dec x)]))
+             same-x-points))]
+    (cond-> r
+      #_#_(odd? r) inc)))
 
 (defn part-2
   [data]
@@ -150,9 +216,7 @@ MMMISSJEEE"))
                               (conj regions current-region)))
                      regions))]
      (->> regions
-          (mapv (fn [points]
-                   [ (count points) (count-sides points)]))
+          (map (fn [points]
+                 #_(*) [(count points) (count-sides points)]))
           #_(reduce +)))))
-
-
 

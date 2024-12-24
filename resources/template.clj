@@ -25,13 +25,13 @@
   data)
 
 ;; ## Part 2
-(defn part-2
-  [data]
-  data)
+#_(defn part-2
+    [data]
+    data)
 
 ;; # Tests
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :hide}}
+#_{:nextjournal.clerk/visibility {:code   :show
+                                  :result :hide}}
 #_(deftest test-YEAR-DAY
     #_(testing "part one"
        (is (= 1 (part-1 input))))

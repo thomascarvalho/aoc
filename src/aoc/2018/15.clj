@@ -65,8 +65,8 @@
     (let [units (get-units cells)]
       (if (= step 1)
         (do #_#_(println "---")
-            (println (pf/draw-grid cells))
-            nil)
+              (println (pf/draw-grid cells))
+         nil)
         (let [new-cells (reduce (fn [cells [coords cell-type]]
                                   (if (or (= cell-type \#) (= cell-type \.))
                                     cells
@@ -80,7 +80,7 @@
                                                                       path-to-opponent
                                                                       path)))
                                                                 nil opponents)]
-                                      
+
                                       (if (= (count shortest-path) 1)
                                         cells
                                         (-> cells
