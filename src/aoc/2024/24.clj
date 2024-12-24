@@ -98,11 +98,21 @@ tnw OR pbm -> gnj"))
 
 ;; Logic
 
+(defn b->d [b]
+  (Long/parseLong b 2))
+
 (defn exec [v1 operation v2]
   (case operation
     "AND" (if (or (zero? v1) (zero? v2)) 0 1)
     "OR" (if (or (= v1 1) (= v2 1)) 1 0)
     "XOR" (if (= v1 v2) 0 1)))
+
+(defn res->d [res]
+  (->> res
+       (mapv second)
+       reverse
+       (reduce str)
+       b->d))
 
 ;; ## Part 1
 (defn solve-1
@@ -117,12 +127,10 @@ tnw OR pbm -> gnj"))
         (if (and (not (nil? v1))
                  (not (nil? v2)))
           (let [result (exec v1 operation v2)]
-            (do
-              #_(println (count instruction))
-              (recur
-               (assoc data target result)
-               instructions
-               (inc step))))
+            (recur
+             (assoc data target result)
+             instructions
+             (inc step)))
           (recur
            data
            (concat instructions [instruction]) #_(conj instructions instruction)
@@ -130,28 +138,38 @@ tnw OR pbm -> gnj"))
 
 (defn part-1 [data]
   (let [data (solve-1 data)]
-    (Long/parseLong (->> (into (sorted-map) data)
-                         (filter (fn [[k]]
-                                   (zero? (.indexOf k "z"))))
-                         (mapv second)
-                         reverse
-                         (reduce str)) 2)))
+    (->> (into (sorted-map) data)
+         (filter (fn [[k]]
+                   (zero? (.indexOf k "z"))))
+         res->d)))
 
 
-(part-1 input)
+
 
 ;; ## Part 2
-#_(defn part-2
-    [data]
-    data)
+(defn part-2
+  [data]
+  (let [data (into (sorted-map) (solve-1 data))
+        x (->> data 
+               (filter (fn [[k]]
+                         (zero? (.indexOf k "x"))))
+               res->d)
+        y (->> data 
+               (filter (fn [[k]]
+                         (zero? (.indexOf k "y"))))
+               res->d)]
+    x))
+
 
 ;; # Tests
 #_{:nextjournal.clerk/visibility {:code   :show
                                   :result :hide}}
-#_(deftest test-2024-24
-    #_(testing "part one"
-        (is (= 1 (part-1 input))))
+(deftest test-2024-24
+  (testing "part one"
+    (is (= 45923082839246 (part-1 input))))
 
-    #_(testing "part two"
-        (is (= 1 (part-2 input)))))
+
+
+  #_(testing "part two"
+      (is (= 1 (part-2 input)))))
 

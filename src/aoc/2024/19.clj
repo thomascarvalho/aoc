@@ -77,11 +77,6 @@ bbrgwb"))
          (mapv #(get-paths-count towels %))
          (reduce +))))
 
-; (time (part-2 input-example))
-
-(defn main [args]
-  (println (part-2 input)))
-(println (part-2 input))
 ;; # Tests
 #_{:nextjournal.clerk/visibility {:code   :show
                                   :result :hide}}

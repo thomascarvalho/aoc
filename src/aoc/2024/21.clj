@@ -210,8 +210,6 @@
 ; <v<A>A<A>^>AvA<^Av>A^A<v<A>^>AvA^A<vA^>A<v<A>^A>AAvA^A<v<A>A^>AAA<Av>A^A
 ; <vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A
 
-(time (part-1 input-example))
-
 ;; to high 206362
 
 ;; ## Part 2

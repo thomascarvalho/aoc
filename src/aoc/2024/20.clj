@@ -110,9 +110,6 @@
                :when (>= diff 0)]
            diff))))
 
-(time (part-1 input))
-
-
 ;; # Tests
 #_{:nextjournal.clerk/visibility {:code   :show
                                   :result :hide}}

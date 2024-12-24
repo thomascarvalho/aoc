@@ -153,7 +153,7 @@
         [_ paths] (dijkstra-all-optimal edges start end :max-best-paths 2)]
        (count (apply cset/union paths))))
 
-(time (part-2 input))
+; (time (part-2 input))
 
 
 ;; # Tests
