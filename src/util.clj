@@ -5,6 +5,7 @@
             [nextjournal.clerk :as clerk]
             [ubergraph.core :as uber]
             [hickory.render :as hr]
+            [test-util :as tu]
             [hiccup2.core :as hi]
             [hickory.select :as s]
             [clojure.pprint :refer [pprint]]
@@ -204,6 +205,7 @@
     [:div.flex.flex-col.gap-4
      (for [[day {:keys [stars]}] (sort days)
            :let                  [title (load-title day year)]]
+                                  
        [:div.flex.flex-row.gap-4
         [:div {:class (str "flex basis-[30px] items-center justify-end "
                            (if (>= stars 2) "text-yellow-300"  "text-yellow-100"))}

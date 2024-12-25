@@ -16,7 +16,7 @@
    [aoc.2021.index]
    [aoc.2022.index]
    [aoc.2023.index]
-   [aoc.2024.01]
+   [aoc.2024.index]
    [babashka.fs :as fs]
    [clojure.java.io :as io]
    [nextjournal.clerk :as clerk]
@@ -64,19 +64,3 @@
                                                                              (= stars 2)) completed-days)))]
                   [:span {:class "text-right font-bold text-xl text-yellow-500"} (format "%s*" (apply + (map :stars (vals completed-days))))]]))
              (group-solutions))))
-
-
-
-
-(defn run-aoc-tests [year]
-  (reduce (fn [m tns]
-            (let [[_ y d] (re-find #"(\d+).(\d+)" (str tns))]
-              (->> (ef/run-tests [tns] {:capture-output? false})
-                   (assoc-in m [y d]))))
-          {}
-          (ef/find-tests (str "src/aoc/" year))))
-
-(run-aoc-tests 2024)
-
-
-

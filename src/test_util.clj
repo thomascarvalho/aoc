@@ -3,8 +3,31 @@
   (:require [nextjournal.clerk :as clerk]
             [nextjournal.clerk.viewer :as v]
             [clojure.test :as test]
+            [eftest.runner :as ef]
             [kaocha.repl :as k]))
 
+(defn run-tests
+  ([{:keys [year day]}]
+   (-> (ef/find-tests
+        (if (and year day)
+          (symbol (format "aoc.%d.%02d" year day))
+          (str "src/aoc/" year "/")))
+       (ef/run-tests {:capture-output? false
+                      :multithread? false}))))
+
+(defn- ef-run-tests [s]
+  (reduce (fn [m tns]
+            (let [[_ y d] (re-find #"(\d+).(\d+)" (str tns))]
+              (->> (ef/run-tests [tns] {:capture-output? false})
+                   (assoc-in m (mapv parse-long [y d])))))
+          {}
+          (ef/find-tests s)))
+
+(defn run-aoc-tests
+  ([year]
+   (ef-run-tests (str "src/aoc/" year "/")))
+  ([year day]
+   (ef-run-tests (symbol (format "aoc.%d.%02d" year day)))))
 
 {:nextjournal.clerk/visibility {:code   :hide
                                 :result :hide}}
@@ -68,5 +91,4 @@
                       :class        "w-6 h-6"}
                      [:path
                       {:stroke-linecap  "round"
-                       :stroke-linejoin "round"
-                       :d               "M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"}]])]]))))
+                       :stroke-linejoin "round"}]])]]))))

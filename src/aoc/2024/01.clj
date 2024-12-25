@@ -50,8 +50,8 @@
          (reduce +))))
 
 ;; # Tests
-{:nextjournal.clerk/visibility {:code   :show
-                                :result :hide}}
+{:nextjournal.clerk/visibility {:code   :hide
+                                :result :show}}
 (deftest test-2024-01
   (testing "part one"
     (is (= 1938424 (part-1 input))))
