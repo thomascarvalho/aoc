@@ -59,18 +59,18 @@ Prize: X=18641, Y=10279"))
   (let [gcd (math/gcd a b)
         [x y] (bezout-coefficients a b)]
     (when (zero? (mod target gcd))
-     (let [factor (/ target gcd)
-           x0 (* x factor)
-           y0 (* y factor)
-           k-step (/ b gcd)
-           x-step (/ a gcd)]
-       (->> (range -20000 20000)
-            (reduce (fn [_ k]
-                      (let [x (- x0 (* k k-step))
-                            y (+ y0 (* k x-step))]
-                        (when (and (< 0 x 101)
-                                   (< 0 y 101))
-                          (reduced [x y]))))))))))
+      (let [factor (/ target gcd)
+            x0 (* x factor)
+            y0 (* y factor)
+            k-step (/ b gcd)
+            x-step (/ a gcd)]
+        (->> (range -20000 20000)
+             (reduce (fn [_ k]
+                       (let [x (- x0 (* k k-step))
+                             y (+ y0 (* k x-step))]
+                         (when (and (< 0 x 100)
+                                    (< 0 y 100))
+                           (reduced [x y]))))))))))
 
 ;; ## Part 1
 (defn part-1
@@ -91,6 +91,9 @@ Prize: X=18641, Y=10279"))
 ;; # Tests
 {:nextjournal.clerk/visibility {:code   :show
                                 :result :hide}}
+
+(part-1 input)
+
 #_(deftest test-2024-13
     (testing "part one"
       (is (= 480 (part-1 input-example)))

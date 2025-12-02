@@ -120,36 +120,6 @@
           (str/join new-path)
           (recur (first parent-info) new-path))))))
 
-(defn shortest-path
-  "Trouve le plus court chemin en utilisant une file prioritaire"
-  [graph start end]
-  (loop [queue (priority-map start 0)  ; File prioritaire
-         visited #{}
-         distances {start 0}
-         parents {}]
-    (if (empty? queue)
-      nil
-      (let [current (first (peek queue))  ; Nœud avec la plus petite distance
-            current-dist (get distances current)
-            queue (pop queue)]
-        (if (= current end)
-          (reconstruct-path-with-attrs parents start end)
-          (if (visited current)
-            (recur queue visited distances parents)
-            (let [neighbors (get graph current #{})
-                  updates (for [[node attrs] neighbors
-                                :let [new-dist (inc current-dist)]
-                                :when (or (not (contains? distances node))
-                                          (< new-dist (get distances node)))]
-                            [node [new-dist [current attrs]]])
-                  new-queue (into queue (map (fn [[node [dist _]]] [node dist]) updates))
-                  new-distances (into distances (map (fn [[node [dist _]]] [node dist]) updates))
-                  new-parents (into parents (map (fn [[node [_ parent]]] [node parent]) updates))]
-              (recur new-queue
-                     (conj visited current)
-                     new-distances
-                     new-parents))))))))
-
 (defn dijkstra
   "Trouve le plus court chemin selon l'algorithme de Dijkstra"
   [graph start end]
@@ -196,21 +166,34 @@
 ;; ## Part 1
 (defn part-1
   [codes]
-  (->> (for [[numeric-code code] codes
+  (->> (for [[numeric-code code] (take 1 codes)
              :let [k1 (path-code numeric-keypad-graph code)
                    k2 (path-code directions-keypad-graph k1)
                    k3 (path-code directions-keypad-graph k2)]]
-         [numeric-code (count k3)])
+         [numeric-code #_(count) (str/join k3)])
        #_#_(map #(apply * %))
          (reduce +)))
 
 ; <v<A>^>A<A>AvA<^AA>A<vAAA^>A
 ; v<<A>>^A<A>AvA<^AA>A<vAAA>^A
 
+;v<<A>>^A<A>AvA<^AA>A<vAAA>^A
+;<v<A>^>A<A>AvA<^AA>A<vAAA^>A
+;<vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A
+;<v<A>A<A>^>AvA<^Av>A^A<v<A>^>AvA^A<vA^>A<v<A>^A>AAvA^A<v<A>A^>AAA<Av>A^A
+
+
 ; <v<A>A<A>^>AvA<^Av>A^A<v<A>^>AvA^A<vA^>A<v<A>^A>AAvA^A<v<A>A^>AAA<Av>A^A
 ; <vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A
 
 ;; to high 206362
+
+;<vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A
+;<v<A>A<A>^>AvA<^Av>A^A<v<A>^>AvA^A<vA^>A<v<A>^A>AAvA^A<v<A>A^>AAA<Av>A^A
+
+;<v<A>>^AAAvA^A<vA<AA>>^AvAA<^A>A<v<A>A>^AAAvA<^A>A<vA>^A<A>A
+
+(part-1 input-example)
 
 ;; ## Part 2
 #_(defn part-2
