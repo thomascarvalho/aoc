@@ -1,9 +1,9 @@
 {:paths ["src" "resources"]
- :deps {org.clojure/clojure            {:mvn/version "1.11.1"}
-        org.babashka/http-client       {:mvn/version "0.4.15"}
+ :deps {org.clojure/clojure            {:mvn/version "1.12.4"}
+        org.babashka/http-client       {:mvn/version "0.4.23"}
            ;;   io.github.nextjournal/clerk    {:mvn/version "0.15.957"}
-        clj-http/clj-http              {:mvn/version "3.12.3"}
-        org.babashka/cli               {:mvn/version "0.7.53"}}
+        clj-http/clj-http              {:mvn/version "3.13.1"}
+        org.babashka/cli               {:mvn/version "0.8.67"}}
  :tasks {:requires       ([babashka.fs :as fs]
                           [clojure.string :as str]
                           [babashka.cli :as cli]

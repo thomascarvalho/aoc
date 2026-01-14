@@ -71,6 +71,29 @@
     (find-paths start-node [start-node] #{start-node})
     @paths))
 
+(defn count-paths-dp
+  "Compte les chemins de start à end via programmation dynamique.
+   Fonctionne uniquement sur un DAG (graphe acyclique dirigé)."
+  [graph start-node end-node]
+  (let [memo (atom {end-node 1})
+        count-from (fn count-from [node]
+                     (if-let [cached (@memo node)]
+                       cached
+                       (let [successors (uber/successors graph node)
+                             total (reduce + 0 (map count-from successors))]
+                         (swap! memo assoc node total)
+                         total)))]
+    (count-from start-node)))
+
+(defn count-paths-through
+  "Compte les chemins de start à end passant par tous les nœuds de through-nodes.
+   through-nodes doit être une séquence ordonnée de nœuds intermédiaires."
+  [graph start-node end-node through-nodes]
+  (let [waypoints (concat [start-node] through-nodes [end-node])]
+    (->> (partition 2 1 waypoints)
+         (map (fn [[from to]] (count-paths-dp graph from to)))
+         (reduce *))))
+
 (defn find-all-paths-optimized
   "Trouve tous les chemins possibles entre start-node et end-node dans un graphe non orienté,
    avec une limite de profondeur pour éviter une explosion combinatoire"
