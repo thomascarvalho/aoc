@@ -1,6 +1,6 @@
 {:paths   ["src" "resources"]
  :deps    {aysylu/loom                    {:mvn/version "1.0.2"}
-           org.clojure/clojure            {:mvn/version "1.12.4"}
+           org.clojure/clojure            {:mvn/version "1.12.7"}
            org.babashka/http-client       {:mvn/version "0.4.23"}
            instaparse/instaparse          {:mvn/version "1.5.0"}
            ubergraph/ubergraph            {:mvn/version "0.9.0"}
@@ -17,7 +17,8 @@
            org.babashka/cli               {:mvn/version "0.8.67"}
            org.clj-commons/hickory        {:mvn/version "0.7.7"}
            org.clojure/core.match         {:mvn/version "1.1.0"}
-           org.mentat/emmy-viewers        {:mvn/version "0.3.2"}
+           org.mentat/emmy-viewers        {:mvn/version "0.3.2"
+                                           :exclusions [cider/piggieback]}
            eftest/eftest                  {:mvn/version "0.6.0"}
            org.slf4j/slf4j-nop            {:mvn/version "2.0.17"}
            org.clojure/test.check         {:mvn/version "1.1.2"}
