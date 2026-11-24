@@ -3,8 +3,6 @@
   (:require [clojure.test :refer :all]
             [clojure.java.io :as io]
             [util :as u]
-            [clojure.set :as cset]
-            [clojure.math.numeric-tower :as tower]
             [clojure.string :as str]))
 
 
@@ -37,83 +35,67 @@
        str/split-lines
        (mapv #(mapv u/parse-int (str/split % #",")))))
 
-(defn- sqr
-  "Uses the numeric tower expt to square a number"
-  [x]
-  (tower/expt x 2))
+(defn squared-distance [a b]
+  (reduce + (map #(* (- %1 %2) (- %1 %2)) a b)))
 
-(defn euclidean-squared-distance
-  "Computes the Euclidean squared distance between two sequences"
-  [a b]
-  (reduce + (map (comp sqr -) a b)))
+(defn sorted-pairs
+  "Every pair of points once, closest first."
+  [points]
+  (->> (for [[i a] (map-indexed vector points)
+             b (subvec points (inc i))]
+         [a b])
+       (sort-by (fn [[a b]] (squared-distance a b)))))
 
-(defn euclidean-distance
-  "Computes the Euclidean distance between two sequences"
-  [a b]
-  (tower/sqrt (euclidean-squared-distance a b)))
+;; ## Union-find
 
-(defn euclidean-distance [v1 v2]
-  (->> (map - v1 v2)
-       (map #(* % %))
-       (reduce +)
-       (tower/sqrt)))
+(defn uf-init [xs]
+  (zipmap xs xs))
 
+(defn uf-find [parent x]
+  (let [p (parent x)]
+    (if (= p x)
+      x
+      (recur parent p))))
 
-(defn get-circuits [circuits a b]
-  (->> circuits
-       (map-indexed vector)
-       (reduce
-        (fn [m [i circuit]]
-          (cond
-            (circuit a) (assoc m :circuit-a-index i)
-            (circuit b) (assoc m :circuit-b-index i)
-            :else m))
-        {:circuit-a-index nil
-         :circuit-b-index nil})))
+(defn uf-union [parent a b]
+  (let [ra (uf-find parent a)
+        rb (uf-find parent b)]
+    (if (= ra rb)
+      parent
+      (assoc parent ra rb))))
 
 (defn part-one
-  [data]
-  (let [lines (parser data)
-        all (for [a  lines
-                  b lines
-                  :when (not= a b)]
-              [(euclidean-distance a b) (set [a b])])
-        sorted (sort-by first (set all))]
-    (->> sorted
-        (take 9)
-        (reduce
-         (fn [acc [_ s]]
-           (let [inter (filter (fn [[i v]] (seq (cset/intersection v s))) (map-indexed vector acc))]
-             (case (count inter)
-               0 (conj acc s)
-               1 (let [[i v] (first inter)]
-                   (update acc i cset/union s))
-               2 acc)))
-         [])
-        #_#_#_#_(map count)
-        (sort >)
-        (take 3)
-        (apply *))))
-
-
+  [data pairs]
+  (let [points (parser data)
+        parent (reduce (fn [parent [a b]] (uf-union parent a b))
+                       (uf-init points)
+                       (take pairs (sorted-pairs points)))]
+    (->> points
+         (map #(uf-find parent %))
+         frequencies
+         vals
+         (sort >)
+         (take 3)
+         (reduce *))))
 
 (defn part-two
   [data]
-  (let [lines (parser data)]))
+  (let [points (parser data)]
+    (loop [[[a b] & others] (sorted-pairs points)
+           parent (uf-init points)
+           n (count points)]
+      (let [ra (uf-find parent a)
+            rb (uf-find parent b)]
+        (cond
+          (= ra rb) (recur others parent n)
+          (= n 2) (* (first a) (first b))
+          :else (recur others (assoc parent ra rb) (dec n)))))))
 
+(deftest test-2025-08
+  (testing "part one"
+    (is (= 40 (part-one input-example 10)))
+    (is (= 83520 (part-one input 1000))))
 
-#_(deftest test-2025-08
-    (testing "part one"
-      (is (= 21 (part-one input-example)))
-      (is (= 1516 (part-one input))))
-
-    (testing "part two"
-      (is (= 40 (part-two input-example)))
-      (is (= 1393669447690 (part-two input)))))
-
-
-
-;; 2028 too low
-
-(time (part-one input-example))
-
+  (testing "part two"
+    (is (= 25272 (part-two input-example)))
+    (is (= 1131823407 (part-two input)))))
